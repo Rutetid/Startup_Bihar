@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Textbox from './Testbox'; // Ensure this is correctly imported
 import Upload from './Upload'; // Assuming you have an Upload component
 import { useFormik } from 'formik';
+import axios from 'axios';
 
 // Validation function
 const validate = values => {
@@ -20,7 +21,7 @@ const validate = values => {
     } else if (!/^\d{10}$/.test(values.FounderAadharNumber)) {
         errors.FounderAadharNumber = 'Must be exactly 10 digits';
     }
-   
+
     if (!values.BriefontheBusinessConcept) {
         errors.BriefontheBusinessConcept = 'Required';
     }
@@ -30,14 +31,14 @@ const validate = values => {
     if (!values.CompanyLogo) {
         errors.CompanyLogo = 'Required';
     }
-    if(!values.WebsiteLink){
+    if (!values.WebsiteLink) {
         errors.WebsiteLink = 'Required'
-     }
-     if(!values.DPIITRecognitionNumber){
+    }
+    if (!values.DPIITRecognitionNumber) {
         errors.DPIITRecognitionNumber = 'Required'
-     }
-     if(!values.UploadDIPPCertificate){
-        errors.UploadDIPPCertificate ='REQUIRED';
+    }
+    if (!values.UploadDIPPCertificate) {
+        errors.UploadDIPPCertificate = 'Required';
     }
     if (!values.CofunderName) {
         errors.CofunderName = 'Required';
@@ -54,13 +55,13 @@ const validate = values => {
     } else if (!/^\d{10}$/.test(values.MobileNo)) {
         errors.MobileNo = 'Must be exactly 10 digits';
     }
-   
+
 
     if (!values.email) {
         errors.email = 'Required';
     } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
         errors.email = 'Invalid email address';
-    }  
+    }
     if (!values.Category) {
         errors.Category = 'Required';
     }
@@ -68,14 +69,6 @@ const validate = values => {
         errors.Gender = 'Required';
     }
 
-    
-
-   
-   
- 
-
-
-   
 
     return errors;
 };
@@ -89,10 +82,10 @@ const Startupform = () => {
             FounderAadharNumber: '',
             BriefontheBusinessConcept: '',
             Sector: '',
-            CompanyLogo: '',
+            CompanyLogo: null,
             WebsiteLink: '',
             DPIITRecognitionNumber: '',
-            UploadDIPPCertificate: '',
+            UploadDIPPCertificate: null,
             CofunderName: '',
             CofunderAadharNumber: '',
             MobileNo: '',
@@ -101,18 +94,64 @@ const Startupform = () => {
             Gender: '',
         },
         validate,
-        onSubmit: values => {
-            
-            console.log(JSON.stringify(values, null, 2));
-            setSubmitted(true);
+        onSubmit: async (values) => {
+            try {
+
+
+                // Manually accessing each property of the values object and creating a new object
+                const dataToSubmit = {
+                    registrationNo: values.RegistrationNo,
+                    foundersName: values.FounderName,
+                    founderAadharNumber: values.FounderAadharNumber,
+                    briefOnBusinessConcept: values.BriefontheBusinessConcept,
+                    sector: values.Sector,
+                    companyLogo: values.CompanyLogo,
+                    websiteLink: values.WebsiteLink,
+                    dpiitRecognitionNumber: values.DPIITRecognitionNumber,
+                    uploadDippCertificate: values.UploadDIPPCertificate,
+                    cofounderName: values.CofunderName,
+                    cofounderAadharNumber: values.CofunderAadharNumber,
+                    mobileNo: values.MobileNo,
+                    email: values.email,
+                    category: values.Category,
+                    gender: values.Gender
+                };
+
+                // Stringify the object manually without looping
+                const dataString = JSON.stringify(dataToSubmit);
+                console.log(JSON.stringify(values, null, 2));
+                console.log(dataString);
+
+
+                // Get token from localStorage
+                const token = localStorage.getItem('token');
+
+                // Send form data to the backend using Axios
+                const response = await axios.post('http://localhost:3000/api/StartupProfile', dataString, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        'Authorization': `${token}`, // Use backticks to insert token properly
+                    },
+                });
+
+                if (response.status === 200) {
+                    console.log('Form submitted successfully:', response.data);
+                    setSubmitted(true); // Assuming setSubmitted is a state setter function
+                }
+            } catch (error) {
+                console.error('Error submitting the form:', error.response ? error.response.data : error.message);
+            }
+
         },
     });
 
-   
-    const handleFileChange = (event, fieldName) => {
-        const file = event.currentTarget.files[0]; // Get the selected file
-        formik.setFieldValue(fieldName, file); // Use setFieldValue to set the file in Formik
-    }
+
+
+    const onFileChange = (file, fieldName) => {
+        console.log('File selected:', file.name);
+        formik.setFieldValue(fieldName, file); // Set the file value in Formik
+    };
+
 
     return (
         <div className="isolate bg-white px-6 py-24 sm:py-3 lg:px-8 min-h-screen flex flex-col items-center">
@@ -126,17 +165,17 @@ const Startupform = () => {
                 ></div>
             </div>
             {submitted && (
-                        <div className="mt-4 font-bold text-black-600">
-                            Form submitted successfully!
-                        </div>
-                    )}         
-           
+                <div className="mt-4 font-bold text-black-600">
+                    Form submitted successfully!
+                </div>
+            )}
+
             <div className="flex w-full max-w-5xl mt-10 space-x-10 ">
-                
+
                 <form onSubmit={formik.handleSubmit} className="w-1/2 p-8 rounded-lg">
                     <h3 className="font-semibold text-xl mb-6">Application Form for Startups</h3>
 
-             
+
                     <div className="mb-6">
                         <Textbox
                             label="Registration No"
@@ -157,7 +196,7 @@ const Startupform = () => {
                         {formik.errors.FounderName && <div className="text-red-600">{formik.errors.FounderName}</div>}
                     </div>
 
-                   
+
                     <div className="mb-6">
                         <Textbox
                             label="Founder Aadhar Number"
@@ -186,13 +225,12 @@ const Startupform = () => {
                         {formik.errors.Sector && <div className="text-red-600">{formik.errors.Sector}</div>}
                     </div>
                     <div className="mb-6">
-    
-                        <Upload 
-                        label = "Company"
-                            name="CompanyLogo" 
-                            onChange={(event) => handleFileChange(event, 'CompanyLogo')}
+                        <Upload
+                            label="Company Logo"
+                            name="CompanyLogo"
+                            onChange={(file) => onFileChange(file, 'CompanyLogo')}
                         />
-                        {formik.errors.CompanyLogo&& <div className="text-red-600">{formik.errors.CompanyLogo}</div>}
+                        {formik.errors.CompanyLogo && <div className="text-red-600">{formik.errors.CompanyLogo}</div>}
                     </div>
                     <div className="mb-6">
                         <Textbox
@@ -215,22 +253,22 @@ const Startupform = () => {
                         {formik.errors.DPIITRecognitionNumber && <div className="text-red-600">{formik.errors.DPIITRecognitionNumber}</div>}
                     </div>
 
-                    
-                   
+
+
                 </form>
 
-               
-                <form  onSubmit={formik.handleSubmit} className="w-1/2 p-8 mt-12 rounded-lg">
-                <div className="mb-6">
-  
-                    <Upload 
-                        label = "Upload Dipp Certificate"
-                        name="UploadDIPPCertificate" // Removed the leading space
-                        onChange={(event) => handleFileChange(event, 'UploadDIPPCertificate')}
-                    />
-                    {formik.errors.UploadDIPPCertificate && <div className="text-red-600">{formik.errors.UploadDIPPCertificate}</div>}
-                </div>
-                    
+
+                <form onSubmit={formik.handleSubmit} className="w-1/2 p-8 mt-12 rounded-lg">
+                    <div className="mb-6">
+
+                        <Upload
+                            label="Upload Dipp Certificate"
+                            name="UploadDIPPCertificate" // Removed the leading space
+                            onChange={(event) => onFileChange(event, 'UploadDIPPCertificate')}
+                        />
+                        {formik.errors.UploadDIPPCertificate && <div className="text-red-600">{formik.errors.UploadDIPPCertificate}</div>}
+                    </div>
+
                     <div className="mb-6">
                         <Textbox
                             label="Co-funder Name"
@@ -238,7 +276,7 @@ const Startupform = () => {
                             onChange={formik.handleChange}
                             value={formik.values.CofunderName}
                         />
-                        {formik.errors.CofunderName && <div className="text-red-600">{formik.errors. CofunderName}</div>}
+                        {formik.errors.CofunderName && <div className="text-red-600">{formik.errors.CofunderName}</div>}
                     </div>
                     <div className="mb-6">
                         <Textbox
@@ -267,7 +305,7 @@ const Startupform = () => {
                         />
                         {formik.errors.email && <div className="text-red-600">{formik.errors.email}</div>}
                     </div>
-                  
+
 
                     <div className="mb-6">
                         <Textbox
@@ -279,7 +317,7 @@ const Startupform = () => {
                         {formik.errors.Category && <div className="text-red-600">{formik.errors.Category}</div>}
                     </div>
 
-                 
+
                     <div className="mb-6">
                         <label className="block text-sm font-medium text-gray-700 mb-2">Gender</label>
                         <select
@@ -294,8 +332,8 @@ const Startupform = () => {
                         </select>
                         {formik.errors.Gender && <div className="text-red-600">{formik.errors.Gender}</div>}
                     </div>
-                 
-                  
+
+
 
                     <div className="mt-6 flex items-center justify-end gap-x-6">
                         <button type="button" className="text-sm font-semibold leading-6 text-gray-900">Cancel</button>
@@ -305,7 +343,7 @@ const Startupform = () => {
                         >
                             Upload
                         </button>
-                                                
+
                     </div>
                 </form>
             </div>

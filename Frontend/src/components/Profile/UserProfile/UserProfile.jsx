@@ -37,7 +37,7 @@ const UserProfile = (props) => {
             </div>
 
             {/* About Company Section */}
-            <div className="flex flex-col w-[40%] h-full">
+            <div className="flex flex-col w-[45%] h-full">
               <h3 className="text-gray-800 text-lg font-semibold mb-2">About Company</h3>
               <textarea
                 className="w-full p-4 h-40 bg-slate-100 rounded-md shadow-md resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800"
@@ -49,7 +49,7 @@ const UserProfile = (props) => {
           {/* Row 2: Nested Row with Three Columns */}
           <div className="flex flex-col space-y-4 md:space-y-0 md:flex-row w-full items-start justify-between">
             {/* Column 1: Upload Bills and Grievance Redressal */}
-            <div className="flex-1 flex flex-col items-start bg-slate-100 p-4 rounded-md shadow-md">
+            <div className="flex-1 flex flex-col items-start bg-slate-100 p-4 rounded-md shadow-md mr-4">
               <h3 className="text-gray-800 text-lg mb-4">Upload Your Bills</h3>
               <div className="bg-gradient-to-r from-blue-600 via-purple-500 to-pink-400 text-white p-4 rounded-lg shadow-md">
                 <h4 className="text-sm font-semibold">Add New Bills</h4>
@@ -68,7 +68,7 @@ const UserProfile = (props) => {
             </div>
 
             {/* Column 2: Apply Tranche */}
-            <div className="flex-1 flex flex-col items-start bg-slate-100 p-4 rounded-md shadow-md mx-4">
+            <div className="flex-1 flex flex-col items-start bg-slate-100 p-4 rounded-md shadow-md mr-4">
               <h3 className="text-gray-900 text-lg">Upload MPR</h3>
               <Applytranche
                 text="MPR"
@@ -94,10 +94,7 @@ const UserProfile = (props) => {
                 text="Query Regarding Employee"
                 text1="How many employees do you have employed in September 2024?"
               />
-              <Query1
-                text="Query Regarding Employee"
-                text1="How many employees do you have employed in September 2024?"
-              />
+
             </div>
           </div>
         </div>
