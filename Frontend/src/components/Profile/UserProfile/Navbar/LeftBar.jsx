@@ -23,7 +23,7 @@ const LeftBar = () => {
             </button>
 
             {/* Sidebar */}
-            <div className={`rounded-lg left-bar bg-slate-100 text-black h-full flex flex-col justify-between p-4 ${isOpen ? 'block' : 'hidden'} md:block`}>
+            <div className={`rounded-lg left-bar bg-[#1c2437] text-[#f5f7f6] h-full flex flex-col justify-between p-4 ${isOpen ? 'block' : 'hidden'} md:block`}>
                 {/* Logo Section */}
                 <div className="flex items-center space-x-2 mb-8">
                     <img
@@ -71,6 +71,10 @@ const LeftBar = () => {
                         <i className="fas fa-lightbulb"></i>
                         <span className="ml-2">Incubation</span>
                     </Link>
+                    <Link to="/seedfunded" className="flex items-center px-3 py-2 hover:bg-gray-500 rounded-md">
+                        <i className="fas fa-lightbulb"></i>
+                        <span className="ml-2">SeedFund</span>
+                    </Link>
                     <Link to="/ipr" className="flex items-center px-3 py-2 hover:bg-gray-500 rounded-md">
                         <i className="fas fa-file-alt"></i>
                         <span className="ml-2">IPR</span>
@@ -100,14 +104,21 @@ const LeftBar = () => {
                         <i className="fas fa-rocket"></i>
                         <span className="ml-2">Second Tranche</span>
                     </Link>
-                </div>
 
-                {/* Theme Switcher and User Profile */}
-                <div className="flex flex-col items-center">
+                </div>
+                <hr className="border-t border-gray-600 my-2 " />
+                <div>
+                    <Link to="/" className="flex items-center justify-between px-3 py-4 rounded-md hover:bg-gray-500">
+                        <span className="flex items-center space-x-2">
+                            <i className="fas fa-chart-bar"></i>
+                            <span>Help</span>
+                        </span>
+                    </Link>
                     <button onClick={handleLogout} className="flex items-center px-3 py-2 hover:bg-gray-500 rounded-md">
                         <i className="fas fa-sign-out-alt"></i>
                         <span className="ml-2">Logout</span>
                     </button>
+
                 </div>
             </div>
         </>

@@ -14,7 +14,7 @@ const Startupdetails = ({ founderimage, companyname, year }) => {
   }, []);
 
   return (
-    <div className="bg-gray-300 shadow-lg rounded-lg mb-4 p-4 max-w-full md:max-w-3xl mx-auto">
+    <div className="mb-4 p-4 max-w-full md:max-w-3xl mx-auto">
       <div className="flex flex-col md:flex-row items-start justify-between w-full space-y-4 md:space-y-0 md:space-x-6">
         
         {/* Founder Profile Section */}
@@ -28,10 +28,10 @@ const Startupdetails = ({ founderimage, companyname, year }) => {
           </div>
 
           <div className="flex flex-col overflow-hidden">
-            <p className="text-sm md:text-base text-gray-600 truncate">Welcome back,</p>
-            <h1 className="text-lg md:text-xl font-bold text-gray-800 truncate">{foundername || 'Loading...'}</h1>
-            <p className="text-sm md:text-lg text-gray-700 truncate">Founder, {companyname || 'Company Name'}</p>
-            <div className="flex items-center space-x-2 mt-1 text-xs md:text-sm text-gray-500">
+            <p className="text-sm md:text-base  truncate">Welcome back,</p>
+            <h1 className="text-lg md:text-xl font-bold  truncate">{foundername || 'Loading...'}</h1>
+            <p className="text-sm md:text-lg  truncate">Founder, {companyname || 'Company Name'}</p>
+            <div className="flex items-center space-x-2 mt-1 text-xs md:text-sm ">
               <span>• Startup</span>
               <span>• Since {year || 'Year'}</span>
             </div>

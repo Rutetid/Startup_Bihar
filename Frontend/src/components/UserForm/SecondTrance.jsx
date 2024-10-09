@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Upload from './Upload';
+import Upload from './Upload'; // Make sure to adjust the import path if necessary
 import { useFormik } from 'formik';
 
 const SecondTrance = () => {
@@ -22,12 +22,13 @@ const SecondTrance = () => {
     },
     onSubmit: async (values) => {
       const formData = new FormData();
-      formData.append('utilizationCertificate', uploadedFiles.utilizationCertificate);
-      formData.append('statusReport', uploadedFiles.statusReport);
-      formData.append('expenditurePlan', uploadedFiles.expenditurePlan);
-      formData.append('bankStatement', uploadedFiles.bankStatement);
-      formData.append('expenditureInvoice', uploadedFiles.expenditureInvoice);
-      formData.append('geoTaggedPhotos', uploadedFiles.geoTaggedPhotos);
+      
+      // Only append files that are not null
+      Object.entries(uploadedFiles).forEach(([key, file]) => {
+        if (file) {
+          formData.append(key, file);
+        }
+      });
 
       try {
         const response = await fetch('http://localhost:3000/api/second-tranche', {
@@ -62,26 +63,29 @@ const SecondTrance = () => {
 
           {/* Registration Number Field */}
           <div className="mb-6">
-            <label className="block text-gray-600 mb-2">C.A certified utilization certificate</label>
-            <Upload onFileChange={(file) => handleFileChange(file, 'utilizationCertificate')} className="bg-blue-500 text-white rounded-2xl shadow-lg gap-1.4rem">
-              Upload Button
-            </Upload>
+            <Upload 
+              label="C.A certified utilization certificate"
+              name="utilizationCertificate"
+              onChange={(file) => handleFileChange(file, 'utilizationCertificate')}
+            />
           </div>
 
           {/* Status Report Field */}
           <div className="mb-6">
-            <label className="block text-gray-600 mb-2">Status Report</label>
-            <Upload onFileChange={(file) => handleFileChange(file, 'statusReport')} className="bg-blue-500 text-white rounded-2xl shadow-lg gap-1.4rem">
-              Upload Button
-            </Upload>
+            <Upload 
+              label="Status Report"
+              name="statusReport"
+              onChange={(file) => handleFileChange(file, 'statusReport')}
+            />
           </div>
 
           {/* Expenditure Plan Field */}
           <div className="mb-6">
-            <label className="block text-gray-600 mb-2">Upload Self-declared second tranche expenditure plan in the letterhead of the entity</label>
-            <Upload onFileChange={(file) => handleFileChange(file, 'expenditurePlan')} className="bg-blue-500 text-white rounded-2xl shadow-lg gap-1.4rem">
-              Upload Button
-            </Upload>
+            <Upload 
+              label="Upload Self-declared second tranche expenditure plan in the letterhead of the entity"
+              name="expenditurePlan"
+              onChange={(file) => handleFileChange(file, 'expenditurePlan')}
+            />
           </div>
         </form>
 
@@ -89,26 +93,29 @@ const SecondTrance = () => {
         <form onSubmit={formik.handleSubmit} className="w-1/2 p-8 mt-11 rounded-lg">
           {/* Bank Statement Field */}
           <div className="mb-6">
-            <label className="block text-gray-600 mb-2">Bank statement (Highlight the fund received and expenditure made)</label>
-            <Upload onFileChange={(file) => handleFileChange(file, 'bankStatement')} className="bg-blue-500 text-white rounded-2xl shadow-lg gap-1.4rem">
-              Upload Button
-            </Upload>
+            <Upload 
+              label="Bank statement (Highlight the fund received and expenditure made)"
+              name="bankStatement"
+              onChange={(file) => handleFileChange(file, 'bankStatement')}
+            />
           </div>
 
           {/* Expenditure Invoice Field */}
           <div className="mb-6">
-            <label className="block text-gray-600 mb-2">Upload Expenditure Invoice</label>
-            <Upload onFileChange={(file) => handleFileChange(file, 'expenditureInvoice')} className="bg-blue-500 text-white rounded-2xl shadow-lg gap-1.4rem">
-              Upload Button
-            </Upload>
+            <Upload 
+              label="Upload Expenditure Invoice"
+              name="expenditureInvoice"
+              onChange={(file) => handleFileChange(file, 'expenditureInvoice')}
+            />
           </div>
 
           {/* Geo-tagged Photos Field */}
           <div className="mb-6">
-            <label className="block text-gray-600 mb-2">Upload geo-tagged photos of your offices/ units</label>
-            <Upload onFileChange={(file) => handleFileChange(file, 'geoTaggedPhotos')} className="bg-blue-500 text-white rounded-2xl shadow-lg gap-1.4rem">
-              Upload Button
-            </Upload>
+            <Upload 
+              label="Upload geo-tagged photos of your offices/ units"
+              name="geoTaggedPhotos"
+              onChange={(file) => handleFileChange(file, 'geoTaggedPhotos')}
+            />
           </div>
         </form>
       </div>

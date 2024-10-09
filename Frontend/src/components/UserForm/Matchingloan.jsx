@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Textbox from './Testbox'; // Assuming it's a custom input component
+import Textbox from './Textbox'; // Assuming it's a custom input component
 import Upload from './Upload'; // Assuming it's a custom file input component
 import { useFormik } from 'formik';
 

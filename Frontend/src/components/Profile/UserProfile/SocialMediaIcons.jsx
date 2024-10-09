@@ -15,7 +15,7 @@ const SocialMediaIcons = () => {
   };
 
   return (
-    <div className="mt-6 mb-6 flex space-x-4 justify-center">
+    <div className="mt-6 flex space-x-4 justify-center">
       {Object.entries(links).map(([platform, link]) => (
         <div key={platform} className="relative group">
           {/* Icon */}
@@ -31,7 +31,7 @@ const SocialMediaIcons = () => {
             value={link}
             onChange={(e) => handleChange(platform, e.target.value)}
             placeholder={`Add ${platform.charAt(0).toUpperCase() + platform.slice(1)} Link`}
-            className="absolute top-10 left-0 w-48 p-2 bg-gray-200 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+            className="absolute top-10 left-0 w-48 p-2 bg-gray-600 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"
           />
         </div>
       ))}

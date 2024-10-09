@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Textbox from './Testbox';
+import Textbox from './Textbox';
 import Datepicker from './Datepicker';
 import { useFormik } from 'formik';
 

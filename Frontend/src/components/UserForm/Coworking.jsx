@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Textbox from './Testbox';
+import Textbox from './Textbox';
 import { useFormik } from 'formik';
 
 const Coworking = () => {

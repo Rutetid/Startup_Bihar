@@ -79,7 +79,7 @@ const UserProfile = (props) => {
               <Applytranche
                 text="Apply for Post Seed Fund"
                 text1="Fill all the required elements of the form."
-                navigateTo="/seedfunded"
+                navigateTo="/postseed"
               />
             </div>
 

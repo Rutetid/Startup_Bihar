@@ -6,8 +6,6 @@ import LoginCopy from './components/Login/LoginCopy';
 import Startupform from './components/UserForm/Startupform';
 import Upload from './components/UserForm/Upload';
 import SecondTrance from './components/UserForm/SecondTrance';
-import SeedFunded from './components/UserForm/SeedFunded';
-import login1 from './components/Login/LoginCopy';
 import Profile from './components/Profile/PublicProfile/Profile';
 import AdminApp from './components/Profile/AdminProfile/AdminApp';
 import SecondTrancheForm from './components/Profile/AdminProfile/secondTrancheAdminForm';
@@ -18,6 +16,11 @@ import Acceleration from './components/UserForm/Acceleration';
 import Coworking from './components/UserForm/Coworking';
 import Matchingloan from './components/UserForm/Matchingloan';
 import Reimbursement from './components/UserForm/Reimbursement';
+import PostSeed from './components/UserForm/Postseed';
+import SeedFunded from './components/UserForm/SeedFunded';
+
+
+
 
 const App = () => {
   return (
@@ -40,6 +43,7 @@ const App = () => {
           <Route path="/upload" element={<Upload />} />
           <Route path="/secondtrance" element={<SecondTrance />} />
           <Route path="/seedfunded" element={<SeedFunded />} />
+          <Route path="/postseed" element={<PostSeed />} />
           <Route path="/login1" element={<LoginCopy />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/AdminSeedFundForm" element={<SeedAdminForm />} />
