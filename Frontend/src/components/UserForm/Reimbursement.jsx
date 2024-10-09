@@ -1,6 +1,6 @@
 import React,{useState} from 'react';
 import Textbox from './Testbox';
-import Upload from '.Upload';
+import Upload from './Upload';
 import { useFormik } from 'formik';
 
 const validate = values => {

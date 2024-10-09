@@ -10,63 +10,78 @@ const validate = values => {
     if (!values.RegistrationNo) {
         errors.RegistrationNo = 'Required';
     }
-
-    if (!values.Gender) {
-        errors.Gender = 'Required';
-    }
-
-    if (!values.BriefontheBusinessConcept) {
-        errors.BriefontheBusinessConcept = 'Required';
-    }
-
-    if (!values.FounderAadharNumber) {
-        errors.FounderAadharNumber = 'Required';
-    } else if (values.FounderAadharNumber.length !== 10) {
-        errors.FounderAadharNumber = 'Must be 10 digits';
-    }
-
-    if (!values.Sector) {
-        errors.Sector = 'Required';
-    }
-
-    if (!values.CofounderAadharNumber) {
-        errors.CofounderAadharNumber = 'Required';
-    } else if (values.CofounderAadharNumber.length !== 10) {
-        errors.CofounderAadharNumber = 'Must be 10 digits';
-    }
-
     if (!values.FounderName) {
         errors.FounderName = 'Required';
     } else if (values.FounderName.length > 15) {
         errors.FounderName = 'Must be 15 characters or less';
     }
-
-    if (!values.Category) {
-        errors.Category = 'Required';
+    if (!values.FounderAadharNumber) {
+        errors.FounderAadharNumber = 'Required';
+    } else if (!/^\d{10}$/.test(values.FounderAadharNumber)) {
+        errors.FounderAadharNumber = 'Must be exactly 10 digits';
     }
-
+   
+    if (!values.BriefontheBusinessConcept) {
+        errors.BriefontheBusinessConcept = 'Required';
+    }
+    if (!values.Sector) {
+        errors.Sector = 'Required';
+    }
+    if (!values.CompanyLogo) {
+        errors.CompanyLogo = 'Required';
+    }
+    if(!values.WebsiteLink){
+        errors.WebsiteLink = 'Required'
+     }
+     if(!values.DPIITRecognitionNumber){
+        errors.DPIITRecognitionNumber = 'Required'
+     }
+     if(!values.UploadDIPPCertificate){
+        errors.UploadDIPPCertificate ='REQUIRED';
+    }
+    if (!values.CofunderName) {
+        errors.CofunderName = 'Required';
+    } else if (values.CofunderName.length > 20) {
+        errors.CofunderName = 'Must be 20 characters or less';
+    }
+    if (!values.CofunderAadharNumber) {
+        errors.CofunderAadharNumber = 'Required';
+    } else if (!/^\d{10}$/.test(values.CofunderAadharNumber)) {
+        errors.CofunderAadharNumber = 'Must be exactly 10 digits';
+    }
     if (!values.MobileNo) {
         errors.MobileNo = 'Required';
-    } else if (values.MobileNo.length !== 10) {
-        errors.MobileNo = 'Must be 10 digits';
+    } else if (!/^\d{10}$/.test(values.MobileNo)) {
+        errors.MobileNo = 'Must be exactly 10 digits';
     }
-
-    if (!values.CofounderName) {
-        errors.CofounderName = 'Required';
-    } else if (values.CofounderName.length > 20) {
-        errors.CofounderName = 'Must be 20 characters or less';
-    }
+   
 
     if (!values.email) {
         errors.email = 'Required';
     } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
         errors.email = 'Invalid email address';
+    }  
+    if (!values.Category) {
+        errors.Category = 'Required';
     }
+    if (!values.Gender) {
+        errors.Gender = 'Required';
+    }
+
+    
+
+   
+   
+ 
+
+
+   
 
     return errors;
 };
 
 const Startupform = () => {
+    const [submitted, setSubmitted] = useState(false);
     const formik = useFormik({
         initialValues: {
             RegistrationNo: '',
@@ -78,8 +93,8 @@ const Startupform = () => {
             WebsiteLink: '',
             DPIITRecognitionNumber: '',
             UploadDIPPCertificate: '',
-            CofounderName: '',
-            CofounderAadharNumber: '',
+            CofunderName: '',
+            CofunderAadharNumber: '',
             MobileNo: '',
             email: '',
             Category: '',
@@ -87,16 +102,17 @@ const Startupform = () => {
         },
         validate,
         onSubmit: values => {
-            alert("Form submitted successfully!");
+            
             console.log(JSON.stringify(values, null, 2));
+            setSubmitted(true);
         },
     });
 
-    const [uploadedFile, setUploadedFile] = useState(null);
-
-    const handleFileChange = file => {
-        setUploadedFile(file);
-    };
+   
+    const handleFileChange = (event, fieldName) => {
+        const file = event.currentTarget.files[0]; // Get the selected file
+        formik.setFieldValue(fieldName, file); // Use setFieldValue to set the file in Formik
+    }
 
     return (
         <div className="isolate bg-white px-6 py-24 sm:py-3 lg:px-8 min-h-screen flex flex-col items-center">
@@ -109,12 +125,18 @@ const Startupform = () => {
                     }}
                 ></div>
             </div>
-
+            {submitted && (
+                        <div className="mt-4 font-bold text-black-600">
+                            Form submitted successfully!
+                        </div>
+                    )}         
+           
             <div className="flex w-full max-w-5xl mt-10 space-x-10 ">
+                
                 <form onSubmit={formik.handleSubmit} className="w-1/2 p-8 rounded-lg">
                     <h3 className="font-semibold text-xl mb-6">Application Form for Startups</h3>
 
-                    {/* Registration No Field */}
+             
                     <div className="mb-6">
                         <Textbox
                             label="Registration No"
@@ -125,7 +147,6 @@ const Startupform = () => {
                         {formik.errors.RegistrationNo && <div className="text-red-600">{formik.errors.RegistrationNo}</div>}
                     </div>
 
-                    {/* Founder Name Field */}
                     <div className="mb-6">
                         <Textbox
                             label="Founder Name"
@@ -136,18 +157,7 @@ const Startupform = () => {
                         {formik.errors.FounderName && <div className="text-red-600">{formik.errors.FounderName}</div>}
                     </div>
 
-                    {/* Co-Funder Name Field */}
-                    <div className="mb-6">
-                        <Textbox
-                            label="Co-Founder Name"
-                            name="CofounderName"
-                            onChange={formik.handleChange}
-                            value={formik.values.CofounderName}
-                        />
-                        {formik.errors.CofounderName && <div className="text-red-600">{formik.errors.CofounderName}</div>}
-                    </div>
-
-                    {/* Founder Aadhar Number Field */}
+                   
                     <div className="mb-6">
                         <Textbox
                             label="Founder Aadhar Number"
@@ -157,19 +167,6 @@ const Startupform = () => {
                         />
                         {formik.errors.FounderAadharNumber && <div className="text-red-600">{formik.errors.FounderAadharNumber}</div>}
                     </div>
-
-                    {/* Co-Founder Aadhar Number Field */}
-                    <div className="mb-6">
-                        <Textbox
-                            label="Co-Funder Aadhar Number"
-                            name="CofunderAadharNumber"
-                            onChange={formik.handleChange}
-                            value={formik.values.CofounderAadharNumber}
-                        />
-                        {formik.errors.CofounderAadharNumber && <div className="text-red-600">{formik.errors.CofounderAadharNumber}</div>}
-                    </div>
-
-                    {/* Brief on Business Concept Field */}
                     <div className="mb-6">
                         <Textbox
                             label="Brief on the Business Concept"
@@ -179,8 +176,110 @@ const Startupform = () => {
                         />
                         {formik.errors.BriefontheBusinessConcept && <div className="text-red-600">{formik.errors.BriefontheBusinessConcept}</div>}
                     </div>
+                    <div className="mb-6">
+                        <Textbox
+                            label="Sector"
+                            name="Sector"
+                            onChange={formik.handleChange}
+                            value={formik.values.Sector}
+                        />
+                        {formik.errors.Sector && <div className="text-red-600">{formik.errors.Sector}</div>}
+                    </div>
+                    <div className="mb-6">
+    
+                        <Upload 
+                        label = "Company"
+                            name="CompanyLogo" 
+                            onChange={(event) => handleFileChange(event, 'CompanyLogo')}
+                        />
+                        {formik.errors.CompanyLogo&& <div className="text-red-600">{formik.errors.CompanyLogo}</div>}
+                    </div>
+                    <div className="mb-6">
+                        <Textbox
+                            label="Website Link"
+                            name="WebsiteLink"
+                            onChange={formik.handleChange}
+                            value={formik.values.WebsiteLink}
+                        />
+                        {formik.errors.WebsiteLink && <div className="text-red-600">{formik.errors.WebsiteLink}</div>}
+                    </div>
 
-                    {/* Gender Field */}
+
+                    <div className="mb-6">
+                        <Textbox
+                            label="DPIIT Recognition Number"
+                            name="DPIITRecognitionNumber"
+                            onChange={formik.handleChange}
+                            value={formik.values.DPIITRecognitionNumber}
+                        />
+                        {formik.errors.DPIITRecognitionNumber && <div className="text-red-600">{formik.errors.DPIITRecognitionNumber}</div>}
+                    </div>
+
+                    
+                   
+                </form>
+
+               
+                <form  onSubmit={formik.handleSubmit} className="w-1/2 p-8 mt-12 rounded-lg">
+                <div className="mb-6">
+  
+                    <Upload 
+                        label = "Upload Dipp Certificate"
+                        name="UploadDIPPCertificate" // Removed the leading space
+                        onChange={(event) => handleFileChange(event, 'UploadDIPPCertificate')}
+                    />
+                    {formik.errors.UploadDIPPCertificate && <div className="text-red-600">{formik.errors.UploadDIPPCertificate}</div>}
+                </div>
+                    
+                    <div className="mb-6">
+                        <Textbox
+                            label="Co-funder Name"
+                            name="CofunderName"
+                            onChange={formik.handleChange}
+                            value={formik.values.CofunderName}
+                        />
+                        {formik.errors.CofunderName && <div className="text-red-600">{formik.errors. CofunderName}</div>}
+                    </div>
+                    <div className="mb-6">
+                        <Textbox
+                            label="Co-Funder Aadhar Number"
+                            name="CofunderAadharNumber"
+                            onChange={formik.handleChange}
+                            value={formik.values.CofunderAadharNumber}
+                        />
+                        {formik.errors.CofunderAadharNumber && <div className="text-red-600">{formik.errors.CofunderAadharNumber}</div>}
+                    </div>
+                    <div className="mb-6">
+                        <Textbox
+                            label="Mobile Number"
+                            name="MobileNo"
+                            onChange={formik.handleChange}
+                            value={formik.values.MobileNo}
+                        />
+                        {formik.errors.MobileNo && <div className="text-red-600">{formik.errors.MobileNo}</div>}
+                    </div>
+                    <div className="mb-6">
+                        <Textbox
+                            label="Email"
+                            name="email"
+                            onChange={formik.handleChange}
+                            value={formik.values.email}
+                        />
+                        {formik.errors.email && <div className="text-red-600">{formik.errors.email}</div>}
+                    </div>
+                  
+
+                    <div className="mb-6">
+                        <Textbox
+                            label="Category"
+                            name="Category"
+                            onChange={formik.handleChange}
+                            value={formik.values.Category}
+                        />
+                        {formik.errors.Category && <div className="text-red-600">{formik.errors.Category}</div>}
+                    </div>
+
+                 
                     <div className="mb-6">
                         <label className="block text-sm font-medium text-gray-700 mb-2">Gender</label>
                         <select
@@ -195,81 +294,19 @@ const Startupform = () => {
                         </select>
                         {formik.errors.Gender && <div className="text-red-600">{formik.errors.Gender}</div>}
                     </div>
-                </form>
+                 
+                  
 
-                {/* Right Side Form */}
-                <form className="w-1/2 p-8 mt-11 rounded-lg">
-                    {/* Mobile No Field */}
-                    <div className="mb-6">
-                        <Textbox
-                            label="Mobile No"
-                            name="MobileNo"
-                            onChange={formik.handleChange}
-                            value={formik.values.MobileNo}
-                        />
-                        {formik.errors.MobileNo && <div className="text-red-600">{formik.errors.MobileNo}</div>}
+                    <div className="mt-6 flex items-center justify-end gap-x-6">
+                        <button type="button" className="text-sm font-semibold leading-6 text-gray-900">Cancel</button>
+                        <button
+                            type="submit"
+                            className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        >
+                            Upload
+                        </button>
+                                                
                     </div>
-
-                    {/* Email Field */}
-                    <div className="mb-6">
-                        <Textbox
-                            label="Email"
-                            name="email"
-                            onChange={formik.handleChange}
-                            value={formik.values.email}
-                        />
-                        {formik.errors.email && <div className="text-red-600">{formik.errors.email}</div>}
-                    </div>
-                    <div className="mb-6">
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Company Logo</label>
-                        <Upload name="  CompanyLogo" onFileChange={handleFileChange} />
-                    </div>
-
-
-                    {/* Sector Field */}
-                    <div className="mb-6">
-                        <Textbox
-                            label="Sector"
-                            name="Sector"
-                            onChange={formik.handleChange}
-                            value={formik.values.Sector}
-                        />
-                        {formik.errors.Sector && <div className="text-red-600">{formik.errors.Sector}</div>}
-                    </div>
-
-                    {/* Category Field */}
-                    <div className="mb-6">
-                        <Textbox
-                            label="Category"
-                            name="Category"
-                            onChange={formik.handleChange}
-                            value={formik.values.Category}
-                        />
-                        {formik.errors.Category && <div className="text-red-600">{formik.errors.Category}</div>}
-                    </div>
-
-                    {/* Website Link Field */}
-                    <div className="mb-6">
-                        <Textbox
-                            label="Website Link"
-                            name="WebsiteLink"
-                            onChange={formik.handleChange}
-                            value={formik.values.WebsiteLink}
-                        />
-                        {formik.errors.WebsiteLink && <div className="text-red-600">{formik.errors.WebsiteLink}</div>}
-                    </div>
-
-                    {/* Upload Logo */}
-                    <div className="mb-6">
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Upload DIPP Certificate</label>
-                        <Upload name=" UploadDIPPCertificate" onFileChange={handleFileChange} />
-                    </div>
-
-                    <div class="mt-6 flex items-center justify-end gap-x-6">
-    <button type="button" class="text-sm font-semibold leading-6 text-gray-900">Cancel</button>
-    <button type="submit" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Upload</button>
-  </div>
-
                 </form>
             </div>
         </div>

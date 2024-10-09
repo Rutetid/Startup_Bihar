@@ -1,43 +1,45 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const NavBar = () => {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen((prev) => !prev);
   };
-  const navigate = useNavigate();
 
   const handleLogout = () => {
-   navigate('/login1');
+    navigate('/login1');
   };
 
   return (
     <div className="home-header flex w-full items-center justify-between">
-
       <header className="flex justify-between items-center py-4 w-full max-w-7xl mx-auto px-6">
         {/* Logo Section */}
         <div className="flex items-center">
           <img
             alt="logo"
-            src="https://presentation-website-assets.teleporthq.io/logos/logo.png"
+            src="https://startup.bihar.gov.in/static/media/new_logo.efdd49a20c5fb7fe0b73.png"
             className="h-10"
           />
         </div>
 
         {/* Navigation Links */}
         <nav className="hidden md:flex space-x-8">
-          <span className="text-lg text-gray-700 hover:text-gray-900 cursor-pointer">Home</span>
-          <span className="text-lg text-gray-700 hover:text-gray-900 cursor-pointer">SSU</span>
-          <span className="text-lg text-gray-700 hover:text-gray-900 cursor-pointer">Help</span>
+          <Link to="/" className="text-lg text-gray-700 hover:text-gray-900 cursor-pointer">Home</Link>
+          <Link to="/ssu" className="text-lg text-gray-700 hover:text-gray-900 cursor-pointer">SSU</Link>
+          <Link to="/help" className="text-lg text-gray-700 hover:text-gray-900 cursor-pointer">Help</Link>
         </nav>
 
         {/* Buttons Section */}
         <div className="hidden md:flex space-x-4">
-          <button 
-          onClick={handleLogout}
-          className="border-red-700 hover:bg-red-800 text-grey-100 font-bold py-2 px-8 rounded-full border">Logout</button>
+          <button
+            onClick={handleLogout}
+            className="border-blue-200 hover:bg-blue-300 text-grey-100 font-bold py-2 px-8 rounded-full border"
+          >
+            Logout
+          </button>
         </div>
 
         {/* Mobile Menu (Hamburger Icon) */}
@@ -64,12 +66,15 @@ const NavBar = () => {
       {isMobileMenuOpen && (
         <div className="md:hidden absolute top-16 left-0 w-full bg-white shadow-md">
           <nav className="flex flex-col items-center space-y-4 py-4">
-            <span className="text-lg text-gray-700 hover:text-gray-900 cursor-pointer">Home</span>
-            <span className="text-lg text-gray-700 hover:text-gray-900 cursor-pointer">SSU</span>
-            <span className="text-lg text-gray-700 hover:text-gray-900 cursor-pointer">Help</span>
-            <button 
-            onClick={handleLogout}
-            className="text-white bg-blue-600 px-4 py-2 rounded-lg hover:bg-blue-500 transition duration-200">Logout</button>
+            <Link to="/" className="text-lg text-gray-700 hover:text-gray-900 cursor-pointer">Home</Link>
+            <Link to="/ssu" className="text-lg text-gray-700 hover:text-gray-900 cursor-pointer">SSU</Link>
+            <Link to="/help" className="text-lg text-gray-700 hover:text-gray-900 cursor-pointer">Help</Link>
+            <button
+              onClick={handleLogout}
+              className="text-white bg-blue-600 px-4 py-2 rounded-lg hover:bg-blue-500 transition duration-200"
+            >
+              Logout
+            </button>
           </nav>
         </div>
       )}

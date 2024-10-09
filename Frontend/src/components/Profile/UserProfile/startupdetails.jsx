@@ -1,11 +1,12 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import SocialMediaIcons from './SocialMediaIcons';
 
 const Startupdetails = ({ founderimage, companyname, year }) => {
   const [foundername, setFounderName] = useState('');
 
   useEffect(() => {
-    // Retrieve foundername from localStorage
+    // Retrieve founder name from localStorage
     const storedFounderName = localStorage.getItem('user_id');
     if (storedFounderName) {
       setFounderName(storedFounderName);
@@ -13,35 +14,47 @@ const Startupdetails = ({ founderimage, companyname, year }) => {
   }, []);
 
   return (
-    <div className="flex items-center justify-start p-6 rounded-lg w-full max-w-5xl ml-[3%] mt-4">
-      {/* Profile Section */}
-      <div className="flex items-center space-x-6">
-        <img
-          alt="Founder Image"
-          src={founderimage}
-          className="w-24 h-24 rounded-full"
-        />
+    <div className='bg-gray-300 shadow-lg rounded-lg mb-4 p-2'>
+      <div className="flex flex-col md:flex-row items-start justify-between w-full max-w-xl space-y-4 md:space-y-0 md:space-x-6">
+        
+        {/* Founder Profile Section */}
+        <div className="flex items-center space-x-4">
+          <div className="flex-shrink-0">
+            <img
+              alt="Founder"
+              src={founderimage || 'https://via.placeholder.com/80'} // Fallback image if founderimage is not provided
+              className="w-16 h-16 md:w-20 md:h-20 rounded-full object-cover border-2 border-gray-400"
+            />
+          </div>
 
-        <div>
-          <p className="text-lg text-gray-500">Welcome back,</p>
-          <h1 className="text-2xl font-bold text-gray-800">{foundername || 'Loading...'}</h1>
-          <p className="text-xl text-gray-600">Founder, {companyname}</p>
-          <div className="flex items-center space-x-2 mt-1">
-            <span className="text-sm text-gray-500">• Startup</span>
-            <span className="text-sm text-gray-500">• Since {year}</span>
+          <div className="flex flex-col">
+            <p className="text-sm md:text-base text-gray-600">Welcome back,</p>
+            <h1 className="text-lg md:text-xl font-bold text-gray-800">{foundername || 'Loading...'}</h1>
+            <p className="text-sm md:text-lg text-gray-700">Founder, {companyname || 'Company Name'}</p>
+            <div className="flex items-center space-x-2 mt-1 text-xs md:text-sm text-gray-500">
+              <span>• Startup</span>
+              <span>• Since {year || 'Year'}</span>
+            </div>
           </div>
         </div>
+      </div>
+
+      {/* Social Media Icons Section */}
+      <div className="mt-4">
+        <SocialMediaIcons />
       </div>
     </div>
   );
 };
 
+// Define default prop values
 Startupdetails.defaultProps = {
-  founderimage: undefined,
-  companyname: undefined,
-  year: undefined,
+  founderimage: 'https://via.placeholder.com/80', // Default image placeholder
+  companyname: 'Unknown Company',
+  year: 'N/A',
 };
 
+// Define prop types for type checking
 Startupdetails.propTypes = {
   founderimage: PropTypes.string,
   companyname: PropTypes.string,

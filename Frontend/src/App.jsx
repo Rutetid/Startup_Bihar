@@ -1,19 +1,23 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomeNav from './components/HomePage/HomeNav';
-import ProfileMain from './components/Profile/UserProfile/ProfileMain'; // Import ProfileMain
+import UserProfile from './components/Profile/UserProfile/UserProfile'; // Import ProfileMain
 import LoginCopy from './components/Login/LoginCopy';
 import Startupform from './components/UserForm/Startupform';
 import Upload from './components/UserForm/Upload';
 import SecondTrance from './components/UserForm/SecondTrance';
 import SeedFunded from './components/UserForm/SeedFunded';
 import login1 from './components/Login/LoginCopy';
-import Profile from './components/Profile/Profile';
+import Profile from './components/Profile/PublicProfile/Profile';
 import AdminApp from './components/Profile/AdminProfile/AdminApp';
 import SecondTrancheForm from './components/Profile/AdminProfile/secondTrancheAdminForm';
 import SeedAdminForm from './components/Profile/AdminProfile/seedAdminForm';
 import AdminForm from './components/Profile/AdminProfile/starterAdminForm';
 import TopNavbar from './components/Profile/AdminProfile/Navbar/TopNavBar';
+import Acceleration from './components/UserForm/Acceleration';
+import Coworking from './components/UserForm/Coworking';
+import Matchingloan from './components/UserForm/Matchingloan';
+import Reimbursement from './components/UserForm/Reimbursement';
 
 const App = () => {
   return (
@@ -25,7 +29,7 @@ const App = () => {
           <Route path="/" element={<HomeNav />} />
           <Route path="/login" element={<LoginCopy />} />
           <Route path="/adminprofile" element={<AdminApp/>} /> {/* Admin profile route */}
-          <Route path="/profilemain" element={<ProfileMain />} />   {/* User profile route */}
+          <Route path="/UserProfile" element={<UserProfile />} />   {/* User profile route */}
           <Route path="/all" element={<HomeNav />} />
           <Route path="/tech" element={<HomeNav />} />
           <Route path="/health" element={<HomeNav />} />
@@ -42,6 +46,10 @@ const App = () => {
           <Route path="/AdminSecondTrancheForm" element={<SecondTrancheForm />} />
           <Route path="/AdminForm" element={<AdminForm />} />
           <Route path="/TopNavbar" element={<TopNavbar />} />
+          <Route path="/Matchingloan" element={<Matchingloan/>} />
+          <Route path="/Reimbursement" element={<Reimbursement/>} />
+          <Route path="/coworking" element={<Coworking/>} />
+          <Route path="/acceleration" element={<Acceleration/>} />
         </Routes>
         
       </div>

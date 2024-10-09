@@ -43,7 +43,7 @@ const validate = values => {
     return errors;
 };
 
-const Acc = () => {
+const Acceleration = () => {
     const [uploadedFile, setUploadedFile] = useState(null);
     const [submitted, setSubmitted] = useState(false);
     const formik = useFormik({
@@ -235,4 +235,4 @@ const Acc = () => {
     );
 };
 
-export default Acc;
+export default Acceleration;
