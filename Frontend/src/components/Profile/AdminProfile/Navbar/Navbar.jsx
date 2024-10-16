@@ -1,42 +1,207 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { HiOutlineUser, HiOutlineDocumentText, HiOutlineCash } from "react-icons/hi"; // Importing icons
 
-const AdminNavbar = () => {
+const Navbar = () => {
+  const [isDarkMode, setIsDarkMode] = useState(true);
+  const [adminDetails, setAdminDetails] = useState({
+    name: "",
+    role: "",
+    startup: "",
+  });
+
+  const toggleDarkMode = () => {
+    setIsDarkMode(!isDarkMode);
+  };
+
+  useEffect(() => {
+    const fetchAdminDetails = async () => {
+      const data = {
+        name: "Srishti",
+        role: "Founder, Srishti.com",
+        startup: "Startup • Since 2004",
+      };
+
+      setAdminDetails(data);
+    };
+
+    fetchAdminDetails();
+  }, []);
+
   return (
-    <nav className="w-64 h-screen bg-gray-100 p-6 font-montserrat font-medium text-gray-700">
-      <h2 className="text-lg mb-6 text-gray-900">Navigation</h2>
-      <ul className="space-y-4">
-        <li className="border-b border-gray-300 pb-2">
-          <Link
-            to="/AdminSeedFundForm"
-            className="flex items-center space-x-3 hover:text-blue-500"
+    <div
+      className={`h-screen  ${
+        isDarkMode ? "bg-gray-900" : "bg-white"
+      } transition duration-500`}
+    >
+      <nav
+        className={`w-64  p-4 font-mont-300 ${
+          isDarkMode ? "bg-gray-900 text-white" : "bg-white text-gray-900"
+        } transition duration-500`}
+      >
+        <div className="flex items-center mb-6">
+          <div
+            className={`w-10 h-10 ${
+              isDarkMode ? "bg-blue-500" : "bg-blue-700"
+            } rounded-full flex items-center justify-center`}
           >
-            <HiOutlineUser className="w-6 h-6" /> {/* Starter Profile Icon */}
-            <span>Starter Profile</span>
-          </Link>
-        </li>
-        <li className="border-b border-gray-300 pb-2">
-          <Link
-            to="/AdminForm"
-            className="flex items-center space-x-3 hover:text-blue-500"
+            <span className="text-white font-bold text-lg">
+              {adminDetails.name[0]}{" "}
+            </span>
+          </div>
+          <div className="ml-3 py-5 ">
+            <h2 className="text-xl font-mont">{adminDetails.name}</h2>
+            <p className="text-lg">{adminDetails.role}</p>
+            <p className="text-xs text-gray-400">{adminDetails.startup}</p>
+          </div>
+        </div>
+
+        <div className="mb-6 py-15">
+          <input
+            type="text"
+            placeholder="Search..."
+            className={`w-full p-2 ${
+              isDarkMode
+                ? "bg-gray-800 text-gray-300"
+                : "bg-gray-200 text-gray-900"
+            } rounded-md focus:outline-none`}
+          />
+        </div>
+
+        <ul className="space-y-4">
+          <li>
+            <Link
+              to="/startupProfile"
+              className="block py-2 px-4 rounded-md hover:bg-gray-700"
+            >
+              Startup Profile
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/seedFund"
+              className="block py-2 px-4 rounded-md hover:bg-gray-700"
+            >
+              Seed Fund Module
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/secondTranche"
+              className="block py-2 px-4 rounded-md hover:bg-gray-700"
+            >
+              Second Tranche Module
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/postSeedFund"
+              className="block py-2 px-4 rounded-md hover:bg-gray-700"
+            >
+              Post Seed Fund Module
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/qprModule"
+              className="block py-2 px-4 rounded-md hover:bg-gray-700"
+            >
+              QPR Module
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/matchingLoan"
+              className="block py-2 px-4 rounded-md hover:bg-gray-700"
+            >
+              Matching Loan
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/incubationModule"
+              className="block py-2 px-4 rounded-md hover:bg-gray-700"
+            >
+              Incubation Module
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/acceleration"
+              className="block py-2 px-4 rounded-md hover:bg-gray-700"
+            >
+              Acceleration Programme Module
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/iprReimbursement"
+              className="block py-2 px-4 rounded-md hover:bg-gray-700"
+            >
+              IPR Reimbursement Module
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/coworkingModule"
+              className="block py-2 px-4 rounded-md hover:bg-gray-700"
+            >
+              Coworking Module (BHUB)
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/startupList"
+              className="block py-2 px-4 rounded-md hover:bg-gray-700"
+            >
+              Startup List
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/dataMining"
+              className="block py-2 px-4 rounded-md hover:bg-gray-700"
+            >
+              Data Mining
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/mentorsList"
+              className="block py-2 px-4 rounded-md hover:bg-gray-700"
+            >
+              Mentors List
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/grievanceRedressal"
+              className="block py-2 px-4 rounded-md hover:bg-gray-700"
+            >
+              Grievance Redressal System
+            </Link>
+          </li>
+        </ul>
+
+        <div className="mt-6">
+          <button
+            onClick={toggleDarkMode}
+            className={`w-full p-3 rounded-lg flex justify-between items-center ${
+              isDarkMode ? "bg-gray-800" : "bg-gray-200"
+            }`}
           >
-            <HiOutlineDocumentText className="w-6 h-6" /> {/* Seed Fund Icon */}
-            <span>Seed Fund</span>
-          </Link>
-        </li>
-        <li className="border-b border-gray-300 pb-2">
-          <Link
-            to="/AdminSecondTrancheForm"
-            className="flex items-center space-x-3 hover:text-blue-500"
-          >
-            <HiOutlineCash className="w-6 h-6" /> {/* Second Tranche Icon */}
-            <span>Second Tranche</span>
-          </Link>
-        </li>
-      </ul>
-    </nav>
+            <span>{isDarkMode ? "Dark Mode" : "Light Mode"}</span>
+            <span
+              className={`material-icons ${
+                isDarkMode ? "text-yellow-300" : "text-gray-900"
+              }`}
+            >
+              {isDarkMode ? "brightness" : "wb_sunny"}
+            </span>
+          </button>
+        </div>
+      </nav>
+    </div>
   );
 };
 
-export default AdminNavbar;
+export default Navbar;

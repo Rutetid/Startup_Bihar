@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Startupdetails from '../startupdetails';
+import './LeftBar.css';
 
 const LeftBar = () => {
     const [isOpen, setIsOpen] = useState(false); // State to manage sidebar visibility
@@ -23,7 +24,7 @@ const LeftBar = () => {
             </button>
 
             {/* Sidebar */}
-            <div className={`rounded-lg left-bar bg-[#1c2437] text-[#f5f7f6] h-full flex flex-col justify-between p-4 ${isOpen ? 'block' : 'hidden'} md:block`}>
+            <div className={`w-[50%] md:w-[22%] bg-[#1c2437] text-[#f5f7f6] h-screen overflow-y-scroll overflow-x-hidden flex flex-col justify-between p-4 ${isOpen ? 'block' : 'hidden'} md:block`}>
                 {/* Logo Section */}
                 <div className="flex items-center space-x-2 mb-8">
                     <img
@@ -75,9 +76,9 @@ const LeftBar = () => {
                         <i className="fas fa-lightbulb"></i>
                         <span className="ml-2">SeedFund</span>
                     </Link>
-                    <Link to="/ipr" className="flex items-center px-3 py-2 hover:bg-gray-500 rounded-md">
+                    <Link to="/qpr" className="flex items-center px-3 py-2 hover:bg-gray-500 rounded-md">
                         <i className="fas fa-file-alt"></i>
-                        <span className="ml-2">IPR</span>
+                        <span className="ml-2">QPR</span>
                     </Link>
                     <Link to="/reimbursement" className="flex items-center px-3 py-2 hover:bg-gray-500 rounded-md">
                         <i className="fas fa-dollar-sign"></i>

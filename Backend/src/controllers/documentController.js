@@ -6,6 +6,7 @@ const prisma = new PrismaClient();
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_key'; // Use environment variable
 
+
 const uploadDocuments = async (req, res) => {
   try {
     // Extract the JWT from the request headers
@@ -91,3 +92,6 @@ const uploadDocuments = async (req, res) => {
 module.exports = {
   uploadDocuments,
 };
+
+
+

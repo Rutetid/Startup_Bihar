@@ -9,13 +9,13 @@ import LeftBar from './Navbar/LeftBar';
 
 const UserProfile = (props) => {
   return (
-    <div className="w-full flex flex-col min-h-screen items-start justify-start">
+    <div className="w-screen flex flex-col min-h-screen items-start justify-start">
       <Helmet>
         <title>Startup Bihar Portal</title>
         <meta property="og:title" content="Startup Bihar Portal" />
       </Helmet>
 
-      <div className="flex flex-col md:flex-row w-full items-start justify-start p-4 space-y-4 md:space-y-0">
+      <div className="flex flex-col md:flex-row  items-start justify-start space-y-4 md:space-y-0">
         {/* Sidebar */}
         <LeftBar/>
 
@@ -40,7 +40,7 @@ const UserProfile = (props) => {
             <div className="flex flex-col w-[45%] h-full">
               <h3 className="text-gray-800 text-lg font-semibold mb-2">About Company</h3>
               <textarea
-                className="w-full p-4 h-40 bg-slate-100 rounded-md shadow-md resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800"
+                className="w-full p-4 h-40 bg-slate-100 rounded-md resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800"
                 placeholder="Write about the company here..."
               />
             </div>

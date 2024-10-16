@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import toast, { Toaster } from "react-hot-toast";
 import userData from "./userDetalis";
-import AdminNavbar from "./Navbar/Navbar";
 
 function SecondTrancheForm() {
   const [selectedUserId, setSelectedUserId] = useState(null);
@@ -164,11 +163,6 @@ function SecondTrancheForm() {
   };
 
   return (
-    <div className="flex">
-
-    <AdminNavbar/>
-    <div className="flex-1 p-6">
-
     <div className="px-4 sm:px-0 flex h-screen">
       <div className="w-1/3 border-r p-4">
         <h3 className="text-lg font-semibold mb-4">Second Tranche</h3>
@@ -207,10 +201,10 @@ function SecondTrancheForm() {
               </div>
 
               <button
-                className="px-4 py-2 text-sm font-bold text-white bg-blue-500 rounded-full hover:bg-blue-700 transition-colors duration-200"
+                className="px-4 py-2 text-lg font-bold text-white bg-blue-500 rounded-full hover:bg-blue-700 transition-colors duration-200"
                 onClick={() => handleViewClick(user.id)}
               >
-                View
+                <p>&rarr;</p>
               </button>
             </li>
           ))}
@@ -226,6 +220,30 @@ function SecondTrancheForm() {
               </p>
             </div>
             <div className="mt-6 border-t border-gray-100">
+              <div
+                className="absolute inset-x-0 top-[-10rem] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[-20rem]"
+                aria-hidden="true"
+              >
+                <div
+                  className="relative left-1/2 -z-10 aspect-[1155/678] w-[36.125rem] max-w-none -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-40rem)] sm:w-[72.1875rem]"
+                  style={{
+                    clipPath:
+                      "polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)",
+                  }}
+                ></div>
+              </div>
+              <div
+                className="absolute right-0 bottom-0 -z-10 transform-gpu overflow-hidden blur-3xl"
+                aria-hidden="true"
+              >
+                <div
+                  className="relative left-1/2 -z-10 aspect-[1155/678] w-[36.125rem] max-w-none -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-40rem)] sm:w-[72.1875rem]"
+                  style={{
+                    clipPath:
+                      "polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)",
+                  }}
+                ></div>
+              </div>
               <form onSubmit={formik.handleSubmit}>
                 <dl className="divide-y divide-gray-100">
                   <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
@@ -238,13 +256,11 @@ function SecondTrancheForm() {
                         {certificateStatus.caCertifiedUtilizationCertificate ===
                         true ? (
                           <span className="text-green-500 font-bold">
-                            ✔ Accepted
+                            \Users\srish\Downloads\accept.png
                           </span>
                         ) : certificateStatus.caCertifiedUtilizationCertificate ===
                           false ? (
-                          <span className="text-red-500 font-bold">
-                            ✘ Rejected
-                          </span>
+                          <span className="text-red-500 font-bold">✘</span>
                         ) : (
                           <>
                             <button
@@ -256,7 +272,7 @@ function SecondTrancheForm() {
                               }
                               className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
                             >
-                              ✔ Accept
+                              ✔
                             </button>
 
                             <button
@@ -268,7 +284,7 @@ function SecondTrancheForm() {
                               }
                               className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
                             >
-                              ✘ Reject
+                              ✘
                             </button>
                           </>
                         )}
@@ -284,13 +300,9 @@ function SecondTrancheForm() {
                       {formik.values.statusReport || "N/A"}
                       <div className="flex mt-4 space-x-4">
                         {certificateStatus.statusReport === true ? (
-                          <span className="text-green-500 font-bold">
-                            ✔ Accepted
-                          </span>
+                          <span className="text-green-500 font-bold">✔</span>
                         ) : certificateStatus.statusReport === false ? (
-                          <span className="text-red-500 font-bold">
-                            ✘ Rejected
-                          </span>
+                          <span className="text-red-500 font-bold">✘</span>
                         ) : (
                           <>
                             <button
@@ -298,7 +310,7 @@ function SecondTrancheForm() {
                               onClick={() => handleAccept("statusReport")}
                               className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
                             >
-                              ✔ Accept
+                              ✔
                             </button>
 
                             <button
@@ -306,7 +318,7 @@ function SecondTrancheForm() {
                               onClick={() => handleReject("statusReport")}
                               className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
                             >
-                              ✘ Reject
+                              ✘
                             </button>
                           </>
                         )}
@@ -323,13 +335,9 @@ function SecondTrancheForm() {
                       {formik.values.expenditurePlan || "N/A"}
                       <div className="flex mt-4 space-x-4">
                         {certificateStatus.expenditurePlan === true ? (
-                          <span className="text-green-500 font-bold">
-                            ✔ Accepted
-                          </span>
+                          <span className="text-green-500 font-bold">✔</span>
                         ) : certificateStatus.expenditurePlan === false ? (
-                          <span className="text-red-500 font-bold">
-                            ✘ Rejected
-                          </span>
+                          <span className="text-red-500 font-bold">✘</span>
                         ) : (
                           <>
                             <button
@@ -337,7 +345,7 @@ function SecondTrancheForm() {
                               onClick={() => handleAccept("expenditurePlan")}
                               className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
                             >
-                              ✔ Accept
+                              ✔
                             </button>
 
                             <button
@@ -345,7 +353,7 @@ function SecondTrancheForm() {
                               onClick={() => handleReject("expenditurePlan")}
                               className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
                             >
-                              ✘ Reject
+                              ✘
                             </button>
                           </>
                         )}
@@ -362,13 +370,9 @@ function SecondTrancheForm() {
                       {formik.values.bankStatement || "N/A"}
                       <div className="flex mt-4 space-x-4">
                         {certificateStatus.bankStatement === true ? (
-                          <span className="text-green-500 font-bold">
-                            ✔ Accepted
-                          </span>
+                          <span className="text-green-500 font-bold">✔</span>
                         ) : certificateStatus.bankStatement === false ? (
-                          <span className="text-red-500 font-bold">
-                            ✘ Rejected
-                          </span>
+                          <span className="text-red-500 font-bold">✘</span>
                         ) : (
                           <>
                             <button
@@ -376,7 +380,7 @@ function SecondTrancheForm() {
                               onClick={() => handleAccept("bankStatement")}
                               className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
                             >
-                              ✔ Accept
+                              ✔
                             </button>
 
                             <button
@@ -384,7 +388,7 @@ function SecondTrancheForm() {
                               onClick={() => handleReject("bankStatement")}
                               className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
                             >
-                              ✘ Reject
+                              ✘
                             </button>
                           </>
                         )}
@@ -400,13 +404,9 @@ function SecondTrancheForm() {
                       {formik.values.expenditureInvoice || "N/A"}
                       <div className="flex mt-4 space-x-4">
                         {certificateStatus.expenditureInvoice === true ? (
-                          <span className="text-green-500 font-bold">
-                            ✔ Accepted
-                          </span>
+                          <span className="text-green-500 font-bold">✔</span>
                         ) : certificateStatus.expenditureInvoice === false ? (
-                          <span className="text-red-500 font-bold">
-                            ✘ Rejected
-                          </span>
+                          <span className="text-red-500 font-bold">✘</span>
                         ) : (
                           <>
                             <button
@@ -414,7 +414,7 @@ function SecondTrancheForm() {
                               onClick={() => handleAccept("expenditureInvoice")}
                               className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
                             >
-                              ✔ Accept
+                              ✔
                             </button>
 
                             <button
@@ -422,7 +422,7 @@ function SecondTrancheForm() {
                               onClick={() => handleReject("expenditureInvoice")}
                               className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
                             >
-                              ✘ Reject
+                              ✘
                             </button>
                           </>
                         )}
@@ -438,13 +438,9 @@ function SecondTrancheForm() {
                       {formik.values.geoTaggedPhotos || "N/A"}
                       <div className="flex mt-4 space-x-4">
                         {certificateStatus.geoTaggedPhotos === true ? (
-                          <span className="text-green-500 font-bold">
-                            ✔ Accepted
-                          </span>
+                          <span className="text-green-500 font-bold">✔</span>
                         ) : certificateStatus.geoTaggedPhotos === false ? (
-                          <span className="text-red-500 font-bold">
-                            ✘ Rejected
-                          </span>
+                          <span className="text-red-500 font-bold">✘</span>
                         ) : (
                           <>
                             <button
@@ -452,7 +448,7 @@ function SecondTrancheForm() {
                               onClick={() => handleAccept("geoTaggedPhotos")}
                               className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
                             >
-                              ✔ Accept
+                              ✔
                             </button>
 
                             <button
@@ -460,7 +456,7 @@ function SecondTrancheForm() {
                               onClick={() => handleReject("geoTaggedPhotos")}
                               className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
                             >
-                              ✘ Reject
+                              ✘
                             </button>
                           </>
                         )}
@@ -509,8 +505,6 @@ function SecondTrancheForm() {
         )}
         <Toaster />
       </div>
-    </div>
-    </div>
     </div>
   );
 }

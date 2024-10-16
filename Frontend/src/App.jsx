@@ -18,6 +18,7 @@ import Matchingloan from './components/UserForm/Matchingloan';
 import Reimbursement from './components/UserForm/Reimbursement';
 import PostSeed from './components/UserForm/Postseed';
 import SeedFunded from './components/UserForm/SeedFunded';
+import Qpr from './components/UserForm/Qpr';
 
 
 
@@ -25,7 +26,7 @@ import SeedFunded from './components/UserForm/SeedFunded';
 const App = () => {
   return (
     <Router>
-      <div className="flex flex-col min-h-screen tyle={{
+      <div className="flex flex-col min-h-screen style={{
           background: 'linear-gradient(90deg, rgb(241, 241, 241) 0%, rgb(211, 208, 227) 85%, rgb(224, 224, 224) 100%)',
         }}">
         <Routes>
@@ -54,6 +55,8 @@ const App = () => {
           <Route path="/Reimbursement" element={<Reimbursement/>} />
           <Route path="/coworking" element={<Coworking/>} />
           <Route path="/acceleration" element={<Acceleration/>} />
+          <Route path="/qpr" element={<Qpr/>} />
+
         </Routes>
         
       </div>

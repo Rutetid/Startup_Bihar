@@ -5,12 +5,12 @@ import dp from '../../assets/logo1.png'; // Assuming dp.png is the default compa
 const CardList = ({ category }) => {
   // Sample card data
   const cardsData = [
-    { logo: dp, name: 'Dream Fire Studio', founder: 'Robert', startupSince: '2023', fundingStatus: 'Seed Funded', Category: "Tech" },
-    { logo: dp, name: 'Google', founder: 'Downey', startupSince: '2022', fundingStatus: 'Seed Funded', Category: "Food" },
-    { logo: dp, name: 'Microsoft', founder: 'Sherlock', startupSince: '2022', fundingStatus: 'Seed Funded', Category: "Food" },
-    { logo: dp, name: 'Infosys', founder: 'Holmes', startupSince: '2022', fundingStatus: 'Seed Funded', Category: "Education" },
-    { logo: dp, name: 'Cognizant', founder: 'John', startupSince: '2022', fundingStatus: 'Not Funded', Category: "Education" },
-    { logo: dp, name: 'NS APPS', founder: 'Rocky', startupSince: '2022', fundingStatus: 'Seed Funded', Category: "Finance" },
+    { logo: dp, name: 'Dream Fire Studio', founder: 'Ankit', startupSince: '2023', fundingStatus: 'Seed Funded', Category: "Tech" },
+    { logo: dp, name: 'floww', founder: 'Amit', startupSince: '2022', fundingStatus: 'Seed Funded', Category: "Food" },
+    { logo: dp, name: 'Roboto', founder: 'Mukesh', startupSince: '2022', fundingStatus: 'Seed Funded', Category: "Food" },
+    { logo: dp, name: 'Medicare', founder: 'Iyer', startupSince: '2022', fundingStatus: 'Seed Funded', Category: "Education" },
+    { logo: dp, name: 'College', founder: 'Sukesh', startupSince: '2022', fundingStatus: 'Not Funded', Category: "Education" },
+    { logo: dp, name: 'NS APPS', founder: 'Nishant', startupSince: '2022', fundingStatus: 'Seed Funded', Category: "Finance" },
     { logo: dp, name: 'Company 7', founder: 'Founder 7', startupSince: '2022', fundingStatus: 'Seed Funded', Category: "Finance" },
     { logo: dp, name: 'Company 8', founder: 'Founder 8', startupSince: '2022', fundingStatus: 'Seed Funded', Category: "Health" },
     { logo: dp, name: 'Company 9', founder: 'Founder 9', startupSince: '2022', fundingStatus: 'Seed Funded', Category: "Tech" },
