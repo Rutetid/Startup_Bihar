@@ -24,7 +24,7 @@ const LeftBar = () => {
             </button>
 
             {/* Sidebar */}
-            <div className={`w-[50%] md:w-[22%] bg-[#1c2437] text-[#f5f7f6] h-screen overflow-y-scroll overflow-x-hidden flex flex-col justify-between p-4 ${isOpen ? 'block' : 'hidden'} md:block`}>
+            <div className={`bg-[#1c2437] text-[#f5f7f6] h-screen overflow-y-scroll overflow-x-hidden flex flex-col justify-between p-4 ${isOpen ? 'block' : 'hidden'} md:block`}>
                 {/* Logo Section */}
                 <div className="flex items-center space-x-2 mb-8">
                     <img

@@ -96,7 +96,7 @@ const Qpr = () => {
                 const token = localStorage.getItem('token');
         
                 // Send form data to the backend using Axios
-                const response = await axios.post('http://localhost:3000/api/match', formData, {
+                const response = await axios.post('http://localhost:3000/api/Qreport', formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                         'Authorization': `${localStorage.getItem('token')}`, // Use backticks to insert token properly

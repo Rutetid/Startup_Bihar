@@ -286,6 +286,7 @@ const DocumentUpload = () => {
           </div>
         </div>
       </div>
+      
     </div>
 
   );

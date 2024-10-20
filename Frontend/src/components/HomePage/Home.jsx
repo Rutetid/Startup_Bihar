@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import HomeNav from "./HomeNav";
-import NavBar from "../Profile/UserProfile/NavBar";
 import { useNavigate } from "react-router-dom";
 import CardList from './CardList';
 import { Link } from 'react-router-dom';
+import NavBarNew from './NavBarNew';
 
 
 const HomePage = () => {
@@ -21,59 +20,7 @@ const HomePage = () => {
 
     return (
         <div className="grid grid-cols-1 ">
-            <div class="bg-white">
-                <header class="absolute inset-x-0 top-0 z-50">
-                    <nav
-                        class="flex items-center justify-between p-6 lg:px-8"
-                        aria-label="Global"
-                    >
-                        <div class="flex lg:flex-1">
-                            <a href="#" class="-m-1.5 p-1.5">
-                                <span class="sr-only">Your Company</span>
-                                <img
-                                    class="h-12 w-auto"
-                                    src="https://startup.bihar.gov.in/static/media/new_logo.efdd49a20c5fb7fe0b73.png"
-                                    alt="Company Logo"
-                                />
-                            </a>
-                        </div>
-                        
-                        <div class="hidden lg:flex lg:gap-x-12">
-                            <a
-                                href="#product"
-                                class="text-sm font-semibold leading-6 text-gray-900"
-                            >
-                                Startups List
-                            </a>
-                            <a
-                                href="#features"
-                                class="text-sm font-semibold leading-6 text-gray-900"
-                            >
-                                Mentors List
-                            </a>
-                            <a
-                                href="#marketplace"
-                                class="text-sm font-semibold leading-6 text-gray-900"
-                            >
-                                Coworking Space
-                            </a>
-                            <a
-                                href="#company"
-                                class="text-sm font-semibold leading-6 text-gray-900"
-                            >
-                                Work with Us
-                            </a>
-                        </div>
-                        <div class="lg:flex lg:flex-1 lg:justify-end">
-                        <Link to="/login" className="text-sm font-semibold leading-6 text-gray-900">
-    Log in <span aria-hidden="true">&rarr;</span>
-  </Link>
-                        </div>
-             
-                    </nav>
-                   
-                </header>
-            </div>
+           <NavBarNew/>
             <div className="isolate bg-white px-6 py-24 sm:py-3 lg:px-8 min-h-screen flex flex-col items-center">
                 <div
                     className="absolute inset-x-0 top-[-10rem] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[-20rem]"
@@ -100,14 +47,14 @@ const HomePage = () => {
                     ></div>
                 </div>
                 <div class="text-center  mx-auto max-w-2xl pt-24 mb-10 sm:pt-40 lg:pt-48 bg-slate-200">
-                    
+
                     <h1 class="text-balance text-4xl font-bold tracking-tight text-gray-600 opacity-35 sm:text-5xl bg-slate-400" style={{ fontFamily: 'Amsterdam' }}>
                         Startup Bihar</h1>
-                    
+
                 </div>
 
                 <div class="mx-auto max-w-2xl pb-32 pt-10 sm:pb-42 sm:pt-10 lg:pb-56 lg:pt-16 bg-slate-200">
-                    <div class="mb-6 flex justify-center sm:mb-8 sm:flex sm:justify-center bg-slate-300"> 
+                    <div class="mb-6 flex justify-center sm:mb-8 sm:flex sm:justify-center bg-slate-300">
                         <div class="relative rounded-full px-3 py-1 text-xs sm:text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
                             Announcing new opportunities for growth.
                             <a href="#" class="font-semibold text-indigo-600">
@@ -117,7 +64,7 @@ const HomePage = () => {
                         </div>
                     </div>
                     <div class="text-center bg-slate-400">
-                    
+
                         <h1 class="text-balance text-3xl  font-bold tracking-tight text-gray-900 sm:text-4xl lg:text-5xl">
                             Empowering Startups, Shaping Tomorrow Together</h1>
                         <p class="mt-6 text-base sm:text-lg leading-6 lg:leading-8 text-gray-600 px-6 sm:px-0 bg-slate-300" >
@@ -140,15 +87,15 @@ const HomePage = () => {
 
                 <div className="flex flex-col items-center">
                     {/* Tabs Section */}
-                    <div className="bg-gradient-to-r from-green-500 to-yellow-500 border-2 border-white rounded-2xl px-4 py-2">
+                    <div className="bg-gray-300 border-2 border-white rounded-2xl px-4 py-2">
                         <nav className="flex justify-center space-x-2">
                             {categories.map((category) => (
                                 <button
                                     key={category}
                                     onClick={() => handleCategoryClick(category)}
                                     className={`py-2 px-4 rounded-lg transition-all duration-300 ${selectedCategory === category
-                                            ? 'bg-[#780206] text-white border border-white rounded-md'
-                                            : 'text-gray-900 hover:text-white hover:bg-transparent rounded-full'
+                                        ? 'bg-[#780206] text-white border border-white rounded-md'
+                                        : 'text-gray-900 hover:text-white hover:bg-transparent rounded-full'
                                         }`}
                                 >
                                     {category}
