@@ -50,7 +50,7 @@ const LoginCopy = () => {
         }
 
         // Redirect based on login type
-        navigate(isAdminLogin ? '/AdminSeedFundForm' : '/UserProfile');
+        navigate(isAdminLogin ? '/startupProfile' : '/UserProfile');
       } else {
         setErrorMessage(data.error || 'Login failed');
         toast.error(data.error || 'Login failed');

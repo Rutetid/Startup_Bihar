@@ -3,7 +3,7 @@ import { useFormik } from "formik";
 import userData from "./userDetalis";
 import toast, { Toaster } from "react-hot-toast";
 
-function accelerationProgrammeModule() {
+function accelerationAdmin() {
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [formAccepted, setFormAccepted] = useState(false);
   const { users, userDetails } = userData();
@@ -249,4 +249,4 @@ function accelerationProgrammeModule() {
   );
 }
 
-export default accelerationProgrammeModule;
+export default accelerationAdmin;

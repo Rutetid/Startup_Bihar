@@ -1,10 +1,10 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import StarterAdminForm from "./starterAdminForm";
+import StarterAdminForm from "./AdminForm";
 import SeedAdminForm from "./seedAdminForm";
-import SecondTrancheAdminForm from "./secondTrancheAdminForm";
+import SecondTrancheAdminForm from "./SecondTrancheAdmin";
 import Navbar from "./Navbar/Navbar";
-import accelerationProgrammeModule from './accelerationProgrammeModule';
+import accelerationProgrammeModule from './accelerationAdmin';
 import TopNavbar from "./Navbar/TopNavBar";
 
 const App = () => {

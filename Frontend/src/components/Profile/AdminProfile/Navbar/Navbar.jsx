@@ -29,20 +29,17 @@ const Navbar = () => {
 
   return (
     <div
-      className={`h-screen  ${
-        isDarkMode ? "bg-gray-900" : "bg-white"
-      } transition duration-500`}
+      className={`  ${isDarkMode ? "bg-gray-900" : "bg-white"
+        } transition duration-500`}
     >
       <nav
-        className={`w-64  p-4 font-mont-300 ${
-          isDarkMode ? "bg-gray-900 text-white" : "bg-white text-gray-900"
-        } transition duration-500`}
+        className={`w-64 h-screen overflow-auto  p-4 font-mont-300 ${isDarkMode ? "bg-gray-900 text-white" : "bg-white text-gray-900"
+          } transition duration-500`}
       >
         <div className="flex items-center mb-6">
           <div
-            className={`w-10 h-10 ${
-              isDarkMode ? "bg-blue-500" : "bg-blue-700"
-            } rounded-full flex items-center justify-center`}
+            className={`w-10 h-10 ${isDarkMode ? "bg-blue-500" : "bg-blue-700"
+              } rounded-full flex items-center justify-center`}
           >
             <span className="text-white font-bold text-lg">
               {adminDetails.name[0]}{" "}
@@ -59,11 +56,10 @@ const Navbar = () => {
           <input
             type="text"
             placeholder="Search..."
-            className={`w-full p-2 ${
-              isDarkMode
-                ? "bg-gray-800 text-gray-300"
-                : "bg-gray-200 text-gray-900"
-            } rounded-md focus:outline-none`}
+            className={`w-full p-2 ${isDarkMode
+              ? "bg-gray-800 text-gray-300"
+              : "bg-gray-200 text-gray-900"
+              } rounded-md focus:outline-none`}
           />
         </div>
 
@@ -110,7 +106,7 @@ const Navbar = () => {
           </li>
           <li>
             <Link
-              to="/matchingLoan"
+              to="/AdminmatchingLoan"
               className="block py-2 px-4 rounded-md hover:bg-gray-700"
             >
               Matching Loan
@@ -126,7 +122,7 @@ const Navbar = () => {
           </li>
           <li>
             <Link
-              to="/acceleration"
+              to="/accelerationAdmin"
               className="block py-2 px-4 rounded-md hover:bg-gray-700"
             >
               Acceleration Programme Module
@@ -185,15 +181,13 @@ const Navbar = () => {
         <div className="mt-6">
           <button
             onClick={toggleDarkMode}
-            className={`w-full p-3 rounded-lg flex justify-between items-center ${
-              isDarkMode ? "bg-gray-800" : "bg-gray-200"
-            }`}
+            className={`w-full p-3 rounded-lg flex justify-between items-center ${isDarkMode ? "bg-gray-800" : "bg-gray-200"
+              }`}
           >
             <span>{isDarkMode ? "Dark Mode" : "Light Mode"}</span>
             <span
-              className={`material-icons ${
-                isDarkMode ? "text-yellow-300" : "text-gray-900"
-              }`}
+              className={`material-icons ${isDarkMode ? "text-yellow-300" : "text-gray-900"
+                }`}
             >
               {isDarkMode ? "brightness" : "wb_sunny"}
             </span>

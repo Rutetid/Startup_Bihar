@@ -141,9 +141,9 @@ function SeedAdminForm() {
 
   return (
     <div className="">
-      <TopNavbar/>
+      
     <div className="flex">
-      <Navbar/>
+      
     
 
     <div className="px-4 sm:px-0 flex h-screen">

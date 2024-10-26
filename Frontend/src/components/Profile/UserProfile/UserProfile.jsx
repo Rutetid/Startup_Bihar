@@ -7,7 +7,7 @@ import GrievanceContainer from './grievance-container';
 
 const UserProfile = (props) => {
   return (
-    <div className="w-full flex flex-col min-h-screen items-start justify-start p-4">
+    <div className="w-full  flex flex-col h-screen overflow-auto items-start justify-start p-4">
       <Helmet>
         <title>Startup Bihar Portal</title>
         <meta property="og:title" content="Startup Bihar Portal" />

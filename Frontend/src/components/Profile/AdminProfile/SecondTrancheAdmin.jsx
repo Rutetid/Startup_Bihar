@@ -3,7 +3,7 @@ import { useFormik } from "formik";
 import toast, { Toaster } from "react-hot-toast";
 import userData from "./userDetalis";
 
-function SecondTrancheForm() {
+function SecondTrancheAdmin() {
   const [selectedUserId, setSelectedUserId] = useState(null);
   const { users, userDetails } = userData();
   const [activeTab, setActiveTab] = useState("list");
@@ -509,4 +509,4 @@ function SecondTrancheForm() {
   );
 }
 
-export default SecondTrancheForm;
+export default SecondTrancheAdmin;
