@@ -9,38 +9,32 @@ datasource db {
   url      = "mongodb+srv://user21:AhK5DzvWLqvHd29u@cluster0.8vbjcu1.mongodb.net/mydb"
 }
 
+
 model User {
-  id               String               @id @default(auto()) @map("_id") @db.ObjectId
-  user_id          String               @unique
-  password         String
-  registration_no  String               @unique
-  document         Document?            // One-to-one relation
-  seedFund         SeedFund?            // One-to-one relation
-  secondTranche    SecondTranche?       // One-to-one relation
-  postSeedFund     PostSeedFund?        // One-to-one relation
-  qReport          QReport?             // One-to-one relation
-  accelerationProgram AccelerationProgram?  // One-to-one relation
-  matchingLoan     MatchingLoan?        // One-to-one relation
-  coworkingApplication CoWorkingApplication? // One-to-one relation with CoWorkingApplication
+  id                   String       @id @default(auto()) @map("_id") @db.ObjectId
+  user_id              String       @unique@db.ObjectId
+  password             String
+  registration_no      String       @unique
+  company_name         String
+  document             Document?    @relation("UserDocument")  // Specify relation name only
+  seedFund             SeedFund?    
+  secondTranche        SecondTranche? 
+  postSeedFund         PostSeedFund? 
+  qReport              QReport?
+  accelerationProgram  AccelerationProgram?
+  matchingLoan         MatchingLoan?
+  coworkingApplication CoWorkingApplication?
   incubationApplication IncubationApplication?
   iprReimbursement     IPRReimbursement?
 }
 
-
-
-model Admin {
-  id        String    @id @default(auto()) @map("_id") @db.ObjectId
-  admin_id  String    @unique
-  password  String
-}
-
 model Document {
-  id                     String   @id @default(auto()) @map("_id") @db.ObjectId
-  logoName               String   // Store logo file name
-  logoPath               String   // Store logo file path
-  certName               String   // Store certificate file name
-  certPath               String   // Store certificate file path
-  registrationNo         String   @unique
+  id                     String    @id @default(auto()) @map("_id") @db.ObjectId
+  logoName               String    
+  logoPath               String    
+  certName               String    
+  certPath               String    
+  registrationNo         String    @unique
   founderName            String
   founderAadharNumber    String
   coFounderNames         String[]
@@ -54,15 +48,27 @@ model Document {
   gender                 String
   dpiitRecognitionNo     String?
   appliedIPR             Boolean
-  user                   User     @relation(fields: [userId], references: [id]) // One-to-one relation
-  userId                 String   @unique
-  isCertVerified         String   // Indicates if certificate is uploaded
-  isFounderDetailsVerified String // Indicates if founder details are uploaded
-  isCoFounderDetailsVerified String // Indicates if co-founder details are uploaded
-  isMobileNumbersVerified String  // Indicates if mobile numbers are uploaded
-  isEmailVerified        String   // Indicates if email is uploaded
-  isDpiitRecognitionNoVerified String // Indicates if dpiitRecognitionNo is uploaded
+  userId                 String    @unique 
+  user                   User      @relation("UserDocument", fields: [userId], references: [user_id]) // Define fields and references only here
+  isCertVerified         String    
+  isFounderDetailsVerified String 
+  isCoFounderDetailsVerified String 
+  isMobileNumbersVerified String  
+  isEmailVerified        String   
+  isDpiitRecognitionNoVerified String 
 }
+
+
+
+
+
+model Admin {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  admin_id  String    @unique
+  password  String
+}
+
+
 
 model SeedFund {
   id                     String   @id @default(auto()) @map("_id") @db.ObjectId
