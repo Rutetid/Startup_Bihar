@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
 const prisma = new PrismaClient();
-const JWT_SECRET = 'your_jwt'; // Store securely in env vars
+const JWT_SECRET = 'your_jwt_secret_key'; // Store securely in env vars
 
 // Admin login controller
 const adminLogin = async (req, res) => {
