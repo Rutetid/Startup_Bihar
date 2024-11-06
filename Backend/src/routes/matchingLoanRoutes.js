@@ -5,9 +5,10 @@
 const express = require('express');
 const router = express.Router();
 
-const { applyForMatchingLoan } = require('../controllers/matchingLoanController');
+const { applyForMatchingLoan,getmatchingnById, getAllmatchingWithUserDetails } = require('../controllers/matchingLoanController');
 
 const { authenticateUser } = require('../middlewares/authenticateUser');  // Import JWT middleware
+const { authenticateAdmin } = require('../middlewares/authenticateAdmin');
 const upload = require('../config/multerconfig');
 
 // Define the POST route for applying for a matching loan
@@ -22,6 +23,16 @@ router.post(
     { name: 'boardResolution', maxCount: 1 }
   ]), // Handle multiple file fields
   applyForMatchingLoan
+);
+
+router.get(
+  '/v1/:id',authenticateAdmin,
+  getmatchingnById
+);
+
+router.get(
+  '/v2',authenticateAdmin,
+  getAllmatchingWithUserDetails
 );
 
 module.exports = router;

@@ -2,11 +2,13 @@
 
 const express = require('express');
 
-const secondTrancheController = require('../controllers/secondTrancheController');
+const {submitSecondTranche,getAllSecnWithUserDetails,getSecondById} = require('../controllers/secondTrancheController');
 
 const router = express.Router();
 
 const { authenticateUser } = require('../middlewares/authenticateUser'); // Import JWT middleware
+const { authenticateAdmin } = require('../middlewares/authenticateAdmin');
+
 const upload = require('../config/multerconfig');
 
 router.post(
@@ -19,7 +21,17 @@ router.post(
     { name: 'expenditureInvoice', maxCount: 1 },
     { name: 'geoTaggedPhotos', maxCount: 1 }
   ]),
-  secondTrancheController.submitSecondTranche
+  submitSecondTranche
+);
+
+router.get(
+  '/v2',authenticateAdmin,
+  getAllSecnWithUserDetails
+);
+
+router.get(
+  '/v1/:id',authenticateAdmin,
+  getSecondById
 );
 
 module.exports = router;

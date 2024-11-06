@@ -2,8 +2,9 @@
 
 const express = require('express');
 
-const seedFundController = require('../controllers/seedFundController');
+const {submitSeedFund,getAllSeedWithUserDetails,getseedById} = require('../controllers/seedFundController');
 const {authenticateUser} = require('../middlewares/authenticateUser');
+const {authenticateAdmin} = require('../middlewares/authenticateAdmin');
 
 const router = express.Router();
 
@@ -16,7 +17,17 @@ router.post(
     { name: 'companyCertificate', maxCount: 1 },
     { name: 'cancelChequeOrPassbook', maxCount: 1 }
   ]),
-  seedFundController.submitSeedFund
+  submitSeedFund
+);
+
+router.get(
+  '/v2',authenticateAdmin,
+  getAllSeedWithUserDetails
+);
+
+router.get(
+  '/v1/:id',authenticateAdmin,
+  getseedById
 );
 
 module.exports = router;

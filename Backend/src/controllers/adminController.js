@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
 const prisma = new PrismaClient();
-const JWT_SECRET = 'your_jwt_secret_key'; // Store securely in env vars
+const JWT_SECRET = 'your'; // Store securely in env vars
 
 // Admin login controller
 const adminLogin = async (req, res) => {
@@ -26,14 +26,6 @@ const adminLogin = async (req, res) => {
     if (!admin) {
       return res.status(404).json({ error: 'Admin not found' });
     }
-
-    // Compare provided password with the stored hashed password
-    //const isPasswordValid = await bcrypt.compare(password, admin.password);
-/*
-    if (!isPasswordValid) {
-      return res.status(401).json({ error: 'Invalid password' });
-    }
-*/
 
 if (password != admin.password) {
     return res.status(401).json({ error: 'Invalid password' });

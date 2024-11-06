@@ -3,8 +3,9 @@
 
 const express = require('express');
 
-const { uploadDocuments,getAllDocuments} = require('../controllers/documentController');
+const { uploadDocuments,getDocumentById,getAllDocumentsWithUserDetails} = require('../controllers/documentController');
 const { authenticateUser } = require('../middlewares/authenticateUser'); // Import JWT middleware
+const { authenticateAdmin } = require('../middlewares/authenticateAdmin');
 const upload = require('../config/multerconfig');
 
 const router = express.Router();
@@ -18,8 +19,14 @@ router.post(
 );
 
 router.get(
-  '/',authenticateUser,
-  getAllDocuments
+  '/v1/:id',authenticateAdmin,
+  getDocumentById
 )
+
+router.get(
+  '/v2',authenticateAdmin,
+  getAllDocumentsWithUserDetails
+)
+
 
 module.exports = router;

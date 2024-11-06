@@ -9,5 +9,5 @@ import AdminApp from './components/Profile/AdminProfile/AdminApp.jsx'
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <App />
-  </StrictMode>,
+  </StrictMode>
 )

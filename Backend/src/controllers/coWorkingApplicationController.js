@@ -53,6 +53,70 @@ const applyForCoWorkingSpace = async (req, res) => {
   }
 };
 
+const getAllCoworkingWithUserDetails = async (req, res) => {
+  try {
+    const documents = await prisma.coWorkingApplication.findMany({
+      select: {
+        id:true,
+        user: {
+          select: {
+            user_id: true,             // Fields from the User model
+            registration_no: true,
+            company_name: true,
+            document: {
+              select: {                // Fields from the Document model
+                coFounderNames: true,
+                logoPath: true,
+                category: true,
+                founderName: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    return res.status(200).json({
+      message: 'Documents with user and program details retrieved successfully',
+      data: documents,
+    });
+  } catch (error) {
+    console.error('Error fetching documents with user details:', error);
+    res.status(500).json({ error: 'An error occurred while fetching documents' });
+  }
+};
+
+const getcoworkingById = async (req, res) => {
+  let { id } = req.params; // Retrieve id from the request parameters
+
+  try {
+  
+    // Check if id is provided
+    if (!id) {
+      return res.status(400).json({ error: 'ID is required' });
+    }
+
+    // Fetch the document from the database
+    const document = await prisma.coWorkingApplication.findUnique({
+      where: { id: id }, // Use the ID to query the database
+    });
+
+    if (!document) {
+      // Return 404 if document is not found
+      return res.status(404).json({ error: 'Document not found' });
+    }
+
+    // Return the document if found
+    return res.status(200).json(document); // Explicitly set status to 200
+  } catch (error) {
+    // Handle any server error
+    console.error(`Error retrieving document with id ${id}:`, error);
+    return res.status(500).json({ error: 'An error occurred while retrieving the document' });
+  }
+};
+
 module.exports = {
   applyForCoWorkingSpace,
+  getAllCoworkingWithUserDetails,
+  getcoworkingById 
 };

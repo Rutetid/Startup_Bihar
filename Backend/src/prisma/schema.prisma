@@ -1,5 +1,4 @@
 
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -9,24 +8,6 @@ datasource db {
   url      = "mongodb+srv://user21:AhK5DzvWLqvHd29u@cluster0.8vbjcu1.mongodb.net/mydb"
 }
 
-model User {
-  id               String               @id @default(auto()) @map("_id") @db.ObjectId
-  user_id          String               @unique
-  password         String
-  registration_no  String               @unique
-  document         Document?            // One-to-one relation
-  seedFund         SeedFund?            // One-to-one relation
-  secondTranche    SecondTranche?       // One-to-one relation
-  postSeedFund     PostSeedFund?        // One-to-one relation
-  qReport          QReport?             // One-to-one relation
-  accelerationProgram AccelerationProgram?  // One-to-one relation
-  matchingLoan     MatchingLoan?        // One-to-one relation
-  coworkingApplication CoWorkingApplication? // One-to-one relation with CoWorkingApplication
-  incubationApplication IncubationApplication?
-  iprReimbursement     IPRReimbursement?
-}
-
-
 
 model Admin {
   id        String    @id @default(auto()) @map("_id") @db.ObjectId
@@ -34,12 +15,30 @@ model Admin {
   password  String
 }
 
+model User {
+  id                    String               @id @default(uuid()) @map("_id")
+  user_id               String               @unique
+  password              String
+  registration_no       String               @unique
+  company_name          String
+  document              Document?            // One-to-one relation
+  seedFund              SeedFund?            // One-to-one relation
+  secondTranche         SecondTranche?       // One-to-one relation
+  postSeedFund          PostSeedFund?        // One-to-one relation
+  qReport               QReport?             // One-to-one relation
+  accelerationProgram   AccelerationProgram? // One-to-one relation
+  matchingLoan          MatchingLoan?        // One-to-one relation
+  coworkingApplication  CoWorkingApplication?
+  incubationApplication IncubationApplication?
+  iprReimbursement      IPRReimbursement?
+}
+
 model Document {
-  id                     String   @id @default(auto()) @map("_id") @db.ObjectId
-  logoName               String   // Store logo file name
-  logoPath               String   // Store logo file path
-  certName               String   // Store certificate file name
-  certPath               String   // Store certificate file path
+  id                     String   @id @default(uuid()) @map("_id")
+  logoName               String
+  logoPath               String
+  certName               String
+  certPath               String
   registrationNo         String   @unique
   founderName            String
   founderAadharNumber    String
@@ -54,15 +53,17 @@ model Document {
   gender                 String
   dpiitRecognitionNo     String?
   appliedIPR             Boolean
-  user                   User     @relation(fields: [userId], references: [id]) // One-to-one relation
+  user                   User     @relation(fields: [userId], references: [user_id]) // One-to-one relation
   userId                 String   @unique
-  isCertVerified         String   // Indicates if certificate is uploaded
-  isFounderDetailsVerified String // Indicates if founder details are uploaded
-  isCoFounderDetailsVerified String // Indicates if co-founder details are uploaded
-  isMobileNumbersVerified String  // Indicates if mobile numbers are uploaded
-  isEmailVerified        String   // Indicates if email is uploaded
-  isDpiitRecognitionNoVerified String // Indicates if dpiitRecognitionNo is uploaded
+  isCertVerified         String // Verification status fields as Booleans
+  isFounderDetailsVerified String
+  isCoFounderDetailsVerified String
+  isMobileNumbersVerified String
+  isEmailVerified        String
+  isDpiitRecognitionNoVerified String
 }
+
+
 
 model SeedFund {
   id                     String   @id @default(auto()) @map("_id") @db.ObjectId
@@ -86,7 +87,7 @@ model SeedFund {
   createdAt              DateTime @default(now())
 
   userId                 String   @unique // One-to-one relation
-  user                   User     @relation(fields: [userId], references: [id]) // Many-to-one relation
+  user                   User     @relation(fields: [userId], references: [user_id]) // Many-to-one relation
 }
 
 model SecondTranche {
@@ -100,7 +101,7 @@ model SecondTranche {
   createdAt               DateTime @default(now())
 
   userId                 String   @unique // One-to-one relation
-  user                   User     @relation(fields: [userId], references: [id]) // Many-to-one relation
+  user                   User     @relation(fields: [userId], references: [user_id]) // Many-to-one relation
 }
 
 model PostSeedFund {
@@ -114,7 +115,7 @@ model PostSeedFund {
   projectReport          String?  // File path for project report (nullable)
 
   userId                 String   @unique // One-to-one relation
-  user                   User     @relation(fields: [userId], references: [id])
+  user                   User     @relation(fields: [userId], references: [user_id])
 }
 
 
@@ -152,7 +153,7 @@ model AccelerationProgram {
   totalPersons              Int
   totalFee                  Float
   userId                    String   @unique // Unique userId from JWT
-  user                      User     @relation(fields: [userId], references: [id]) // Relation to User
+  user                      User     @relation(fields: [userId], references: [user_id]) // Relation to User
 
 }
 
@@ -173,7 +174,7 @@ model MatchingLoan {
   utilizationPlanPath              String?  // File path for Fund Utilization Plan
   boardResolutionName              String?  // File name for Board Resolution
   boardResolutionPath              String?  // File path for Board Resolution
-  user                             User     @relation(fields: [userId], references: [id])
+  user                             User     @relation(fields: [userId], references: [user_id])
   userId                           String   @unique // Foreign key to User
   
 }
@@ -185,7 +186,7 @@ model IncubationApplication {
   status            String   // Status of the application
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
-  user              User     @relation(fields: [userId], references: [id])
+  user              User     @relation(fields: [userId], references: [user_id])
 }
 
 
@@ -195,7 +196,7 @@ model CoWorkingApplication {
   seatNo           String
   status           String
   userId           String   @unique
-  user             User     @relation(fields: [userId], references: [id])
+  user             User     @relation(fields: [userId], references: [user_id])
 
 }
 
@@ -211,5 +212,5 @@ model IPRReimbursement {
   consultancyInvoiceFileName      String?
   consultancyInvoiceFilePath      String?
   userId                          String   @unique
-  user                            User     @relation(fields: [userId], references: [id])
+  user                            User     @relation(fields: [userId], references: [user_id])
 }

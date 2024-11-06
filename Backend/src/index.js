@@ -5,7 +5,6 @@ const cors = require('cors');
 const documentRoutes = require('./routes/documentRoutes');
 const userRoutes = require('./routes/userRoutes');
 const adminRoutes = require('./routes/adminRoutes');
-const trackRoutes  = require('./routes/trackRoutes');
 const seedFundRoutes = require('./routes/seedFundRoutes');
 const secondTrancheRoutes = require('./routes/secondTrancheRoutes')
 const postSeedFundRoutes = require('./routes/postSeedFundRoutes');
@@ -44,14 +43,42 @@ app.use('/api/iprReimbursement', iprReimbursementRoutes);
 
 
 
-//  get routes
-app.use('/api/StartupProfile', documentRoutes);
+ //  get routes
+
+// http://localhost:3000/api/StartupProfile/v2   
+// http://localhost:3000/api/StartupProfile/v1/:id
 
 
+//http://localhost:3000/api/acceleration/v1:id
+//http://localhost:3000/api/acceleration/v2
 
 
+//http://localhost:3000/api/coworking/v1:id
+//http://localhost:3000/api/coworking/v2
 
 
+//http://localhost:3000/api/incubation/v1:id
+//http://localhost:3000/api/incubation/v2
+
+//http://localhost:3000/api/seed-fund/v1:id
+//http://localhost:3000/api/seed-fund/v2
+
+
+//http://localhost:3000/api/second-tranche/v1:id
+//http://localhost:3000/api/second-tranche/v2
+
+//http://localhost:3000/api/post-seed/v1:id
+//http://localhost:3000/api/post-seed/v2
+
+//http://localhost:3000/api/Qreport/v1:id
+//http://localhost:3000/api/Qreport/v2
+
+//http://localhost:3000/api/iprReimbursement/v1:id
+//http://localhost:3000/api/iprReimbursement/v2
+
+
+//http://localhost:3000/api/matchingLoan/v1:id
+//http://localhost:3000/api/matchingLoan/v2
 
 // Start the server
 const PORT = process.env.PORT || 3000;

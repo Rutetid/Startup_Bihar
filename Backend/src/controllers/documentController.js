@@ -1,31 +1,25 @@
 
-
 const { PrismaClient } = require('@prisma/client');
-const jwt = require('jsonwebtoken'); // Import the jsonwebtoken library
+const jwt = require('jsonwebtoken');
 const prisma = new PrismaClient();
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_key'; // Use environment variable
-
+const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_key';
 
 const uploadDocuments = async (req, res) => {
   try {
-    // Extract the JWT from the request headers
-    const token = req.headers.authorization?.split(' ')[1]; // Assuming the token is in the format "Bearer <token>"
-
-    // Verify and decode the JWT to get the user ID
+    const token = req.headers.authorization?.split(' ')[1];
     if (!token) {
       return res.status(401).json({ error: 'Unauthorized: No token provided' });
     }
 
     let userId;
     try {
-      const decoded = jwt.verify(token, JWT_SECRET); // Use your secret key
-      userId = decoded.user_id; // Assuming the JWT payload contains the user ID as "user_id"
+      const decoded = jwt.verify(token, JWT_SECRET);
+      userId = decoded.user_id;
     } catch (err) {
       return res.status(401).json({ error: 'Unauthorized: Invalid token' });
     }
 
-    // Prepare data to create or update a document
     const newDocumentData = {
       registrationNo: req.body.registrationNo,
       founderName: req.body.founderName,
@@ -40,37 +34,31 @@ const uploadDocuments = async (req, res) => {
       category: req.body.category,
       gender: req.body.gender,
       dpiitRecognitionNo: req.body.dpiitRecognitionNo,
-      appliedIPR: req.body.appliedIPR === 'true', // Convert string to boolean
+      appliedIPR: req.body.appliedIPR === 'true',
     };
 
-    // Handle file uploads safely
     if (req.files) {
       if (req.files.logo && req.files.logo.length > 0) {
         const logoFile = req.files.logo[0];
-        newDocumentData.logoName = logoFile.filename; // Store logo file name
-        newDocumentData.logoPath = logoFile.path; // Store logo file path
+        newDocumentData.logoName = logoFile.filename;
+        newDocumentData.logoPath = logoFile.path;
       }
 
       if (req.files.certificate && req.files.certificate.length > 0) {
         const certificateFile = req.files.certificate[0];
-        newDocumentData.certName = certificateFile.filename; // Store certificate file name
-        newDocumentData.certPath = certificateFile.path; // Store certificate file path
+        newDocumentData.certName = certificateFile.filename;
+        newDocumentData.certPath = certificateFile.path;
       }
     }
 
-    // Upsert: Create or update the document
     const document = await prisma.document.upsert({
-      where: { userId }, // Check for existing document by userId
-      update: {
-        ...newDocumentData,
-        // Maintain existing verification status during update
-      },
+      where: { userId }, 
+      update: { ...newDocumentData },
       create: {
         ...newDocumentData,
-        userId, // Associate the document with the authenticated user
-        // Set verification fields to 'pending' when creating a new document
+        userId,
         isCertVerified: "pending",
-        isFounderDetailsVerified: "pending", // Ensure correct field naming
+        isFounderDetailsVerified: "pending",
         isCoFounderDetailsVerified: "pending",
         isMobileNumbersVerified: "pending",
         isEmailVerified: "pending",
@@ -78,7 +66,6 @@ const uploadDocuments = async (req, res) => {
       },
     });
 
-    // Return the created or updated document in the response
     return res.status(200).json({
       message: document ? 'Document updated successfully' : 'Document created successfully',
       document,
@@ -89,45 +76,69 @@ const uploadDocuments = async (req, res) => {
   }
 };
 
+const getDocumentById = async (req, res) => {
+  let { id } = req.params; // Retrieve id from the request parameters
 
-
-
-const getAllDocuments = async (req, res) => {
   try {
-    // Extract the JWT from the request headers
-    const token = req.headers.authorization?.split(' ')[1]; // Assuming the token is in the format "Bearer <token>"
-
-    // Verify and decode the JWT to check if the user is an admin
-    if (!token) {
-      return res.status(401).json({ error: 'Unauthorized: No token provided' });
+  
+    // Check if id is provided
+    if (!id) {
+      return res.status(400).json({ error: 'ID is required' });
     }
 
-    let decodedToken;
-    try {
-      decodedToken = jwt.verify(token, JWT_SECRET); // Verify the token using the secret key
-    } catch (err) {
-      return res.status(401).json({ error: 'Unauthorized: Invalid token' });
+    // Fetch the document from the database
+    const document = await prisma.document.findUnique({
+      where: { id: id }, // Use the ID to query the database
+    });
+
+    if (!document) {
+      // Return 404 if document is not found
+      return res.status(404).json({ error: 'Document not found' });
     }
 
-    // Fetch all documents from the database
-    const documents = await prisma.document.findMany();
+    // Return the document if found
+    return res.status(200).json(document); // Explicitly set status to 200
+  } catch (error) {
+    // Handle any server error
+    console.error(`Error retrieving document with id ${id}:`, error);
+    return res.status(500).json({ error: 'An error occurred while retrieving the document' });
+  }
+};
 
-    // Return the documents in the response
+
+const getAllDocumentsWithUserDetails = async (req, res) => {
+  try {
+    const documents = await prisma.document.findMany({
+      select: {
+        id: true,
+        coFounderNames: true,
+        logoPath: true,
+        category:true,
+         // Only select coFounderNames from Document
+        user: {
+          select: {
+            user_id: true,          // Include other fields from User as needed
+            registration_no: true,  // Example field; adjust as necessary
+            company_name:true
+            // Add more fields if needed, but exclude `password`
+          },
+        },
+      },
+    });
+
     return res.status(200).json({
-      message: 'Documents retrieved successfully',
+      message: 'Documents with user details retrieved successfully',
       documents,
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'An error occurred while retrieving the documents' });
+    res.status(500).json({ error: 'An error occurred while fetching documents' });
   }
 };
 
 
 module.exports = {
   uploadDocuments,
-  getAllDocuments
+  getDocumentById,
+  getAllDocumentsWithUserDetails,
 };
-
-
-
