@@ -15,7 +15,7 @@ import Acceleration from './components/UserForm/Acceleration';
 import Coworking from './components/UserForm/Coworking';
 import Matchingloan from './components/UserForm/Matchingloan';
 import Reimbursement from './components/UserForm/Reimbursement';
-import PostSeed from './components/UserForm/Postseed';
+import PostSeed from './components/UserForm/PostSeed';
 import SeedFunded from './components/UserForm/SeedFunded';
 import Qpr from './components/UserForm/Qpr';
 import HomePage from './components/HomePage/Home';
@@ -23,6 +23,9 @@ import LeftBar from './components/Profile/UserProfile/Navbar/LeftBar';
 import LeftBarfix from './components/Profile/UserProfile/LeftBarfix';
 import Navbarfix from './components/Profile/AdminProfile/Navbar/Navbarfix';
 import SecondTrancheAdmin from './components/Profile/AdminProfile/SecondTrancheAdmin';
+import GrievanceContainer from './components/Profile/UserProfile/grievance-container';
+import Grievance from './components/UserForm/Grievance';
+import Incubation from './components/UserForm/Incubation';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -51,6 +54,9 @@ const App = () => {
           <Route path="/coworking" element={<Coworking />} />
           <Route path="/acceleration" element={<Acceleration />} />
           <Route path="/qpr" element={<Qpr />} />
+          <Route path="/grievance" element={<Grievance />} />
+          <Route path="/incubation" element={<Incubation />} />
+
         </Route>
         {/*Admin Route with fixNavbar hello*/}
         <Route element={<Navbarfix isLoggedIn={isLoggedIn} />}>

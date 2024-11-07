@@ -94,7 +94,7 @@ const SeedFunded = () => {
     };
 
     return (
-        <div className="min-h-screen flex flex-col items-center">
+        <div className="h-screen overflow-x-auto flex flex-col items-center">
              {submitted && (
             <div className="mt-4 font-bold text-black-600">
                 Form submitted successfully!
@@ -102,7 +102,7 @@ const SeedFunded = () => {
         )}
             <div className="flex w-full max-w-5xl mt-10 space-x-10">
                 <form onSubmit={formik.handleSubmit} className="w-1/2 p-8 rounded-lg">
-                    <h3 className="font-semibold text-xl mb-6">Application Form for Startups</h3>
+                    <h3 className="font-semibold text-xl mb-6">Application Form for Seed Fund</h3>
 
                     <div className="mb-6">
                         <Textbox

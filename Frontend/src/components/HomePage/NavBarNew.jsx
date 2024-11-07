@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Link as ScrollLink } from 'react-scroll';
+import { Link as ScrollLink, animateScroll as scroll } from 'react-scroll';
 
 const NavBarNew = () => {
   const [sticky, setSticky] = useState(false);
@@ -11,7 +11,7 @@ const NavBarNew = () => {
   useEffect(() => {
     const handleScroll = () => {
       setSticky(window.scrollY > 50);
-      
+
       // Determine scroll direction
       if (window.scrollY > lastScrollY) {
         setVisible(false); // Scrolling down
@@ -39,7 +39,8 @@ const NavBarNew = () => {
         <header className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${visible ? 'translate-y-0' : '-translate-y-full'}`}>
           <nav className={`flex items-center justify-between p-6 lg:px-8 ${sticky ? 'bg-[#3f1063]' : 'bg-[#3f1063]'}`} aria-label="Global">
             <div className="flex lg:flex-1">
-              <a href="#" className="-m-1.5 p-1.5">
+              {/* Smooth scroll to top on logo click */}
+              <a onClick={() => scroll.scrollToTop()} className="-m-1.5 p-1.5 cursor-pointer">
                 <span className="sr-only">Your Company</span>
                 <img
                   className="h-12 w-auto"
@@ -51,17 +52,51 @@ const NavBarNew = () => {
 
             {/* Desktop Menu */}
             <div className={`hidden lg:flex lg:gap-x-12`}>
-              {['Startups List', 'Mentors List', 'Coworking Space', 'Work with Us', 'Contact Us'].map((item, index) => (
-                <ScrollLink
-                  key={index}
-                  to={item.toLowerCase().replace(' ', '')} // assuming IDs are lowercase and no spaces
-                  smooth={true}
-                  duration={500}
-                  className="text-sm font-semibold leading-6 text-white hover:text-gray-200" // Added hover effect
-                >
-                  {item}
-                </ScrollLink>
-              ))}
+              <ScrollLink
+                to="startups"
+                smooth={true}
+                offset={-50}
+                duration={500}
+                className="text-sm font-semibold leading-6 text-white cursor-pointer hover:text-gray-200 active:text-gray-300"
+              >
+                Startups List
+              </ScrollLink>
+              <ScrollLink
+                to="mentors"
+                smooth={true}
+                offset={-50}
+                duration={500}
+                className="text-sm font-semibold leading-6 text-white cursor-pointer hover:text-gray-200 active:text-gray-300"
+              >
+                Mentors List
+              </ScrollLink>
+              <ScrollLink
+                to="coworking"
+                smooth={true}
+                offset={-50}
+                duration={500}
+                className="text-sm font-semibold leading-6 text-white cursor-pointer hover:text-gray-200 active:text-gray-300"
+              >
+                Coworking Space
+              </ScrollLink>
+              <ScrollLink
+                to="work"
+                smooth={true}
+                offset={-50}
+                duration={500}
+                className="text-sm font-semibold leading-6 text-white cursor-pointer hover:text-gray-200 active:text-gray-300"
+              >
+                Work with Us
+              </ScrollLink>
+              <ScrollLink
+                to="contact"
+                smooth={true}
+                offset={-50}
+                duration={500}
+                className="text-sm font-semibold leading-6 text-white cursor-pointer hover:text-gray-200 active:text-gray-300"
+              >
+                Contact Us
+              </ScrollLink>
             </div>
 
             {/* Login Button */}
@@ -82,18 +117,56 @@ const NavBarNew = () => {
           {/* Mobile Menu */}
           {mobileMenu && (
             <div className="flex flex-col lg:hidden p-4 bg-white shadow-md">
-              {['Startups List', 'Mentors List', 'Coworking Space', 'Work with Us', 'Contact Us'].map((item, index) => (
-                <ScrollLink
-                  key={index}
-                  to={item.toLowerCase().replace(' ', '')} // assuming IDs are lowercase and no spaces
-                  smooth={true}
-                  duration={500}
-                  className="text-sm font-semibold leading-6 text-white py-2 hover:text-gray-200" // Added hover effect
-                  onClick={toggleMenu} // Close menu on click
-                >
-                  {item}
-                </ScrollLink>
-              ))}
+              <ScrollLink
+                to="startups"
+                smooth={true}
+                offset={-50}
+                duration={500}
+                className="text-sm font-semibold leading-6 text-gray-700 py-2 hover:text-gray-500 active:text-gray-600"
+                onClick={toggleMenu}
+              >
+                Startups List
+              </ScrollLink>
+              <ScrollLink
+                to="mentors"
+                smooth={true}
+                offset={-50}
+                duration={500}
+                className="text-sm font-semibold leading-6 text-gray-700 py-2 hover:text-gray-500 active:text-gray-600"
+                onClick={toggleMenu}
+              >
+                Mentors List
+              </ScrollLink>
+              <ScrollLink
+                to="coworking"
+                smooth={true}
+                offset={-50}
+                duration={500}
+                className="text-sm font-semibold leading-6 text-gray-700 py-2 hover:text-gray-500 active:text-gray-600"
+                onClick={toggleMenu}
+              >
+                Coworking Space
+              </ScrollLink>
+              <ScrollLink
+                to="work"
+                smooth={true}
+                offset={-50}
+                duration={500}
+                className="text-sm font-semibold leading-6 text-gray-700 py-2 hover:text-gray-500 active:text-gray-600"
+                onClick={toggleMenu}
+              >
+                Work with Us
+              </ScrollLink>
+              <ScrollLink
+                to="contact"
+                smooth={true}
+                offset={-50}
+                duration={500}
+                className="text-sm font-semibold leading-6 text-gray-700 py-2 hover:text-gray-500 active:text-gray-600"
+                onClick={toggleMenu}
+              >
+                Contact Us
+              </ScrollLink>
             </div>
           )}
         </header>

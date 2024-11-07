@@ -12,6 +12,15 @@ const SecondTrance = () => {
     geoTaggedPhotos: null,
   });
 
+  const requiredFiles = [
+    'utilizationCertificate',
+    'statusReport',
+    'expenditurePlan',
+    'bankStatement',
+    'expenditureInvoice',
+    'geoTaggedPhotos',
+  ];
+
   const handleFileChange = (file, fieldName) => {
     setUploadedFiles((prev) => ({ ...prev, [fieldName]: file }));
   };
@@ -34,7 +43,6 @@ const SecondTrance = () => {
         const response = await fetch('http://localhost:3000/api/second-tranche', {
           method: 'POST',
           headers: {
-            // If you are using JWT for authentication, include the token here
             Authorization: `${localStorage.getItem('token')}`, // Adjust according to your token storage
           },
           body: formData,
@@ -54,11 +62,27 @@ const SecondTrance = () => {
     },
   });
 
+  const checkMissingFiles = () => {
+    const missingFiles = requiredFiles.filter((file) => !uploadedFiles[file]);
+    if (missingFiles.length > 0) {
+      alert(`Missing files: ${missingFiles.join(', ')}`);
+      return false; // Prevent form submission if files are missing
+    }
+    return true;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (checkMissingFiles()) {
+      formik.handleSubmit();
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center">
+    <div className="h-screen overflow-y-auto bg-gray-50 flex flex-col items-center">
       <div className="flex w-full max-w-5xl mt-10 space-x-10">
         {/* Left Form */}
-        <form onSubmit={formik.handleSubmit} className="w-1/2 p-8 rounded-lg">
+        <form onSubmit={handleSubmit} className="w-1/2 p-8 rounded-lg">
           <h3 className="font-semibold text-xl mb-6">Application Form for Second Tranche</h3>
 
           {/* Registration Number Field */}
@@ -90,7 +114,7 @@ const SecondTrance = () => {
         </form>
 
         {/* Right Form (Optional, if needed) */}
-        <form onSubmit={formik.handleSubmit} className="w-1/2 p-8 mt-11 rounded-lg">
+        <form onSubmit={handleSubmit} className="w-1/2 p-8 mt-11 rounded-lg">
           {/* Bank Statement Field */}
           <div className="mb-6">
             <Upload 
@@ -120,7 +144,7 @@ const SecondTrance = () => {
         </form>
       </div>
       {/* Submit Button */}
-      <button onClick={formik.handleSubmit} className="mt-4 px-4 py-2 text-sm font-semibold rounded-lg bg-blue-500 text-white hover:bg-blue-600">
+      <button onClick={handleSubmit} className="mt-4 px-4 py-2 text-sm font-semibold rounded-lg bg-blue-500 text-white hover:bg-blue-600">
         Submit
       </button>
     </div>

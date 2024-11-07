@@ -17,6 +17,8 @@ const LeftBarfix = ({ isLoggedIn }) => {
     '/coworking',
     '/acceleration',
     '/qpr',
+    '/incubation',
+    '/grievance'
   ];
 
   const showLeftBar = isLoggedIn || showLeftBarRoutes.includes(location.pathname);

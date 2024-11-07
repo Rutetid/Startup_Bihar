@@ -87,7 +87,7 @@ const MovingPage = () => {
     ];
 
     return (
-        <div className='w-screen overflow-hidden'>
+        <div className='startups w-screen overflow-hidden'>
             <div className='flex m-4 justify-between'>
                 <h1 className='text-2xl font-semibold px-10 lg:max-w-7xl lg:px-10'>Top Companies</h1>
                 <Link to="/all-items" className="flex items-center  px-10 lg:max-w-7xl lg:px-10">
