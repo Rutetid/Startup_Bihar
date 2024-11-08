@@ -1,35 +1,38 @@
 import React from "react";
 import axios from "axios";
-import { useState , useEffect } from "react";
+import { useState, useEffect } from "react";
 
-const StartupProfile = ({onSelect}) => {
+const StartupProfile = ({ onSelect }) => {
 	const [sdata, setSdata] = useState([]);
 
 	const handleClick = (id) => {
 		onSelect(id);
-	}
+	};
 
-	 useEffect(() => {
-			const fetchData = async () => {
-				try {
-					const token = localStorage.getItem("token"); 
-					const response = await axios.get(
-						"http://localhost:3000/api/StartupProfile/v2",
-						{
-							headers: {
-								Authorization: `Bearer ${token}`, 
-							},
+	const token = localStorage.getItem("token");
+
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				console.log(token);
+				const response = await axios.get(
+					"http://localhost:3000/api/StartupProfile/v2",
+					{
+						headers: {
+							"Content-Type" : "application/json",
+							Authorization : `${token}`,
 						},
-					);
-					setSdata(response.data.documents);
-				} catch (error) {
-					console.error("Error fetching data:", error);
-				}
-			};
+					},
+				);
+				setSdata(response.data.documents);
+			} catch (error) {
+				console.error("Error fetching data:", error);
+			}
+		};
 
-			fetchData();
-			console.log(sdata);
-		}, []);
+		fetchData();
+		console.log(sdata);
+	}, []);
 
 	return (
 		<div
