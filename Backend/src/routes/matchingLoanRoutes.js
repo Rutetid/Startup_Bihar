@@ -5,7 +5,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { applyForMatchingLoan,getmatchingnById, getAllmatchingWithUserDetails } = require('../controllers/matchingLoanController');
+const { applyForMatchingLoan,getmatchingnById, getAllmatchingWithUserDetails,updateMatchingStatus } = require('../controllers/matchingLoanController');
 
 const { authenticateUser } = require('../middlewares/authenticateUser');  // Import JWT middleware
 const { authenticateAdmin } = require('../middlewares/authenticateAdmin');
@@ -34,5 +34,10 @@ router.get(
   '/v2',authenticateAdmin,
   getAllmatchingWithUserDetails
 );
+
+router.patch(
+  '/u1/:id',authenticateAdmin,
+   updateMatchingStatus
+)
 
 module.exports = router;

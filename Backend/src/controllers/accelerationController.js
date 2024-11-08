@@ -38,7 +38,8 @@ const applyForAccelerationProgram = async (req, res) => {
       travelAccommodationCost: parseFloat(req.body.travelAccommodationCost),
       totalPersons: parseInt(req.body.totalPersons, 10),
       totalFee: parseFloat(req.body.totalFee),
-      userName // Add the username extracted from the token
+      userName ,// Add the username extracted from the token
+      documentStatus : "created"
     };
 
     // Upsert: Create or update the acceleration program application
@@ -127,9 +128,46 @@ const getAccnById = async (req, res) => {
   }
 };
 
+const updateAccnStatus = async (req, res) => {
+  const { id } = req.params;
+  const { documentStatus } = req.body;
+
+  if (!documentStatus) {
+    return res.status(400).json({ error: 'Document status is required' });
+  }
+
+  try {
+    const document = await prisma.accelerationProgram.findUnique({
+      where: { id },
+    });
+
+    if (!document) {
+      return res.status(404).json({ error: 'Document not found' });
+    }
+
+    const updatedDocument = await prisma.accelerationProgram.update({
+      where: { id },
+      data: { documentStatus },
+    });
+
+    res.status(200).json({
+      message: 'Document status updated successfully',
+      document: updatedDocument,
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      error: 'Failed to update document status',
+      details: error.message,
+    });
+  }
+};
+
 
 module.exports = {
   applyForAccelerationProgram,
   getAllAccnWithUserDetails,
-  getAccnById
+  getAccnById,
+  updateAccnStatus
 };
