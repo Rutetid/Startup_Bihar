@@ -7,7 +7,7 @@ import GrievanceContainer from './grievance-container';
 
 const UserProfile = (props) => {
   return (
-    <div className="w-full  flex flex-col h-screen overflow-auto items-start justify-start p-4">
+    <div className="flex flex-col h-screen overflow-auto items-start justify-start p-4">
       <Helmet>
         <title>Startup Bihar Portal</title>
         <meta property="og:title" content="Startup Bihar Portal" />
@@ -58,6 +58,7 @@ const UserProfile = (props) => {
               text1="Please describe the issue in detail"
               imageSrc="/external/grievance-image.png"
               imageAlt="Grievance Form Image"
+              navigateTo="/grievance"
             />
           </div>
 

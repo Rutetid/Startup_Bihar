@@ -73,7 +73,7 @@ const Acceleration = () => {
     };
 
     return (
-        <div className="min-h-screen  flex flex-col items-center">
+        <div className="h-screen overflow-y-auto  flex flex-col items-center">
               {submitted && (
                         <div className="mt-4 font-bold text-blacl-600">
                             Form submitted successfully!

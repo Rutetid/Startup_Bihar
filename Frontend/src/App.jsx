@@ -1,34 +1,28 @@
-import React, { useState } from "react";
-import {
-	BrowserRouter as Router,
-	Routes,
-	Route,
-	useLocation,
-} from "react-router-dom";
-import HomeNav from "./components/HomePage/HomeNav";
-import UserProfile from "./components/Profile/UserProfile/UserProfile";
-import LoginCopy from "./components/Login/LoginCopy";
-import Startupform from "./components/UserForm/Startupform";
-import Upload from "./components/UserForm/Upload";
-import SecondTrance from "./components/UserForm/SecondTrance";
-import Profile from "./components/Profile/PublicProfile/Profile";
-import AdminApp from "./components/Profile/AdminProfile/AdminApp";
-import SeedAdminForm from "./components/Profile/AdminProfile/seedAdminForm";
-import AdminForm from "./components/Profile/AdminProfile/AdminForm";
-import TopNavbar from "./components/Profile/AdminProfile/Navbar/TopNavBar";
-import Acceleration from "./components/UserForm/Acceleration";
-import Coworking from "./components/UserForm/Coworking";
-import Matchingloan from "./components/UserForm/Matchingloan";
-import Reimbursement from "./components/UserForm/Reimbursement";
-import PostSeed from "./components/UserForm/Postseed";
-import SeedFunded from "./components/UserForm/SeedFunded";
-import Qpr from "./components/UserForm/Qpr";
-import HomePage from "./components/HomePage/Home";
-import LeftBar from "./components/Profile/UserProfile/Navbar/LeftBar";
-import LeftBarfix from "./components/Profile/UserProfile/LeftBarfix";
-import Navbarfix from "./components/Profile/AdminProfile/Navbar/Navbarfix";
-import SecondTrancheAdmin from "./components/Profile/AdminProfile/SecondTrancheAdmin";
-import AdminMainProfile from "./components/Admin_Profile_Abhishek/AdminMainProfile";
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import HomeNav from './components/HomePage/HomeNav';
+import UserProfile from './components/Profile/UserProfile/UserProfile';
+import LoginCopy from './components/Login/LoginCopy';
+import Startupform from './components/UserForm/Startupform';
+import Upload from './components/UserForm/Upload';
+import SecondTrance from './components/UserForm/SecondTrance';
+import Profile from './components/Profile/PublicProfile/Profile';
+import AdminApp from './components/Profile/AdminProfile/AdminApp';
+import SeedAdminForm from './components/Profile/AdminProfile/seedAdminForm';
+import AdminForm from './components/Profile/AdminProfile/AdminForm';
+import TopNavbar from './components/Profile/AdminProfile/Navbar/TopNavBar';
+import Acceleration from './components/UserForm/Acceleration';
+import Coworking from './components/UserForm/Coworking';
+import Matchingloan from './components/UserForm/Matchingloan';
+import Reimbursement from './components/UserForm/Reimbursement';
+import PostSeed from './components/UserForm/Postseed';
+import SeedFunded from './components/UserForm/SeedFunded';
+import Qpr from './components/UserForm/Qpr';
+import HomePage from './components/HomePage/Home';
+import LeftBar from './components/Profile/UserProfile/Navbar/LeftBar';
+import LeftBarfix from './components/Profile/UserProfile/LeftBarfix';
+import Navbarfix from './components/Profile/AdminProfile/Navbar/Navbarfix';
+import SecondTrancheAdmin from './components/Profile/AdminProfile/SecondTrancheAdmin';
 
 const App = () => {
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -54,15 +48,16 @@ const App = () => {
 					<Route path="/postseed" element={<PostSeed />} />
 					<Route path="/profile" element={<Profile />} />
 
-					<Route path="/Matchingloan" element={<Matchingloan />} />
-					<Route path="/Reimbursement" element={<Reimbursement />} />
-					<Route path="/coworking" element={<Coworking />} />
-					<Route path="/acceleration" element={<Acceleration />} />
-					<Route path="/qpr" element={<Qpr />} />
-				</Route>
-				{/*Admin Route with fixNavbar hello*/}
-				<Route element={<Navbarfix isLoggedIn={isLoggedIn} />}>
-					<Route path="/startupProfile" element={<AdminForm />} />
+          <Route path="/Matchingloan" element={<Matchingloan />} />
+          <Route path="/Reimbursement" element={<Reimbursement />} />
+          <Route path="/coworking" element={<Coworking />} />
+          <Route path="/acceleration" element={<Acceleration />} />
+          <Route path="/qpr" element={<Qpr />} />
+        </Route>
+        {/*Admin Route with fixNavbar hello*/}
+        <Route element={<Navbarfix isLoggedIn={isLoggedIn} />}>
+
+          <Route path="/startupProfile" element={<AdminForm />} />
 
 					<Route path="/seedFund" element={<SeedAdminForm />} />
 

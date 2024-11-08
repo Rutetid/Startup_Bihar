@@ -80,6 +80,21 @@ app.use('/api/iprReimbursement', iprReimbursementRoutes);
 //http://localhost:3000/api/matchingLoan/v1:id
 //http://localhost:3000/api/matchingLoan/v2
 
+
+
+
+// update -----------------> accept/////// reject
+  //http://localhost:3000/api/StartupProfile/u1/:id
+  //http://localhost:3000/api/acceleration/u1/:id
+  //http://localhost:3000/api/coworking/u1/:id
+  //http://localhost:3000/api/incubation/u1/:id
+  //http://localhost:3000/api/seed-fund/u1/:id
+  //http://localhost:3000/api/second-tranche/u1/:id
+  //http://localhost:3000/api/post-seed/u1/:id
+  //http://localhost:3000/api/Qreport/u1/:id
+   //http://localhost:3000/api/iprReimbursement/u1/:id
+  //http://localhost:3000/api/matchingLoan/u1/:id
+
 // Start the server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

@@ -61,7 +61,7 @@ const DocumentUpload = () => {
   };
 
   return (
-    <div className=''>
+    <div className='h-screen overflow-y-auto'>
       <h2 className="text-center text-xl font-semibold mb-4">Upload Documents</h2>
       <div className='flex z'>
 

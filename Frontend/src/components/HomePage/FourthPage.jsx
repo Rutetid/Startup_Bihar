@@ -3,7 +3,7 @@ import React from 'react'
 const FourthPage = () => {
   return (
     <div>
-       <div className="bg-white py-24 sm:py-32">
+       <div className="bg-white py-24 sm:py-32 mentors">
                 <div className="mx-auto max-w-7xl px-6 lg:px-8">
                     <div className="mx-auto max-w-3xl lg:text-center">
                         <h2 className="text-base font-semibold leading-7 text-indigo-600">

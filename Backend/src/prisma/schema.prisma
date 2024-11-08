@@ -55,18 +55,14 @@ model Document {
   appliedIPR             Boolean
   user                   User     @relation(fields: [userId], references: [user_id]) // One-to-one relation
   userId                 String   @unique
-  isCertVerified         String // Verification status fields as Booleans
-  isFounderDetailsVerified String
-  isCoFounderDetailsVerified String
-  isMobileNumbersVerified String
-  isEmailVerified        String
-  isDpiitRecognitionNoVerified String
+  documentStatus         String
+ 
 }
 
 
 
 model SeedFund {
-  id                     String   @id @default(auto()) @map("_id") @db.ObjectId
+  id                     String   @id @default(uuid()) @map("_id") 
   companyName            String
   registrationNumber     String
   dateOfIncorporation    DateTime
@@ -84,28 +80,30 @@ model SeedFund {
   cancelChequeOrPassbook String?
   panNumber              String
   gstNumber              String
-  createdAt              DateTime @default(now())
+
 
   userId                 String   @unique // One-to-one relation
   user                   User     @relation(fields: [userId], references: [user_id]) // Many-to-one relation
+  documentStatus         String
 }
 
 model SecondTranche {
-  id                     String   @id @default(auto()) @map("_id") @db.ObjectId
+  id                     String   @id @default(uuid()) @map("_id") 
   utilizationCertificate  String?
   statusReport            String?
   expenditurePlan         String?
   bankStatement           String?
   expenditureInvoice      String?
   geoTaggedPhotos         String?
-  createdAt               DateTime @default(now())
+
 
   userId                 String   @unique // One-to-one relation
   user                   User     @relation(fields: [userId], references: [user_id]) // Many-to-one relation
+  documentStatus         String
 }
 
 model PostSeedFund {
-  id                     String   @id @default(auto()) @map("_id") @db.ObjectId
+  id                     String   @id @default(uuid()) @map("_id") 
   currentStage           String   // dropdown (Ideation, Prototype Validation, MVP, Scaling)
   technicalKnowledge     Boolean  // Checkbox (Yes/No)
   auditedBalanceSheet    String?  // File path for audited balance sheet (nullable)
@@ -113,14 +111,15 @@ model PostSeedFund {
   raisedFunds            Boolean  // Checkbox (Yes/No)
   employment             Boolean  // Checkbox (Yes/No)
   projectReport          String?  // File path for project report (nullable)
-
+ 
   userId                 String   @unique // One-to-one relation
   user                   User     @relation(fields: [userId], references: [user_id])
+  documentStatus         String
 }
 
 
 model QReport {
-    id                 String   @id @default(auto()) @map("_id") @db.ObjectId
+    id                 String   @id @default(uuid()) @map("_id")
     currentStage       String
     averageTurnover    Float
     currentRevenue     Float
@@ -134,13 +133,14 @@ model QReport {
     partnerships       String
     nextQuarterGoals   String
     userId             String   @unique
-    createdAt          DateTime @default(now())
+   
     user               User     @relation(fields: [userId], references: [user_id])
+    documentStatus         String
 }
 
 
 model AccelerationProgram {
-  id                       String   @id @default(auto()) @map("_id") @db.ObjectId
+  id                       String   @id @default(uuid()) @map("_id") 
   hostInstitute             String
   programName               String
   startDate                 DateTime
@@ -152,13 +152,15 @@ model AccelerationProgram {
   travelAccommodationCost   Float
   totalPersons              Int
   totalFee                  Float
+ 
   userId                    String   @unique // Unique userId from JWT
   user                      User     @relation(fields: [userId], references: [user_id]) // Relation to User
+  documentStatus         String
 
 }
 
 model MatchingLoan {
-  id                              String   @id @default(auto()) @map("_id") @db.ObjectId
+  id                              String   @id @default(uuid()) @map("_id") 
   fundRaised                      Float    // Total Amount of fund raised from recognized investors
   investorName                    String   // Name of recognized investors
   matchingGrantAmount              Float    // Amount required under Matching Grants
@@ -174,34 +176,38 @@ model MatchingLoan {
   utilizationPlanPath              String?  // File path for Fund Utilization Plan
   boardResolutionName              String?  // File name for Board Resolution
   boardResolutionPath              String?  // File path for Board Resolution
+
   user                             User     @relation(fields: [userId], references: [user_id])
   userId                           String   @unique // Foreign key to User
+  documentStatus         String
   
 }
 
 model IncubationApplication {
-  id                String   @id @default(auto()) @map("_id") @db.ObjectId
+  id                String   @id @default(uuid()) @map("_id") 
   userId            String   @unique// Relates to the User model
   incubationCenter  String   // Dropdown value for the selected Incubation Center
   status            String   // Status of the application
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+ 
   user              User     @relation(fields: [userId], references: [user_id])
+  documentStatus         String
 }
 
 
 model CoWorkingApplication {
-  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  id               String   @id @default(uuid()) @map("_id") 
   coworkingCenter  String
   seatNo           String
   status           String
+
   userId           String   @unique
   user             User     @relation(fields: [userId], references: [user_id])
+  documentStatus         String
 
 }
 
 model IPRReimbursement {
-  id                             String   @id @default(auto()) @map("_id") @db.ObjectId
+  id                             String   @id @default(uuid()) @map("_id") 
   iprType                         String
   iprCertificateFileName          String
   iprCertificateFilePath          String
@@ -211,6 +217,8 @@ model IPRReimbursement {
   consultancyFee                  String?
   consultancyInvoiceFileName      String?
   consultancyInvoiceFilePath      String?
+ 
   userId                          String   @unique
   user                            User     @relation(fields: [userId], references: [user_id])
+  documentStatus         String
 }

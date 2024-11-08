@@ -30,6 +30,7 @@ const applyForMatchingLoan = async (req, res) => {
       fundRaised: parseFloat(req.body.fundRaised),
       investorName: req.body.investorName,
       matchingGrantAmount: parseFloat(req.body.matchingGrantAmount),
+      documentStatus : "created"
       
     };
 
@@ -157,8 +158,45 @@ const getmatchingnById = async (req, res) => {
   }
 };
 
+const updateMatchingStatus = async (req, res) => {
+  const { id } = req.params;
+  const { documentStatus } = req.body;
+
+  if (!documentStatus) {
+    return res.status(400).json({ error: 'Document status is required' });
+  }
+
+  try {
+    const document = await prisma.matchingLoan.findUnique({
+      where: { id },
+    });
+
+    if (!document) {
+      return res.status(404).json({ error: 'Document not found' });
+    }
+
+    const updatedDocument = await prisma.matchingLoan.update({
+      where: { id },
+      data: { documentStatus },
+    });
+
+    res.status(200).json({
+      message: 'Document status updated successfully',
+      document: updatedDocument,
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      error: 'Failed to update document status',
+      details: error.message,
+    });
+  }
+};
+
 module.exports = {
   applyForMatchingLoan,
   getmatchingnById,
-  getAllmatchingWithUserDetails
+  getAllmatchingWithUserDetails,
+  updateMatchingStatus
 };

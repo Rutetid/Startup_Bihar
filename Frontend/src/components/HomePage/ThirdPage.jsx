@@ -1,9 +1,47 @@
-import React from 'react'
+import React, { useState } from 'react';
+import './ThirdPage.css';
 
 const ThirdPage = () => {
-  return (
-    <div>
-      <div id="product" className="bg-gray-50 py-24 sm:py-32">
+    const [activeTab, setActiveTab] = useState("notifications");
+
+    const notifications = [
+        { text: 'New funding opportunities available!', date: 'Nov 5, 2024', author: 'Admin' },
+        { text: 'Startup workshop scheduled for next month.', date: 'Oct 28, 2024', author: 'Admin' },
+        { text: 'Policy updates for startups announced.', date: 'Oct 15, 2024', author: 'Admin' },
+        { text: 'Startup workshop scheduled for next month.', date: 'Oct 28, 2024', author: 'Admin' },
+        { text: 'Policy updates for startups announced.', date: 'Oct 15, 2024', author: 'Admin' },
+        { text: 'Mentorship program applications now open.', date: 'Sep 30, 2024', author: 'Admin' },
+        { text: 'Mentorship program applications now open.', date: 'Sep 30, 2024', author: 'Admin' },
+        { text: 'Mentorship program applications now open.', date: 'Sep 30, 2024', author: 'Admin' },
+        { text: 'Mentorship program applications now open.', date: 'Sep 30, 2024', author: 'Admin' },
+        { text: 'Mentorship program applications now open.', date: 'Sep 30, 2024', author: 'Admin' },
+    ];
+
+    const appNotifications = [
+        { text: 'New app feature: real-time insights!', date: 'Nov 1, 2024', author: 'Admin' },
+        { text: 'Mobile app update available now.', date: 'Oct 22, 2024', author: 'Admin' },
+        { text: 'Mobile app update available now.', date: 'Oct 22, 2024', author: 'Admin' },
+        { text: 'Mobile app update available now.', date: 'Oct 22, 2024', author: 'Admin' },
+        { text: 'Mobile app update available now.', date: 'Oct 22, 2024', author: 'Admin' },
+        { text: 'Mobile app update available now.', date: 'Oct 22, 2024', author: 'Admin' },
+        { text: 'Mobile app update available now.', date: 'Oct 22, 2024', author: 'Admin' },
+        { text: 'Mobile app update available now.', date: 'Oct 22, 2024', author: 'Admin' },
+        { text: 'Mobile app update available now.', date: 'Oct 22, 2024', author: 'Admin' },
+    ];
+
+    const renderNotifications = (data) => {
+        return data.map((notification, index) => (
+            <div key={index} className="my-2 text-white">
+                <p className="text-sm">{notification.text}</p>
+                <p className="text-xs text-gray-400">{notification.date} by {notification.author}</p>
+            </div>
+        ));
+    };
+   
+
+    return (
+        <div>
+            <div id="product" className="coworking bg-gray-50 py-24 sm:py-32">
                 <div className="mx-auto max-w-2xl px-6 lg:max-w-7xl lg:px-8">
                     <h2 className="text-center text-base font-semibold text-indigo-600">
                         Transforming ideas into enterprises
@@ -101,28 +139,52 @@ const ThirdPage = () => {
                                     </p>
                                 </div>
                                 <div className="relative min-h-[30rem] w-full grow">
-                                    <div className="absolute bottom-0 left-10 right-0 top-10 overflow-hidden rounded-tl-xl bg-gray-900 shadow-2xl">
-                                        <div className="flex bg-gray-800/40 ring-1 ring-white/5">
-                                            <div className="-mb-px flex text-sm font-medium leading-6 text-gray-400">
-                                                <div className="border-b border-r border-b-white/20 border-r-white/10 bg-white/5 px-4 py-2 text-white">
-                                                    NotificationSetting.jsx
-                                                </div>
-                                                <div className="border-r border-gray-600/10 px-4 py-2">
-                                                    App.jsx
-                                                </div>
+                                    <div className="absolute bottom-0 left-10 right-0 top-1 overflow-hidden rounded-tl-xl bg-gray-900 shadow-2xl">
+                                        {/* Tab headers */}
+                                        <div className="flex bg-gray-800/40 ring-1 ring-white/5 z-10">
+                                            <div
+                                                className={`flex-1 text-center py-2 cursor-pointer ${activeTab === "notifications" ? "bg-indigo-600 text-white" : "bg-gray-700 text-gray-300"}`}
+                                                onClick={() => setActiveTab("notifications")}
+                                            >
+                                                Notifications
+                                            </div>
+                                            <div
+                                                className={`flex-1 text-center py-2 cursor-pointer ${activeTab === "appNotifications" ? "bg-indigo-600 text-white" : "bg-gray-700 text-gray-300"}`}
+                                                onClick={() => setActiveTab("appNotifications")}
+                                            >
+                                                App Notifications
                                             </div>
                                         </div>
-                                        <div className="px-6 pb-14 pt-6"></div>
+
+                                        {/* Scrollable Section */}
+                                        <div className="px-6 pb-14 pt-6 overflow-hidden">
+                                            <div
+                                                className={`notifications-scroll ${activeTab === "notifications" ? "show-notifications" : "show-app-notifications"}`}
+                                                style={{
+                                                    paddingTop: "2rem", // Ensure space between header and scroll area
+                                                    height: "calc(100% - 4rem)", // Account for the header's height
+                                                }}
+                                            >
+                                                {activeTab === "notifications"
+                                                    ? renderNotifications(notifications)
+                                                    : renderNotifications(appNotifications)}
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+
+
+
                             </div>
+
+
                             <div className="pointer-events-none absolute inset-px rounded-lg shadow ring-1 ring-black/5 max-lg:rounded-b-[2rem] lg:rounded-r-[2rem]"></div>
                         </div>
                     </div>
                 </div>
             </div>
-    </div>
-  )
+        </div>
+    )
 }
 
 export default ThirdPage

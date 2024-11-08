@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Startupdetails from '../startupdetails';
 import './LeftBar.css';
+import menu from '../../../../assets/menu.png';
 
 const LeftBar = () => {
-    const [isOpen, setIsOpen] = useState(false); // State to manage sidebar visibility
+    const [isOpen, setIsOpen] = useState(false); // Sidebar visibility state
     const navigate = useNavigate();
+    const sidebarRef = useRef(null);
 
     const handleLogout = () => {
         localStorage.removeItem('token'); // Clear the authentication token
@@ -16,15 +18,36 @@ const LeftBar = () => {
         setIsOpen(!isOpen); // Toggle sidebar visibility
     };
 
+    // Close sidebar when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
+                setIsOpen(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
     return (
         <>
             {/* Toggle Button for Smaller Screens */}
-            <button onClick={toggleSidebar} className="md:hidden p-4 bg-gray-200 rounded">
-                {isOpen ? 'Close Menu' : 'Open Menu'}
+            <button 
+                onClick={toggleSidebar} 
+                className="absolute top-4 left-4 z-50 md:hidden p-2 bg-gray-200 rounded"
+            >
+                <img src={menu} alt="menu icon" className="h-6 w-6"/>
             </button>
 
-            {/* Sidebar */}
-            <div className={`bg-[#1c2437] text-[#f5f7f6] h-screen overflow-y-scroll overflow-x-hidden flex flex-col justify-between p-4 ${isOpen ? 'block' : 'hidden'} md:block`}>
+            {/* Sidebar with smooth animation */}
+            <div
+                ref={sidebarRef}
+                className={`bg-[#1c2437] text-[#f5f7f6] h-screen overflow-y-scroll overflow-x-hidden flex flex-col justify-between p-4 
+                    ${isOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 transition-transform duration-300 ease-in-out fixed md:static`}
+                style={{
+                    width: isOpen ? (window.innerWidth < 768 ? '60%' : window.innerWidth < 1024 ? '40%' : '20%') : '20%',
+                }}
+            >
                 {/* Logo Section */}
                 <div className="flex items-center space-x-2 mb-8">
                     <img
@@ -51,13 +74,13 @@ const LeftBar = () => {
                     </Link>
                     <Link to="/" className="flex items-center justify-between px-3 py-2 rounded-md hover:bg-gray-500">
                         <span className="flex items-center space-x-2">
-                            <i className="fas fa-chart-bar"></i>
+                            <i className="fas fa-chart-barr"></i>
                             <span>SSU</span>
                         </span>
                     </Link>
                     <Link to="/matchingloan" className="flex items-center justify-between px-3 py-2 rounded-md hover:bg-gray-500">
                         <span className="flex items-center space-x-2">
-                            <i className="fas fa-chart-bar"></i>
+                            <i className="fas fa-chart-barrr"></i>
                             <span>Matching Loan</span>
                         </span>
                     </Link>
@@ -73,7 +96,7 @@ const LeftBar = () => {
                         <span className="ml-2">Incubation</span>
                     </Link>
                     <Link to="/seedfunded" className="flex items-center px-3 py-2 hover:bg-gray-500 rounded-md">
-                        <i className="fas fa-lightbulb"></i>
+                        <i className="fas fa-lightbulbb"></i>
                         <span className="ml-2">SeedFund</span>
                     </Link>
                     <Link to="/qpr" className="flex items-center px-3 py-2 hover:bg-gray-500 rounded-md">
@@ -98,28 +121,26 @@ const LeftBar = () => {
                 <div className="flex flex-col space-y-4 mb-8">
                     <span className="text-sm font-semibold">Group</span>
                     <Link to="/StartupForm" className="flex items-center px-3 py-2 hover:bg-gray-500 rounded-md">
-                        <i className="fas fa-rocket"></i>
+                        <i className="fas fa-rockett"></i>
                         <span className="ml-2">First Tranche</span>
                     </Link>
                     <Link to="/SecondTrance" className="flex items-center px-3 py-2 hover:bg-gray-500 rounded-md">
-                        <i className="fas fa-rocket"></i>
+                        <i className="fas fa-rockettt"></i>
                         <span className="ml-2">Second Tranche</span>
                     </Link>
-
                 </div>
                 <hr className="border-t border-gray-600 my-2 " />
                 <div>
                     <Link to="/" className="flex items-center justify-between px-3 py-4 rounded-md hover:bg-gray-500">
                         <span className="flex items-center space-x-2">
-                            <i className="fas fa-chart-bar"></i>
+                            <i className="fas fa-chart-barrrrr"></i>
                             <span>Help</span>
                         </span>
                     </Link>
-                    <button onClick={handleLogout} className="flex items-center px-3 py-2 hover:bg-gray-500 rounded-md">
-                        <i className="fas fa-sign-out-alt"></i>
+                    <button onClick={handleLogout} className="flex items-center justify-between px-3 py-4 hover:bg-gray-500 rounded-md">
+                        <i className="fas fa-sign-out-altttt"></i>
                         <span className="ml-2">Logout</span>
                     </button>
-
                 </div>
             </div>
         </>

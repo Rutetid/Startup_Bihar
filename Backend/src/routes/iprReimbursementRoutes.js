@@ -1,7 +1,7 @@
 
 
 const express = require('express');
-const { applyForIPRReimbursement,getIprnById,getAllIprnWithUserDetails } = require('../controllers/iprReimbursementController');
+const { applyForIPRReimbursement,getIprnById,getAllIprnWithUserDetails,updateiprStatus } = require('../controllers/iprReimbursementController');
 const upload = require('../config/multerconfig'); // Use the multer config for file uploads
 const { authenticateUser } = require('../middlewares/authenticateUser'); 
 const { authenticateAdmin } = require('../middlewares/authenticateAdmin'); 
@@ -20,5 +20,10 @@ router.get('/v1/:id',authenticateAdmin, getIprnById);
 
 router.get('/v2',authenticateAdmin, getAllIprnWithUserDetails);
 
+router.patch(
+  '/u1/:id',authenticateAdmin,
+  updateiprStatus
+
+)
 
 module.exports = router;
