@@ -31,9 +31,9 @@ const StartupProfile = ({ onSelect }) => {
 		};
 
 		fetchData();
-		console.log(sdata);
+		
 	}, []);
-
+console.log(sdata);
 	return (
 		<div
 			className="w-3/12 bg-slate-200 h-screen overflow-y-auto"

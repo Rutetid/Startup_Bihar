@@ -4,6 +4,8 @@ import axios from "axios";
 
 const ProfileDetails = ({ id }) => {
 	const [data, setData] = useState([]);
+	const [isCommentVisible, setIsCommentVisible] = useState(false);
+	const token = localStorage.getItem("token");
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -11,6 +13,13 @@ const ProfileDetails = ({ id }) => {
 				try {
 					const response = await axios.get(
 						`http://localhost:3000/api/StartupProfile/v1/${id}`,
+
+						{
+							headers: {
+								"Content-Type": "application/json",
+								Authorization: `${token}`,
+							},
+						},
 					);
 					setData(response.data);
 				} catch (error) {
@@ -22,6 +31,47 @@ const ProfileDetails = ({ id }) => {
 		fetchData();
 	}, [id]);
 	console.log(data);
+
+	const handleReject = async () => {
+		try {
+			const response = await axios.put(
+				`http://localhost:3000/api/StartupProfile/v2/${id}`,
+				{
+
+					documentStatus: "Rejected",
+				},
+				{
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${token}`,
+					},
+				},
+			);
+			console.log("Response:", response.data);
+		} catch (error) {
+			console.error("Error updating data:", error);
+		}
+	};
+
+	const handleAccept = async () => {
+		try {
+			const response = await axios.put(
+				`http://localhost:3000/api/StartupProfile/v2/${id}`,
+				{
+					documentStatus: "Accepted",
+				},
+				{
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${token}`,
+					},
+				},
+			);
+			console.log("Response:", response.data);
+		} catch (error) {
+			console.error("Error updating data:", error);
+		}
+	};
 
 	return (
 		<div
@@ -217,11 +267,14 @@ const ProfileDetails = ({ id }) => {
 														href="https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" // Ensure this path points to the correct relative URL of the PDF file
 														download
 														className="font-medium text-indigo-600 hover:text-indigo-900"
-													>		
+													>
 														Download
 													</a>
 												</div>
-												<div className="ml-4 shrink-0">
+												<div
+													className="ml-4 shrink-0"
+													onClick={() => setIsCommentVisible(true)}
+												>
 													<a
 														href="#"
 														className="font-medium text-indigo-600 hover:text-indigo-900"
@@ -237,21 +290,50 @@ const ProfileDetails = ({ id }) => {
 						</tr>
 					</tbody>
 				</table>
+
 				<div className="flex items-center justify-end gap-x-2 pr-4 py-3 ">
 					<button
 						type="submit"
 						className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+						onClick={handleAccept}
 					>
 						Accept
 					</button>
 					<button
 						type="button"
 						className="rounded-md bg-gray-800 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+						onClick={handleReject}
 					>
 						Reject
 					</button>
 				</div>
 			</div>
+
+			{isCommentVisible && (
+				<div className="absolute top-64 w-3/12 bg-white rounded-md shadow-xl p-4 z-10 left-[37%] ">
+					<h2 className="text-lg font-semibold">Add Comment</h2>
+					<textarea
+						onChange={(e) => setComment(e.target.value)}
+						className="mt-2  border rounded-md w-full h-20 pl-2 pt-2"
+					/>
+					<div className="flex justify-end gap-x-2 mt-4">
+						<button
+							type="button"
+							className="rounded-md bg-gray-800 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-500"
+							onClick={() => setIsCommentVisible(false)}
+						>
+							Cancel
+						</button>
+						<button
+							type="button"
+							className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500"
+							onClick={handleReject}
+						>
+							Reject
+						</button>
+					</div>
+				</div>
+			)}
 		</div>
 	);
 };
