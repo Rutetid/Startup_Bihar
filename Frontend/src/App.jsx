@@ -26,7 +26,6 @@ import SecondTrancheAdmin from './components/Profile/AdminProfile/SecondTrancheA
 import GrievanceContainer from './components/Profile/UserProfile/grievance-container';
 import Grievance from './components/UserForm/Grievance';
 import Incubation from './components/UserForm/Incubation';
-import AdminMainProfile from './components/Admin_Profile_Abhishek/adminMainProfile';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -36,45 +35,51 @@ const App = () => {
   };
 
   return (
-			<Router>
-				<Routes>
-					<Route path="/login" element={<LoginCopy onLogin={handleLogin} />} />
-					<Route path="/adminmainprofile" element={<AdminMainProfile />} />
-					{/* Wrap all the routes that need LeftBar inside LayoutWithLeftBar */}
-					<Route element={<LeftBarfix isLoggedIn={isLoggedIn} />}>
-						<Route path="/UserProfile" element={<UserProfile />} />
-						<Route path="/startupform" element={<Startupform />} />
-						<Route path="/upload" element={<Upload />} />
-						<Route path="/secondtrance" element={<SecondTrance />} />
-						<Route path="/seedfunded" element={<SeedFunded />} />
-						<Route path="/postseed" element={<PostSeed />} />
-						<Route path="/profile" element={<Profile />} />
+    <Router>
+      <Routes>
+        <Route path="/login" element={<LoginCopy onLogin={handleLogin} />} />
 
-						<Route path="/Matchingloan" element={<Matchingloan />} />
-						<Route path="/Reimbursement" element={<Reimbursement />} />
-						<Route path="/coworking" element={<Coworking />} />
-						<Route path="/acceleration" element={<Acceleration />} />
-						<Route path="/qpr" element={<Qpr />} />
-						<Route path="/grievance" element={<Grievance />} />
-						<Route path="/incubation" element={<Incubation />} />
-					</Route>
-					{/*Admin Route with fixNavbar hello*/}
-					<Route element={<Navbarfix isLoggedIn={isLoggedIn} />}>
-						<Route path="/startupProfile" element={<AdminForm />} />
+        {/* Wrap all the routes that need LeftBar inside LayoutWithLeftBar */}
+        <Route element={<LeftBarfix isLoggedIn={isLoggedIn} />}>
+          <Route path="/UserProfile" element={<UserProfile />} />
+          <Route path="/startupform" element={<Startupform />} />
+          <Route path="/upload" element={<Upload />} />
+          <Route path="/secondtrance" element={<SecondTrance />} />
+          <Route path="/seedfunded" element={<SeedFunded />} />
+          <Route path="/postseed" element={<PostSeed />} />
+          <Route path="/profile" element={<Profile />} />
 
-						<Route path="/seedFund" element={<SeedAdminForm />} />
+          <Route path="/Matchingloan" element={<Matchingloan />} />
+          <Route path="/Reimbursement" element={<Reimbursement />} />
+          <Route path="/coworking" element={<Coworking />} />
+          <Route path="/acceleration" element={<Acceleration />} />
+          <Route path="/qpr" element={<Qpr />} />
+          <Route path="/grievance" element={<Grievance />} />
+          <Route path="/incubation" element={<Incubation />} />
 
-						<Route path="/secondTranche" element={<SecondTrancheAdmin />} />
-						<Route path="/accelerationAdmin" element={<accelerationAdmin />} />
-					</Route>
+        </Route>
+        {/*Admin Route with fixNavbar hello*/}
+        <Route element={<Navbarfix isLoggedIn={isLoggedIn} />}>
 
-					{/* Routes without LeftBar */}
-					<Route path="/" element={<HomePage />} />
-					<Route path="/adminprofile" element={<AdminApp />} />
-					<Route path="/TopNavbar" element={<TopNavbar />} />
-				</Routes>
-			</Router>
-		);
+          <Route path="/startupProfile" element={<AdminForm />} />
+
+          <Route path="/seedFund" element={<SeedAdminForm />} />
+
+          <Route path="/secondTranche" element={<SecondTrancheAdmin />} />
+          <Route
+            path="/accelerationAdmin"
+            element={<accelerationAdmin />}
+          />
+
+        </Route>
+
+        {/* Routes without LeftBar */}
+        <Route path="/" element={<HomePage />} />
+        <Route path="/adminprofile" element={<AdminApp />} />
+        <Route path="/TopNavbar" element={<TopNavbar />} />
+      </Routes>
+    </Router>
+  );
 };
 
 export default App;
