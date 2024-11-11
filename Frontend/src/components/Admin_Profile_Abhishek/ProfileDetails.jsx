@@ -34,7 +34,7 @@ const ProfileDetails = ({ id }) => {
 
 	const handleReject = async () => {
 		try {
-			const response = await axios.put(
+			const response = await axios.patch(
 				`http://localhost:3000/api/StartupProfile/v2/${id}`,
 				{
 
@@ -55,8 +55,8 @@ const ProfileDetails = ({ id }) => {
 
 	const handleAccept = async () => {
 		try {
-			const response = await axios.put(
-				`http://localhost:3000/api/StartupProfile/v2/${id}`,
+			const response = await axios.patch(
+				`http://localhost:3000/api/StartupProfile/u1/${id}`,
 				{
 					documentStatus: "Accepted",
 				},
@@ -312,6 +312,7 @@ const ProfileDetails = ({ id }) => {
 			{isCommentVisible && (
 				<div className="absolute top-64 w-3/12 bg-white rounded-md shadow-xl p-4 z-10 left-[37%] ">
 					<h2 className="text-lg font-semibold">Add Comment</h2>
+					<h2>Reason for Rejecting File: </h2>
 					<textarea
 						onChange={(e) => setComment(e.target.value)}
 						className="mt-2  border rounded-md w-full h-20 pl-2 pt-2"

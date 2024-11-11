@@ -1,8 +1,9 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import SecondTrancheModule from "./SecondTrancheModule";
 
-const SeedFundModuleDetails = ({ regKey }) => {
+const SecondTrancheModuleDetails = ({ regKey }) => {
 	const [data, setData] = useState([]);
 
 	useEffect(() => {
@@ -56,4 +57,4 @@ const SeedFundModuleDetails = ({ regKey }) => {
 	);
 };
 
-export default SeedFundModuleDetails;
+export default SecondTrancheModuleDetails;

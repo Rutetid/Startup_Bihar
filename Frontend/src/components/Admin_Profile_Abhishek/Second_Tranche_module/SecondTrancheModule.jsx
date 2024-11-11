@@ -12,17 +12,23 @@ const SecondTrancheModule = ({ onSelect }) => {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
+				console.log(token);
 				const response = await axios.get(
 					"http://localhost:3000/api/second-tranche/v2",
+					{
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: `${token}`,
+						},
+					},
 				);
-				setSdata(response.data.data);
+				setSdata(response.data.documents);
 			} catch (error) {
 				console.error("Error fetching data:", error);
 			}
 		};
 
 		fetchData();
-		console.log(sdata);
 	}, []);
 
 	return (

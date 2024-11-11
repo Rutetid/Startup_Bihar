@@ -48,6 +48,11 @@ console.log(sdata);
 					key={item.id}
 					className="mx-5 bg-white rounded-lg mt-3 hover:shadow-lg cursor-pointer"
 					onClick={() => handleClick(item.id)}
+					onKeyUp={(e) => {
+						if (e.key === 'Enter' || e.key === ' ') {
+							handleClick(item.id);
+						}
+					}}
 				>
 					<div className="flex items-center py-5 px-5 ">
 						<div>

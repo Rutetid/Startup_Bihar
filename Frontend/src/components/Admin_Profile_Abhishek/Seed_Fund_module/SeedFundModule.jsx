@@ -12,7 +12,16 @@ const SeedFundModule = ({ onSelect }) => {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const response = await axios.get("http://localhost:3000/api/seed-fund/v2");
+				console.log(token);
+				const response = await axios.get(
+					"http://localhost:3000/api/seed-fund/v2",
+					{
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: `${token}`,
+						},
+					},
+				);
 				setSdata(response.data.documents);
 			} catch (error) {
 				console.error("Error fetching data:", error);
@@ -20,7 +29,6 @@ const SeedFundModule = ({ onSelect }) => {
 		};
 
 		fetchData();
-		console.log(sdata);
 	}, []);
 
 	return (
@@ -31,12 +39,17 @@ const SeedFundModule = ({ onSelect }) => {
 				scrollbarWidth: "none",
 			}}
 		>
-			<h1 className="pl-5 pt-8 text-2xl pb-4">Seed Fund Module</h1>
+			<h1 className="pl-5 pt-8 text-2xl pb-4">Seed Fund</h1>
 			{sdata.map((item, index) => (
 				<div
 					key={item.id}
 					className="mx-5 bg-white rounded-lg mt-3 hover:shadow-lg cursor-pointer"
 					onClick={() => handleClick(item.id)}
+					onKeyUp={(e) => {
+						if (e.key === "Enter" || e.key === " ") {
+							handleClick(item.id);
+						}
+					}}
 				>
 					<div className="flex items-center py-5 px-5 ">
 						<div>
