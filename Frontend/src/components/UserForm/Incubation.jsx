@@ -21,7 +21,7 @@ const Incubation = () => {
               }
             }
             try {
-              const response = await axios.post('http://localhost:3000/api/incubation', formData, {
+              const response = await axios.post('https://startup-bihar1.onrender.com/api/incubation', formData, {
                 headers: {
                   'Content-Type': 'multipart/form-data',
                   Authorization: `${localStorage.getItem('token')}`, // Assuming you store the token in localStorage

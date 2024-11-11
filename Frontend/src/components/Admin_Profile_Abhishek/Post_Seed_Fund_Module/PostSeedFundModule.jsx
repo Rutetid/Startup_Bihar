@@ -13,7 +13,7 @@ const PostSeedFundModule = ({ onSelect }) => {
 		const fetchData = async () => {
 			try {
 				const response = await axios.get(
-					"http://localhost:3000/api/StartupProfile/v2",
+					"https://startup-bihar1.onrender.com/api/StartupProfile/v2",
 				);
 				setSdata(response.data.documents);
 			} catch (error) {

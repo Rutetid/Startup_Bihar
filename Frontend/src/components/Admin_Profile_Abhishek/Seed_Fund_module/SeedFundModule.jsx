@@ -22,6 +22,7 @@ const SeedFundModule = ({ onSelect }) => {
 						},
 					},
 				);
+				const response = await axios.get("https://startup-bihar1.onrender.com/api/seed-fund/v2");
 				setSdata(response.data.documents);
 			} catch (error) {
 				console.error("Error fetching data:", error);

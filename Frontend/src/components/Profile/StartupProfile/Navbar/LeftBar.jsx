@@ -12,6 +12,7 @@ const menuItems = [
     { name: 'Notification', panel: 'notification', iconClass: 'fas fa-bell', notificationCount: 21 },
     { name: 'Incubation', panel: 'Incubation', iconClass: 'fas fa-seedling' },
     { name: 'SeedFund', panel: 'SeedFund', iconClass: 'fas fa-lightbulb' },
+    { name: 'PostSeed', panel: 'PostSeed', iconClass: 'fas fa-lightbulb' },
     { name: 'QPR', panel: 'Qpr', iconClass: 'fas fa-file-alt' },
     { name: 'Reimbursement', panel: 'Reimbursement', iconClass: 'fas fa-dollar-sign' },
     { name: 'Coworking', panel: 'Coworking', iconClass: 'fas fa-building' },
@@ -116,7 +117,7 @@ const LeftBar = ({ changePanel }) => {
                     <span className="text-sm font-semibold">Group</span>
                     <button
                         onClick={() => {
-                            checkDocumentStatus('http://localhost:3000/api/StartupProfile/user-document');
+                            checkDocumentStatus('https://startup-bihar1.onrender.com/api/StartupProfile/user-document');
                             changePanel('StartupForm');
                             setSelectedItem('StartupForm');
                         }}

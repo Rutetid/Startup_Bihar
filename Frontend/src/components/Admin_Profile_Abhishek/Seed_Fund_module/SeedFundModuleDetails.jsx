@@ -7,22 +7,15 @@ const SeedFundModuleDetails = ({ regKey }) => {
 
 	useEffect(() => {
 		const fetchData = async () => {
-			if (id) {
-				try {
-					const response = await axios.get(
-						`http://localhost:3000/api/StartupProfile/v1/${id}`,
-
-						{
-							headers: {
-								"Content-Type": "application/json",
-								Authorization: `${token}`,
-							},
-						},
-					);
-					setData(response.data);
-				} catch (error) {
-					console.error("Error fetching data:", error);
-				}
+			try {
+				const response = await axios({
+					method: "get",
+					url: "http://localhost:3000/api/startupProfile/startuplist",
+					data: { user_id: "Pratush" }, // Pass data in the body (non-standard)
+				});
+				setData(response.data);
+			} catch (error) {
+				console.error("Error fetching data:", error);
 			}
 		};
 

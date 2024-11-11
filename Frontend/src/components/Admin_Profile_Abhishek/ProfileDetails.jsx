@@ -12,7 +12,7 @@ const ProfileDetails = ({ id }) => {
 			if (id) {
 				try {
 					const response = await axios.get(
-						`http://localhost:3000/api/StartupProfile/v1/${id}`,
+						`https://startup-bihar1.onrender.com/api/StartupProfile/v1/${id}`,
 
 						{
 							headers: {
@@ -36,6 +36,8 @@ const ProfileDetails = ({ id }) => {
 		try {
 			const response = await axios.patch(
 				`http://localhost:3000/api/StartupProfile/v2/${id}`,
+			const response = await axios.put(
+				`https://startup-bihar1.onrender.com/api/StartupProfile/v2/${id}`,
 				{
 
 					documentStatus: "Rejected",
@@ -57,6 +59,8 @@ const ProfileDetails = ({ id }) => {
 		try {
 			const response = await axios.patch(
 				`http://localhost:3000/api/StartupProfile/u1/${id}`,
+			const response = await axios.put(
+				`https://startup-bihar1.onrender.com/api/StartupProfile/v2/${id}`,
 				{
 					documentStatus: "Accepted",
 				},
