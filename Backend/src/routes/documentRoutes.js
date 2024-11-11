@@ -1,9 +1,6 @@
-
-
-
 const express = require('express');
 
-const { uploadDocuments,getDocumentById,getAllDocumentsWithUserDetails,updateDocumentStatus} = require('../controllers/documentController');
+const { uploadDocuments,getDocumentById,getAllDocumentsWithUserDetails,updateDocumentStatus,getUserDocument} = require('../controllers/documentController');
 const { authenticateUser } = require('../middlewares/authenticateUser'); // Import JWT middleware
 const { authenticateAdmin } = require('../middlewares/authenticateAdmin');
 const upload = require('../config/multerconfig');
@@ -32,5 +29,11 @@ router.patch(
   '/u1/:id',authenticateAdmin,
    updateDocumentStatus
 )
+
+router.get(
+  '/user-document',
+  authenticateUser,  // Ensure the user is authenticated
+  getUserDocument    // Controller function to get the user's document
+);
 
 module.exports = router;

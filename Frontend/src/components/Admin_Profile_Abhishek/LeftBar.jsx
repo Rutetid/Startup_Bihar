@@ -1,6 +1,15 @@
 import React from "react";
+import { Link, useNavigate } from 'react-router-dom';
 
-const LeftBar = ({changePanel}) => {
+
+const LeftBar = ({ changePanel }) => {
+	const navigate = useNavigate();
+	const handleLogout = () => {
+        if (window.confirm("Are you sure you want to log out?")) {
+            localStorage.removeItem('token');
+            navigate('/login');
+        }
+    };
 	return (
 		<div className="w-1/4 bg-gray-900 h-screen overflow-y-auto">
 			<div className="flex items-center pt-12 pl-8 gap-4">
@@ -137,6 +146,10 @@ const LeftBar = ({changePanel}) => {
 						Grievance Redressal System
 					</div>
 				</div>
+				<button onClick={handleLogout} className="flex items-center justify-between px-3 py-4 hover:bg-gray-500 rounded-md">
+					<i className="fas fa-sign-out-alt"></i>
+					<span className="ml-2">Logout</span>
+				</button>
 			</div>
 		</div>
 	);

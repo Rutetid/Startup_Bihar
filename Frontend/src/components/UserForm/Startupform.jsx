@@ -3,7 +3,7 @@ import { useFormik } from 'formik';
 import axios from 'axios';
 import Upload from './Upload';
 
-const DocumentUpload = () => {
+const StartupForm = () => {
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   
@@ -292,4 +292,4 @@ const DocumentUpload = () => {
   );
 };
 
-export default DocumentUpload;
+export default StartupForm;
