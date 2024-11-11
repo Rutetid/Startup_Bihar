@@ -10,7 +10,7 @@ const ProfileDetails = ({ regKey }) => {
 			try {
 				const response = await axios({
 					method: "get",
-					url: "http://localhost:3000/api/startupProfile/startuplist",
+					url: "https://startup-bihar1.onrender.com/api/startupProfile/startuplist",
 					data: { user_id: "Pratush" }, // Pass data in the body (non-standard)
 				});
 				setData(response.data);

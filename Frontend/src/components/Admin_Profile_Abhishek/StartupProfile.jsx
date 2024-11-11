@@ -16,7 +16,7 @@ const StartupProfile = ({ onSelect }) => {
 			try {
 				console.log(token);
 				const response = await axios.get(
-					"http://localhost:3000/api/StartupProfile/v2",
+					"https://startup-bihar1.onrender.com/api/StartupProfile/v2",
 					{
 						headers: {
 							"Content-Type" : "application/json",
@@ -53,7 +53,7 @@ console.log(sdata);
 						<div>
 							<img
 								src={item.logoPath}
-								alt="avatar"
+								alt="photo"
 								className="w-12 h-12 rounded-full"
 							/>
 						</div>

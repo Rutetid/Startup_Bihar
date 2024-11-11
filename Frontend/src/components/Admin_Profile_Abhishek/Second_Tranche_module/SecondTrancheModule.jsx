@@ -13,7 +13,7 @@ const SecondTrancheModule = ({ onSelect }) => {
 		const fetchData = async () => {
 			try {
 				const response = await axios.get(
-					"http://localhost:3000/api/second-tranche/v2",
+					"https://startup-bihar1.onrender.com/api/second-tranche/v2",
 				);
 				setSdata(response.data.data);
 			} catch (error) {

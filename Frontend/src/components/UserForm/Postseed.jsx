@@ -62,7 +62,7 @@ const PostSeed = () => {
       }
 
       try {
-        const response = await axios.post('http://localhost:3000/api/post-seed', formData, {
+        const response = await axios.post('https://startup-bihar1.onrender.com/api/post-seed', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
             Authorization:`${localStorage.getItem('token')}`,

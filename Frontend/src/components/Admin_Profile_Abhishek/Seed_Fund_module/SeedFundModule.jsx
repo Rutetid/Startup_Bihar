@@ -12,7 +12,7 @@ const SeedFundModule = ({ onSelect }) => {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const response = await axios.get("http://localhost:3000/api/seed-fund/v2");
+				const response = await axios.get("https://startup-bihar1.onrender.com/api/seed-fund/v2");
 				setSdata(response.data.documents);
 			} catch (error) {
 				console.error("Error fetching data:", error);
