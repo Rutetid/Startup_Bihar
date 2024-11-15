@@ -9,7 +9,7 @@ const MentorsList = ({ onProfileClick }) => {
 		const fetchData = async () => {
 			try {
 				const response = await axios.get(
-					"https://startup-bihar1.onrender.com/api/startupProfile/list",
+					"http://localhost:3000/api/startupProfile/list",
 				);
 				setSdata(response.data.documents);
 			} catch (error) {
@@ -55,4 +55,4 @@ const MentorsList = ({ onProfileClick }) => {
 	);
 };
 
-export default MentorsList
+export default MentorsList;

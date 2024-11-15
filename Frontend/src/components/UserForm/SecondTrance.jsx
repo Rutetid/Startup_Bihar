@@ -40,20 +40,20 @@ const SecondTrance = () => {
       });
 
       try {
-        const response = await fetch('https://startup-bihar1.onrender.com/api/second-tranche', {
-          method: 'POST',
-          headers: {
-            Authorization: `${localStorage.getItem('token')}`, // Adjust according to your token storage
-          },
-          body: formData,
-        });
+        const response = await fetch("http://localhost:3000/api/second-tranche", {
+									method: "POST",
+									headers: {
+										Authorization: `${localStorage.getItem("token")}`, // Adjust according to your token storage
+									},
+									body: formData,
+								});
 
         const data = await response.json();
         if (response.ok) {
           alert('Form submitted successfully!');
           console.log(data);
         } else {
-          alert('Error: ' + data.error);
+          alert(`Error: ${data.error}`);
         }
       } catch (error) {
         console.error('Error submitting form:', error);
@@ -114,7 +114,7 @@ const SecondTrance = () => {
         </form>
 
         {/* Right Form (Optional, if needed) */}
-        <form onSubmit={handleSubmit} className="w-1/2 p-8 mt-11 rounded-lg">
+        <form onSubmit={handleSubmit} className="w-1/2 p-8 mt-11 rounded-lg pt-10">
           {/* Bank Statement Field */}
           <div className="mb-6">
             <Upload 
@@ -125,7 +125,7 @@ const SecondTrance = () => {
           </div>
 
           {/* Expenditure Invoice Field */}
-          <div className="mb-6">
+          <div className="mb-6 pt-1">
             <Upload 
               label="Upload Expenditure Invoice"
               name="expenditureInvoice"
@@ -134,7 +134,7 @@ const SecondTrance = () => {
           </div>
 
           {/* Geo-tagged Photos Field */}
-          <div className="mb-6">
+          <div className="mb-6 pt-6">
             <Upload 
               label="Upload geo-tagged photos of your offices/ units"
               name="geoTaggedPhotos"
@@ -144,7 +144,7 @@ const SecondTrance = () => {
         </form>
       </div>
       {/* Submit Button */}
-      <button onClick={handleSubmit} className="mt-4 px-4 py-2 text-sm font-semibold rounded-lg bg-blue-500 text-white hover:bg-blue-600">
+      <button type="button" onClick={handleSubmit} className="mt-4 px-4 py-2 text-sm font-semibold rounded-lg bg-blue-500 text-white hover:bg-blue-600">
         Submit
       </button>
     </div>

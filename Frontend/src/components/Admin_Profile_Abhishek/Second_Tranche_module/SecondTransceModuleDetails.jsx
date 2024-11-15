@@ -42,14 +42,32 @@ const SecondTrancheModuleDetails = ({ regKey }) => {
 			<div className="px-8 py-5">
 				<table className="min-w-full bg-white">
 					<tbody>
-						{Object.entries(data).map(([key, value], index) => (
-							<tr key={index} className="">
-								<td className="py-4 px-4 border-b border-l border-t">{key}</td>
-								<td className="py-4 px-4 border-b border-l border-t border-r w-[35vw]">
-									{value}
-								</td>
-							</tr>
-						))}
+						<tr>
+							<td className="py-4 px-4 border">Company Name</td>
+							<td className="py-4 px-4 border">{data.companyName}</td>
+						</tr>
+						<tr>
+							<td className="py-4 px-4 border">
+								C.A  certified utilization certificate
+							</td>
+							<td className="py-4 px-4 border">
+								{data.cancelChequeOrPassbook && (
+									<div>
+										<a
+											href={`/${data.cancelChequeOrPassbook}`}
+											target="_blank"
+											rel="noopener noreferrer"
+										>
+											View
+										</a>{" "}
+										|{" "}
+										<a href={`/${data.cancelChequeOrPassbook}`} download>
+											Download
+										</a>
+									</div>
+								)}
+							</td>
+						</tr>
 					</tbody>
 				</table>
 			</div>

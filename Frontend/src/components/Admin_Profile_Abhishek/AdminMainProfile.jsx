@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Navbar from "../Navbar/Navbar";
 import LeftBar from "./LeftBar";
 import StartupProfile from "./StartupProfile";
@@ -16,76 +16,107 @@ import StartupList from "./Startup_List/StartupList";
 import DataMining from "./Data_Mining/DataMining";
 import MentorsList from "./Mentors_List/MentorsList.jsx";
 import GrievanceRedressalSystem from "./Grievance_Redressal_System/GrievanceRedressalSystem.jsx";
+import SeedfundModuleDetails from "./Seed_Fund_module/SeedFundModuleDetails.jsx";
 
-import { useState } from "react";
+const AdminMainProfile = () => {
+	const [activePage, setActivePage] = useState("StartupProfile"); // Controls second section
+	const [selectedId, setSelectedId] = useState(""); // Controls selected ID for details
+	const [detailsView, setDetailsView] = useState(false); // Controls if third section is displayed
 
-const adminMainProfile = () => {
-
-	const [activePage , setActivePage] = useState("StartupProfile");
-	const [selectedId, setSelectedId] = useState("");
-
-	function handlePageChange(){
-		switch(activePage){
+	// Handles the main content section (second section) based on `activePage`
+	function handlePageChange() {
+		switch (activePage) {
 			case "StartupProfile":
-				return <StartupProfile onSelect={setSelectedId} />;
-			
+				return <StartupProfile onSelect={handleSelect} />;
+
 			case "SeedFundModule":
-				return <SeedFundModule />
+				return <SeedFundModule onSelect={handleSelect} />;
 
 			case "SecondTrancheModule":
-				return <SecondTrancheModule />
+				return <SecondTrancheModule />;
 
 			case "PostSeedFundModule":
-				return <PostSeedFundModule />
+				return <PostSeedFundModule />;
 
 			case "QPRModule":
-				return <QPRModule />
+				return <QPRModule />;
 
 			case "MatchingLoan":
-				return <MatchingLoan />
+				return <MatchingLoan />;
 
 			case "IncubationModule":
-				return <IncubationModule />
+				return <IncubationModule />;
 
 			case "AccelerationProgrammeModule":
-				return <AccelerationProgrammeModule />
+				return <AccelerationProgrammeModule />;
 
 			case "IPRReimbursementModule":
-				return <IPRReimbursementModule />
+				return <IPRReimbursementModule />;
 
 			case "CoworkingModule":
-				return <CoworkingModule />
+				return <CoworkingModule />;
 
 			case "StartupList":
-				return <StartupList />
+				return <StartupList />;
 
 			case "DataMining":
-				return <DataMining />
+				return <DataMining />;
 
 			case "MentorsList":
-				return <MentorsList />
+				return <MentorsList />;
 
 			case "GrievanceRedressalSystem":
-				return <GrievanceRedressalSystem />
-				
+				return <GrievanceRedressalSystem />;
+
 			default:
-				return <StartupProfile />
+				return <StartupProfile onSelect={handleSelect} />;
 		}
 	}
 
+	// Handles changes in the first section (left bar menu)
 	const changePanel = (newPanel) => {
 		setActivePage(newPanel);
-	}
+		setDetailsView(false); // Reset to second section when changing main module
+	};
 
+	// Handles selection within the second section (when clicking on an item to view details)
+	const handleSelect = (id) => {
+		setSelectedId(id);
+		setDetailsView(true); // Show third section when an item is selected
+	};
+	const renderDetailsSection = () => {
+		if (!detailsView)
+			return (
+				<div className="flex items-center justify-center h-full">
+					<h1>Select an item to view details</h1>
+				</div>
+			);
+
+		switch (activePage) {
+			case "SeedFundModule":
+				return <SeedfundModuleDetails id={selectedId} />;
+			case "StartupProfile":
+				return <ProfileDetails id={selectedId} />;
+
+			default:
+				return null;
+		}
+	};
 
 	return (
-		<div className="flex items-center ">
-			<LeftBar changePanel={changePanel} />
-			{handlePageChange(activePage)}
+		<div className="grid grid-cols-12 ">
+			{/* First Section - Left Sidebar */}
+			<div className="col-span-2 ">
+				<LeftBar changePanel={changePanel} />
+			</div>
 
-			<ProfileDetails id={selectedId} />
+			{/* Second Section - Main Content Area */}
+			<div className="col-span-3">{handlePageChange()}</div>
+
+			{/* Third Section - Details Section */}
+			<div className="col-span-7  bg-gray-100">{renderDetailsSection()}</div>
 		</div>
 	);
 };
 
-export default adminMainProfile;
+export default AdminMainProfile;

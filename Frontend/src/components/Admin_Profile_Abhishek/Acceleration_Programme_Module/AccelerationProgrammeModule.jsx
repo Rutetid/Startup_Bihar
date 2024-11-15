@@ -9,7 +9,7 @@ const AccelerationProgrammeModule = ({ onProfileClick }) => {
 		const fetchData = async () => {
 			try {
 				const response = await axios.get(
-					"https://startup-bihar1.onrender.com/api/startupProfile/list",
+					"http://localhost:3000/api/startupProfile/list",
 				);
 				setSdata(response.data.documents);
 			} catch (error) {
@@ -35,7 +35,7 @@ const AccelerationProgrammeModule = ({ onProfileClick }) => {
 					key={item.userId}
 					className="mx-5 bg-white rounded-lg mt-3 hover:shadow-lg cursor-pointer"
 					onClick={() => onProfileClick(item.userId)}
-					onKeyUp={(e) => e.key === 'Enter' && onProfileClick(item.userId)}
+					onKeyUp={(e) => e.key === "Enter" && onProfileClick(item.userId)}
 				>
 					<div className="flex items-center py-5 px-5 ">
 						<div>

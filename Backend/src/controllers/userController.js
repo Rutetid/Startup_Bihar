@@ -3,6 +3,7 @@
 
 const { PrismaClient } = require('@prisma/client');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 
 const prisma = new PrismaClient();
 const JWT_SECRET = 'your_jwt_secret_key'; // Store securely in env vars
@@ -27,8 +28,9 @@ const userLogin = async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    // Compare provided password with the stored password
-    if (password !== user.password) {
+    // Compare the provided password with the hashed password in the database
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
       return res.status(401).json({ error: 'Invalid password' });
     }
 
@@ -44,7 +46,7 @@ const userLogin = async (req, res) => {
       message: 'Login successful',
       token,
       user_id: user.user_id,
-      registration_no: user.registration_no // Assuming 'registration_no' is a field in your user table
+      registration_no: user.registration_no
     });
   } catch (error) {
     console.error(error);
@@ -52,6 +54,253 @@ const userLogin = async (req, res) => {
   }
 };
 
+
+// Fetch basic details of a startup by user_id or registration_no
+const getStartupDetails = async (req, res) => {
+  try {
+    const { user_id } = req.query; // Assuming user_id is provided as a query parameter
+
+    // Ensure that a user_id is provided
+    if (!user_id) {
+      return res.status(400).json({ error: 'user_id is required to fetch startup details' });
+    }
+
+    // Find the user by user_id and select only basic fields
+    const startup = await prisma.user.findUnique({
+      where: { user_id },
+      select: {
+        user_id: true,
+        company_name: true,
+        registration_no: true,
+        registration_year: true,
+        about: true,
+        moto: true
+      }
+    });
+
+    // If the user is not found, return an error
+    if (!startup) {
+      return res.status(404).json({ error: 'Startup not found' });
+    }
+
+    // Respond with the basic details
+    res.status(200).json({ startup });
+  } catch (error) {
+    console.error('Error fetching startup details:', error);
+    res.status(500).json({ error: 'An error occurred while fetching startup details' });
+  }
+};
+
+
+const createUser = async (req, res) => {
+  try {
+    const { user_id, password, registration_no, company_name, startup_since, about } = req.body;
+
+    if (!user_id || !password || !registration_no || !company_name) {
+      return res.status(400).json({ error: 'All fields are required: user_id, password, registration_no, and company_name' });
+    }
+
+    const existingUser = await prisma.user.findFirst({
+      where: { OR: [{ user_id }, { registration_no }] }
+    });
+
+    if (existingUser) {
+      return res.status(400).json({ error: 'User with this user_id or registration_no already exists' });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const newUser = await prisma.user.create({
+      data: {
+        user_id,
+        password: hashedPassword,
+        registration_no,
+        company_name,
+        startup_since,
+        about
+      },
+    });
+
+    res.status(201).json({
+      message: 'User created successfully',
+      user: {
+        user_id: newUser.user_id,
+        registration_no: newUser.registration_no,
+        company_name: newUser.company_name,
+        startup_since: newUser.startup_since,
+        about: newUser.about
+      },
+    });
+  } catch (error) {
+    console.error('Error creating user:', error);
+    res.status(500).json({ error: 'An error occurred while creating the user' });
+  }
+};
+// Utility function to verify JWT and get user_id
+const getUserIdFromToken = (token) => {
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    return decoded.user_id;
+  } catch (err) {
+    throw new Error('Unauthorized: Invalid token');
+  }
+};
+
+// Update Twitter
+const updateTwitter = async (req, res) => {
+  try {
+    const token = req.headers.authorization?.split(' ')[1];
+    if (!token) return res.status(401).json({ error: 'Unauthorized: No token provided' });
+
+    const user_id = getUserIdFromToken(token);
+    const { twitter } = req.body;
+    if (!twitter) {
+      return res.status(400).json({ error: 'Correct Field required' });
+    }
+
+    const updatedUser = await prisma.user.update({
+      where: { user_id },
+      data: { twitter },
+    });
+
+    res.status(200).json({ message: 'Twitter updated successfully', twitter: updatedUser.twitter });
+  } catch (error) {
+    console.error('Error updating Twitter:', error);
+    res.status(500).json({ error: 'An error occurred while updating Twitter' });
+  }
+};
+
+// Update Facebook
+const updateFacebook = async (req, res) => {
+  try {
+    const token = req.headers.authorization?.split(' ')[1];
+    if (!token) return res.status(401).json({ error: 'Unauthorized: No token provided' });
+
+    const user_id = getUserIdFromToken(token);
+    const { facebook } = req.body;
+    if (!facebook) {
+      return res.status(400).json({ error: 'Correct Field required' });
+    }
+
+    const updatedUser = await prisma.user.update({
+      where: { user_id },
+      data: { facebook },
+    });
+
+    res.status(200).json({ message: 'Facebook updated successfully', facebook: updatedUser.facebook });
+  } catch (error) {
+    console.error('Error updating Facebook:', error);
+    res.status(500).json({ error: 'An error occurred while updating Facebook' });
+  }
+};
+
+// Update Instagram
+const updateInstagram = async (req, res) => {
+  try {
+    const token = req.headers.authorization?.split(' ')[1];
+    if (!token) return res.status(401).json({ error: 'Unauthorized: No token provided' });
+
+    const user_id = getUserIdFromToken(token);
+    const { instaLink } = req.body;
+    if (!instaLink) {
+      return res.status(400).json({ error: 'Correct Field required' });
+    }
+
+    const updatedUser = await prisma.user.update({
+      where: { user_id },
+      data: { instaLink },
+    });
+
+    res.status(200).json({ message: 'Instagram updated successfully', instaLink: updatedUser.instaLink });
+  } catch (error) {
+    console.error('Error updating Instagram:', error);
+    res.status(500).json({ error: 'An error occurred while updating Instagram' });
+  }
+};
+
+// Update Website
+const updateWebsite = async (req, res) => {
+  try {
+    const token = req.headers.authorization?.split(' ')[1];
+    if (!token) return res.status(401).json({ error: 'Unauthorized: No token provided' });
+
+    const user_id = getUserIdFromToken(token);
+    const { websiteLink } = req.body;
+    if (!websiteLink) {
+      return res.status(400).json({ error: 'Correct Field required' });
+    }
+
+    const updatedUser = await prisma.user.update({
+      where: { user_id },
+      data: { websiteLink },
+    });
+
+    res.status(200).json({ message: 'Website updated successfully', websiteLink: updatedUser.websiteLink });
+  } catch (error) {
+    console.error('Error updating Website:', error);
+    res.status(500).json({ error: 'An error occurred while updating Website' });
+  }
+};
+
+// Update Moto
+const updateMoto = async (req, res) => {
+  try {
+    const token = req.headers.authorization?.split(' ')[1];
+    if (!token) return res.status(401).json({ error: 'Unauthorized: No token provided' });
+
+    const user_id = getUserIdFromToken(token);
+    const { moto } = req.body;
+    if (!moto) {
+      return res.status(400).json({ error: 'Correct Field required' });
+    }
+
+    const updatedUser = await prisma.user.update({
+      where: { user_id },
+      data: { moto },
+    });
+
+    res.status(200).json({ message: 'Moto updated successfully', moto: updatedUser.moto });
+  } catch (error) {
+    console.error('Error updating Moto:', error);
+    res.status(500).json({ error: 'An error occurred while updating Moto' });
+  }
+};
+
+// Update About
+const updateAbout = async (req, res) => {
+  try {
+    const token = req.headers.authorization?.split(' ')[1];
+    if (!token) return res.status(401).json({ error: 'Unauthorized: No token provided' });
+
+    const user_id = getUserIdFromToken(token);
+    const { about } = req.body;
+    if (!about) {
+      return res.status(400).json({ error: 'Correct Field required' });
+    }
+
+    const updatedUser = await prisma.user.update({
+      where: { user_id },
+      data: { about },
+    });
+
+    res.status(200).json({ message: 'About updated successfully', about: updatedUser.about });
+  } catch (error) {
+    console.error('Error updating About:', error);
+    res.status(500).json({ error: 'An error occurred while updating About' });
+  }
+};
+
+
 module.exports = {
   userLogin,
+  createUser,
+  
+  getStartupDetails,
+
+  updateAbout,
+  updateFacebook,
+  updateInstagram,
+  updateWebsite,
+  updateTwitter,
+  updateMoto
 };

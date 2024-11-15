@@ -78,13 +78,20 @@ const StartupProfileMain = () => {
 
 
     return (
-        <div className="flex w-screen">
-            <LeftBar changePanel={changePanel} selectedItem={selectedItem} /> {/* Pass selectedItem for highlighting */}
-            <div className="flex-grow w-[75%]">
-                {handlePageChange()}
-            </div>
-        </div>
-    );
+					<div className="flex h-screen overflow-hidden">
+						<LeftBar changePanel={changePanel} selectedItem={selectedItem} />{" "}
+						{/* Pass selectedItem for highlighting */}
+						<div
+							className="flex-grow w-[75%] overflow-y-auto"
+							style={{
+								msOverflowStyle: "none",
+								scrollbarWidth: "none",
+							}}
+						>
+							{handlePageChange()}
+						</div>
+					</div>
+				);
 };
 
 export default StartupProfileMain;

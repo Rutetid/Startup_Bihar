@@ -1,104 +1,155 @@
-import React from "react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-const ProfileDetails = ({ id }) => {
-	const [data, setData] = useState([]);
+const SeedfundModuleDetails = ({ id }) => {
+	const [data, setData] = useState({});
 	const [isCommentVisible, setIsCommentVisible] = useState(false);
+	const [comment, setComment] = useState("");
+	const [showDialog, setShowDialog] = useState(false);
+	const [dialogMessage, setDialogMessage] = useState("");
 	const token = localStorage.getItem("token");
+	const [isModalVisible, setIsModalVisible] = useState(false);
+	const [pdfUrl, setPdfUrl] = useState("");
+
+	const fetchData = async () => {
+		if (id) {
+			try {
+				const response = await axios.get(
+					`http://localhost:3000/api/StartupProfile/v1/${id}`,
+					{
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: `${token}`,
+						},
+					},
+				);
+				setData(response.data);
+			} catch (error) {
+				console.error("Error fetching data:", error);
+			}
+		}
+	};
 
 	useEffect(() => {
-		const fetchData = async () => {
-			if (id) {
-				try {
-					const response = await axios.get(
-						`https://startup-bihar1.onrender.com/api/StartupProfile/v1/${id}`,
-
-						{
-							headers: {
-								"Content-Type": "application/json",
-								Authorization: `${token}`,
-							},
-						},
-					);
-					setData(response.data);
-				} catch (error) {
-					console.error("Error fetching data:", error);
-				}
-			}
-		};
-
 		fetchData();
 	}, [id]);
-	console.log(data);
+
+	const handleDialog = (message) => {
+		setDialogMessage(message);
+		setShowDialog(true);
+		setTimeout(() => setShowDialog(false), 2000);
+	};
 
 	const handleReject = async () => {
+		handleDialog("Updating status to reject...");
 		try {
-			const response = await axios.patch(
-				`http://localhost:3000/api/StartupProfile/v2/${id}`,
-			const response = await axios.put(
-				`https://startup-bihar1.onrender.com/api/StartupProfile/v2/${id}`,
+			await axios.patch(
+				`http://localhost:3000/api/StartupProfile/u1/${id}`,
 				{
-
 					documentStatus: "Rejected",
+					comment: `Document has been rejected for reason: ${comment}`,
 				},
 				{
 					headers: {
 						"Content-Type": "application/json",
-						Authorization: `Bearer ${token}`,
+						Authorization: `${token}`,
 					},
 				},
 			);
-			console.log("Response:", response.data);
+			handleDialog("Application is rejected.");
+			setIsCommentVisible(false);
+			await fetchData(); // Update the data after status change
+		} catch (error) {
+			console.error("Error updating data:", error);
+		}
+	};
+
+	const handlePartialReject = async () => {
+		handleDialog("Updating status to partial reject...");
+		try {
+			await axios.patch(
+				`http://localhost:3000/api/StartupProfile/u1/${id}`,
+				{
+					documentStatus: "Partially Rejected",
+					comment: `Document has been partially rejected for reason: ${comment}`,
+				},
+				{
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `${token}`,
+					},
+				},
+			);
+			handleDialog("Application is partially rejected.");
+			setIsCommentVisible(false);
+			await fetchData(); // Update the data after status change
 		} catch (error) {
 			console.error("Error updating data:", error);
 		}
 	};
 
 	const handleAccept = async () => {
+		handleDialog("Updating status to accept...");
 		try {
-			const response = await axios.patch(
+			await axios.patch(
 				`http://localhost:3000/api/StartupProfile/u1/${id}`,
-			const response = await axios.put(
-				`https://startup-bihar1.onrender.com/api/StartupProfile/v2/${id}`,
 				{
 					documentStatus: "Accepted",
+					comment: "Document has been reviewed and approved.",
 				},
 				{
 					headers: {
 						"Content-Type": "application/json",
-						Authorization: `Bearer ${token}`,
+						Authorization: `${token}`,
 					},
 				},
 			);
-			console.log("Response:", response.data);
+			handleDialog("Application is accepted.");
+			await fetchData(); // Update the data after status change
 		} catch (error) {
 			console.error("Error updating data:", error);
 		}
 	};
 
+	const getStatusColor = () => {
+		if (data.documentStatus === "Accepted") return "text-green-500";
+		if (data.documentStatus === "Rejected") return "text-red-500";
+		if (data.documentStatus === "Partially Rejected") return "text-yellow-500";
+		return "";
+	};
+
+	const handleViewPdf = (url) => {
+		setPdfUrl(url);
+		setIsModalVisible(true);
+	};
+
+	const handleCloseModal = () => {
+		setIsModalVisible(false);
+		setPdfUrl("");
+	};
+
 	return (
 		<div
 			className="h-screen overflow-y-auto"
-			style={{
-				msOverflowStyle: "none", //for no scrollbar
-				scrollbarWidth: "none",
-			}}
+			style={{ msOverflowStyle: "none", scrollbarWidth: "none" }}
 		>
-			<h1 className="pt-5 pl-8 text-2xl">Startup Profile Details </h1>
+			<h1 className="pt-5 pl-8 text-2xl">Startup Profile Details</h1>
 			<div className="px-8 py-5">
 				<table className="min-w-full bg-white">
-					{/* <tbody>
-						{Object.entries(data).map(([key, value], index) => (
-							<tr key={index} className="">
-								<td className="py-4 px-4 border-b border-l border-t">{key}</td>
-								<td className="py-4 px-4 border-b border-l border-t border-r w-[35vw]">
-									{value}
+					<tbody>
+						{/* Conditionally render Application Status row */}
+						{data.documentStatus && (
+							<tr>
+								<td className="py-4 px-4 border-b border-l border-t">
+									Application Status
+								</td>
+								<td
+									className={`py-4 px-4 border-b border-l border-t border-r w-[35vw] ${getStatusColor()}`}
+								>
+									{data.documentStatus + " | " + data.comment}
 								</td>
 							</tr>
-						))} */}
-
-					<tbody>
+						)}
 						<tr>
 							<td className="py-4 px-4 border-b border-l border-t">
 								Registration No
@@ -113,24 +164,6 @@ const ProfileDetails = ({ id }) => {
 							</td>
 							<td className="py-4 px-4 border-b border-l border-t border-r w-[35vw]">
 								{data.founderName}
-							</td>
-						</tr>
-						<tr>
-							<td className="py-4 px-4 border-b border-l border-t">
-								Founder Aadhar Number
-							</td>
-							<td className="py-4 px-4 border-b border-l border-t border-r w-[35vw]">
-								{data.founderAadharNumber}
-							</td>
-						</tr>
-						<tr>
-							<td className="py-4 px-4 border-b border-l border-t">
-								Co-funder Names
-							</td>
-							<td className="py-4 px-4 border-b border-l border-t border-r w-[35vw]">
-								{Array.isArray(data.coFounderNames)
-									? data.coFounderNames.join(", ")
-									: data.coFounderNames}
 							</td>
 						</tr>
 						<tr>
@@ -257,14 +290,26 @@ const ProfileDetails = ({ id }) => {
 													</div>
 												</div>
 												<div className="ml-4 shrink-0">
-													<a
-														href={`/${data.certPath}`} // Ensure this path points to the correct relative URL of the PDF file
+													{/* <a
+														href="https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" // Ensure this path points to the correct relative URL of the PDF file
 														target="_blank"
 														rel="noopener noreferrer"
 														className="font-medium text-indigo-600 hover:text-indigo-900"
 													>
 														View
-													</a>
+													</a> */}
+
+													<button
+														type="button"
+														className="font-medium text-indigo-600 hover:text-indigo-900"
+														onClick={() =>
+															handleViewPdf(
+																"/certificate-1730768875489-30300590.pdf",
+															)
+														}
+													>
+														View
+													</button>
 												</div>
 												<div className="ml-4 shrink-0">
 													<a
@@ -273,17 +318,6 @@ const ProfileDetails = ({ id }) => {
 														className="font-medium text-indigo-600 hover:text-indigo-900"
 													>
 														Download
-													</a>
-												</div>
-												<div
-													className="ml-4 shrink-0"
-													onClick={() => setIsCommentVisible(true)}
-												>
-													<a
-														href="#"
-														className="font-medium text-indigo-600 hover:text-indigo-900"
-													>
-														Reject
 													</a>
 												</div>
 											</li>
@@ -295,7 +329,28 @@ const ProfileDetails = ({ id }) => {
 					</tbody>
 				</table>
 
-				<div className="flex items-center justify-end gap-x-2 pr-4 py-3 ">
+				{isModalVisible && (
+					<div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50 ">
+						<div className="bg-white rounded-lg shadow-lg p-4 w-3/4 h-[600px] py-5 px-10">
+							<div className="flex justify-end">
+								<button
+									type="button"
+									className="text-gray-600 hover:text-gray-900"
+									onClick={handleCloseModal}
+								>
+									Close
+								</button>
+							</div>
+							<iframe
+								src={pdfUrl}
+								className="w-full h-full"
+								frameBorder="0"
+							></iframe>
+						</div>
+					</div>
+				)}
+
+				<div className="flex items-center justify-end gap-x-2 pr-4 py-3">
 					<button
 						type="submit"
 						className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
@@ -306,20 +361,33 @@ const ProfileDetails = ({ id }) => {
 					<button
 						type="button"
 						className="rounded-md bg-gray-800 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-						onClick={handleReject}
+						onClick={() => {
+							setIsCommentVisible(true);
+							setComment("");
+						}}
 					>
 						Reject
+					</button>
+					<button
+						type="button"
+						className="rounded-md bg-gray-800 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+						onClick={() => {
+							setIsCommentVisible(true);
+							setComment("");
+						}}
+					>
+						Partial Reject
 					</button>
 				</div>
 			</div>
 
 			{isCommentVisible && (
-				<div className="absolute top-64 w-3/12 bg-white rounded-md shadow-xl p-4 z-10 left-[37%] ">
+				<div className="absolute top-64 w-3/12 bg-white rounded-md shadow-xl p-4 z-10 left-[37%]">
 					<h2 className="text-lg font-semibold">Add Comment</h2>
-					<h2>Reason for Rejecting File: </h2>
 					<textarea
+						value={comment}
 						onChange={(e) => setComment(e.target.value)}
-						className="mt-2  border rounded-md w-full h-20 pl-2 pt-2"
+						className="mt-2 border rounded-md w-full h-20 pl-2 pt-2"
 					/>
 					<div className="flex justify-end gap-x-2 mt-4">
 						<button
@@ -336,6 +404,22 @@ const ProfileDetails = ({ id }) => {
 						>
 							Reject
 						</button>
+						<button
+							type="button"
+							className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500"
+							onClick={handlePartialReject}
+						>
+							Partial Reject
+						</button>
+					</div>
+				</div>
+			)}
+
+			{showDialog && (
+				<div className="fixed inset-0 flex items-center justify-center z-50">
+					<div className="bg-black bg-opacity-50 absolute inset-0"></div>
+					<div className="bg-white p-6 rounded-md shadow-lg z-10">
+						<p className="text-lg font-semibold">{dialogMessage}</p>
 					</div>
 				</div>
 			)}
@@ -343,4 +427,4 @@ const ProfileDetails = ({ id }) => {
 	);
 };
 
-export default ProfileDetails;
+export default SeedfundModuleDetails;

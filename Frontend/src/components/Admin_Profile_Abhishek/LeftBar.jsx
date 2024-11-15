@@ -11,7 +11,7 @@ const LeftBar = ({ changePanel }) => {
         }
     };
 	return (
-		<div className="w-1/4 bg-gray-900 h-screen overflow-y-auto">
+		<div className="w-full bg-gray-900 h-screen overflow-y-auto">
 			<div className="flex items-center pt-12 pl-8 gap-4">
 				<div>
 					<img

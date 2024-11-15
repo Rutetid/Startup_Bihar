@@ -21,7 +21,7 @@ const SecondTrancheModule = ({ onSelect }) => {
 							Authorization: `${token}`,
 						},
 					},
-					"https://startup-bihar1.onrender.com/api/second-tranche/v2",
+					"http://localhost:3000/api/second-tranche/v2",
 				);
 				setSdata(response.data.documents);
 			} catch (error) {
