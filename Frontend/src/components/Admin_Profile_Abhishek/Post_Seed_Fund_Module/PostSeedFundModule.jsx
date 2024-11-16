@@ -9,52 +9,84 @@ const PostSeedFundModule = ({ onSelect }) => {
 		onSelect(id);
 	};
 
+	const token = localStorage.getItem("token");
+
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
+				console.log(token);
 				const response = await axios.get(
-					"http://localhost:3000/api/StartupProfile/v2",
+					"http://localhost:3000/api/post-seed/v2",
+					{
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: `${token}`,
+						},
+					},
 				);
-				setSdata(response.data.documents);
+				setSdata(response.data);
 			} catch (error) {
 				console.error("Error fetching data:", error);
 			}
 		};
 
 		fetchData();
-		console.log(sdata);
 	}, []);
+	console.log(sdata);
+	// Check if data is available before rendering
+	if (!sdata || !sdata.data) {
+		return (
+			<div
+				className="w-full bg-slate-200 h-screen overflow-y-auto"
+				style={{
+					msOverflowStyle: "none",
+					scrollbarWidth: "none",
+				}}
+			>
+				<h1 className="pl-5 pt-8 text-2xl pb-4">Seed Fund Module</h1>
+			</div>
+		);
+	}
 
 	return (
 		<div
-			className="w-3/12 bg-slate-200 h-screen overflow-y-auto"
+			className="w-full bg-slate-200 h-screen overflow-y-auto"
 			style={{
 				msOverflowStyle: "none",
 				scrollbarWidth: "none",
 			}}
 		>
-			<h1 className="pl-5 pt-8 text-2xl pb-4">Post Seed Fund Module</h1>
-			{sdata.map((item, index) => (
-				<div
-					key={item.id}
-					className="mx-5 bg-white rounded-lg mt-3 hover:shadow-lg cursor-pointer"
-					onClick={() => handleClick(item.id)}
-				>
-					<div className="flex items-center py-5 px-5 ">
-						<div>
-							<img
-								src={item.logoPath}
-								alt="avatar"
-								className="w-12 h-12 rounded-full"
-							/>
-						</div>
-						<div className="px-3">
-							<h1 className="text-">{item.user.user_id} </h1>
-							<h1 className="text-">Reg no: {item.user.registration_no}</h1>
+			<h1 className="pl-5 pt-8 text-2xl pb-4">Seed Fund Module</h1>
+			{/* Display the data once available */}
+			<ul>
+				{sdata.data.map((item) => (
+					<div
+						key={item.id}
+						className="mx-5 bg-white rounded-lg mt-3 hover:shadow-lg cursor-pointer"
+						onClick={() => handleClick(item.id)}
+					>
+						<div className="flex items-center py-5 px-5 ">
+							<div>
+								<img
+									src="startup.png"
+									alt="Startup"
+									className="w-12 h-12 rounded-full"
+									onError={(e) => {
+										e.target.onerror = null;
+										e.target.src =
+											"https://img.freepik.com/premium-vector/startup-logo-business-project-business-concept-identity-symbol_136321-649.jpg";
+									}}
+								/>
+							</div>
+							<div className="px-3">
+								<h1 className="text-">{item.user.user_id} </h1>
+								<h1 className="text-">Reg no: {item.user.registration_no}</h1>
+								<h1 className="text-">Seed Fund Application</h1>
+							</div>
 						</div>
 					</div>
-				</div>
-			))}
+				))}
+			</ul>
 		</div>
 	);
 };

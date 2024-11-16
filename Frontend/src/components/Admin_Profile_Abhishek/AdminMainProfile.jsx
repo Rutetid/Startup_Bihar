@@ -17,6 +17,9 @@ import DataMining from "./Data_Mining/DataMining";
 import MentorsList from "./Mentors_List/MentorsList.jsx";
 import GrievanceRedressalSystem from "./Grievance_Redressal_System/GrievanceRedressalSystem.jsx";
 import SeedfundModuleDetails from "./Seed_Fund_module/SeedFundModuleDetails.jsx";
+import CommonList from "./CommonList.jsx";
+import SecondTrancheModuleDetails from "./Second_Tranche_module/SecondTrancheModuleDetails.jsx";
+import PostSeedFundModuleDetails from "./Post_Seed_Fund_module/PostSeedFundModuleDetails.jsx";
 
 const AdminMainProfile = () => {
 	const [activePage, setActivePage] = useState("StartupProfile"); // Controls second section
@@ -30,13 +33,31 @@ const AdminMainProfile = () => {
 				return <StartupProfile onSelect={handleSelect} />;
 
 			case "SeedFundModule":
-				return <SeedFundModule onSelect={handleSelect} />;
+				return (
+					<CommonList
+						onSelect={handleSelect}
+						url="http://localhost:3000/api/seed-fund/v2"
+						title="Seed Fund Application List"
+					/>
+				);
 
 			case "SecondTrancheModule":
-				return <SecondTrancheModule />;
+				return (
+					<CommonList
+						onSelect={handleSelect}
+						url="http://localhost:3000/api/second-tranche/v2"
+						title="Second Tranche Application List"
+					/>
+				);
 
 			case "PostSeedFundModule":
-				return <PostSeedFundModule />;
+				return (
+					<CommonList
+						onSelect={handleSelect}
+						url="http://localhost:3000/api/post-seed/v2"
+						title="Post Seed Application List"
+					/>
+				);
 
 			case "QPRModule":
 				return <QPRModule />;
@@ -85,18 +106,23 @@ const AdminMainProfile = () => {
 		setDetailsView(true); // Show third section when an item is selected
 	};
 	const renderDetailsSection = () => {
-		if (!detailsView) return (
-			<div className="flex items-center justify-center h-full">
-			<h1>Select an item to view details</h1>
-		</div>
-		);
+		if (!detailsView)
+			return (
+				<div className="flex items-center justify-center h-full">
+					<h1>Select an item to view details</h1>
+				</div>
+			);
 
 		switch (activePage) {
 			case "SeedFundModule":
 				return <SeedfundModuleDetails id={selectedId} />;
 			case "StartupProfile":
 				return <ProfileDetails id={selectedId} />;
-			
+			case "SecondTrancheModule":
+				return <SecondTrancheModuleDetails id={selectedId} />;
+			case "PostSeedFundModule":
+				return <PostSeedFundModuleDetails id={selectedId} />;
+
 			default:
 				return null;
 		}
@@ -106,19 +132,14 @@ const AdminMainProfile = () => {
 		<div className="grid grid-cols-12 ">
 			{/* First Section - Left Sidebar */}
 			<div className="col-span-2 ">
-
-			<LeftBar changePanel={changePanel} />
+				<LeftBar changePanel={changePanel} />
 			</div>
 
 			{/* Second Section - Main Content Area */}
-			<div className="col-span-3">
-				{handlePageChange()}
-			</div>
+			<div className="col-span-3">{handlePageChange()}</div>
 
 			{/* Third Section - Details Section */}
-			<div className="col-span-7  bg-gray-100">
-				{renderDetailsSection()}
-			</div>
+			<div className="col-span-7  bg-gray-100">{renderDetailsSection()}</div>
 		</div>
 	);
 };

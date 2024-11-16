@@ -144,7 +144,7 @@ const getSecondById = async (req, res) => {
 
 const updateSecondStatus = async (req, res) => {
 	const { id } = req.params;
-	const { documentStatus } = req.body;
+	const { documentStatus,comment } = req.body;
 
 	if (!documentStatus) {
 		return res.status(400).json({ error: "Document status is required" });
@@ -161,7 +161,7 @@ const updateSecondStatus = async (req, res) => {
 
 		const updatedDocument = await prisma.secondTranche.update({
 			where: { id },
-			data: { documentStatus },
+			data: { documentStatus,comment },
 		});
 
 		res.status(200).json({

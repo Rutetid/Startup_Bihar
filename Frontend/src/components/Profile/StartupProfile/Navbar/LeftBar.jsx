@@ -140,9 +140,9 @@ const LeftBar = ({ changePanel }) => {
 					<span className="text-sm font-semibold">Group</span>
 					<button
 						onClick={() => {
-							checkDocumentStatus(
-								"http://localhost:3000/api/StartupProfile/user-document",
-							);
+							//checkDocumentStatus(
+							//</div>	"http://localhost:3000/api/StartupProfile/user-document",
+							//);
 							changePanel("StartupForm");
 							setSelectedItem("StartupForm");
 						}}

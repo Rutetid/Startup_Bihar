@@ -17,17 +17,17 @@ const App = () => {
   };
 
   return (
-    <Router>
-      <Routes>
-        <Route path="/login" element={<LoginCopy onLogin={handleLogin} />} />
-        <Route path="/userprofile" element={<StartupProfileMain />} />
-        <Route path="/" element={<HomePage />} />
-        <Route path="/adminprofile" element={<AdminMainProfile />} />
-        <Route path="/seedfunded" element={<SeedFunded />} />
-        <Route path="/SecondTranche" element={<SecondTrance />} />
-      </Routes>
-    </Router>
-  );
+			<Router>
+				<Routes>
+					<Route path="/login" element={<LoginCopy onLogin={handleLogin} />} />
+					<Route path="/StartupProfile" element={<StartupProfileMain />} />
+					<Route path="/" element={<HomePage />} />
+					<Route path="/adminprofile" element={<AdminMainProfile />} />
+					<Route path="/seedfunded" element={<SeedFunded />} />
+					<Route path="/SecondTranche" element={<SecondTrance />} />
+				</Routes>
+			</Router>
+		);
 };
 
 export default App;

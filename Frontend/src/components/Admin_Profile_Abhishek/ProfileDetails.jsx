@@ -284,9 +284,6 @@ const SeedfundModuleDetails = ({ id }) => {
 														<span className="truncate font-medium">
 															{data.certName}
 														</span>
-														<span className="shrink-0 text-gray-400">
-															2.4mb
-														</span>
 													</div>
 												</div>
 												<div className="ml-4 shrink-0">

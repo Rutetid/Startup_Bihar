@@ -137,7 +137,7 @@ const getpostById = async (req, res) => {
 
 const updatepostStatus = async (req, res) => {
   const { id } = req.params;
-  const { documentStatus } = req.body;
+  const { documentStatus,comment } = req.body;
 
   if (!documentStatus) {
     return res.status(400).json({ error: 'Document status is required' });
@@ -154,7 +154,7 @@ const updatepostStatus = async (req, res) => {
 
     const updatedDocument = await prisma.postSeedFund.update({
       where: { id },
-      data: { documentStatus },
+      data: { documentStatus,comment },
     });
 
     res.status(200).json({
