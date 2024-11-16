@@ -4,37 +4,51 @@ import axios from "axios";
 const SeedfundModuleDetails = ({ id }) => {
 	const [data, setData] = useState({});
 	const [isCommentVisible, setIsCommentVisible] = useState(false);
+	const [comment, setComment] = useState("");
+	const [showDialog, setShowDialog] = useState(false);
+	const [dialogMessage, setDialogMessage] = useState("");
 	const token = localStorage.getItem("token");
 
-	useEffect(() => {
-		const fetchData = async () => {
-			if (id) {
-				try {
-					const response = await axios.get(
-						`http://localhost:3000/api/seed-fund/v1/${id}`,
-						{
-							headers: {
-								"Content-Type": "application/json",
-								Authorization: `${token}`,
-							},
+	const [pdfUrl, setPdfUrl] = useState("");
+	const [isPdfModalVisible, setIsPdfModalVisible] = useState(false); // State to manage PDF modal visibility
+
+	const fetchData = async () => {
+		if (id) {
+			try {
+				const response = await axios.get(
+					`http://localhost:3000/api/seed-fund/v1/${id}`,
+					{
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: `${token}`,
 						},
-					);
-					setData(response.data);
-				} catch (error) {
-					console.error("Error fetching data:", error);
-				}
+					},
+				);
+				setData(response.data);
+			} catch (error) {
+				console.error("Error fetching data:", error);
 			}
-		};
+		}
+	};
+
+	useEffect(() => {
 		fetchData();
-	}, [id, token]);
+	}, [id]);
+
+	const handleDialog = (message) => {
+		setDialogMessage(message);
+		setShowDialog(true);
+		setTimeout(() => setShowDialog(false), 2000); // Close after 2 seconds
+	};
 
 	const handleReject = async () => {
+		handleDialog("Updating status to reject...");
 		try {
 			await axios.patch(
 				`http://localhost:3000/api/seed-fund/u1/${id}`,
 				{
 					documentStatus: "Rejected",
-					comment: "Your Seed Application is Rejected",
+					comment: `Document has been rejected for reason: ${comment}`,
 				},
 				{
 					headers: {
@@ -43,26 +57,9 @@ const SeedfundModuleDetails = ({ id }) => {
 					},
 				},
 			);
-		} catch (error) {
-			console.error("Error updating data:", error);
-		}
-	};
-
-	const handleAccept = async () => {
-		try {
-			await axios.put(
-				`http://localhost:3000/api/seed-fund/u1/${id}`,
-				{
-					documentStatus: "Accepted",
-					comment: "Your Seed Application is Accepted",
-				},
-				{
-					headers: {
-						"Content-Type": "application/json",
-						Authorization: `${token}`,
-					},
-				},
-			);
+			handleDialog("Application is rejected.");
+			setIsCommentVisible(false);
+			await fetchData(); // Update the data after status change
 		} catch (error) {
 			console.error("Error updating data:", error);
 		}
@@ -72,7 +69,7 @@ const SeedfundModuleDetails = ({ id }) => {
 		handleDialog("Updating status to partial reject...");
 		try {
 			await axios.patch(
-				`http://localhost:3000/api/StartupProfile/u1/${id}`,
+				`http://localhost:3000/api/seed-fund/u1/${id}`,
 				{
 					documentStatus: "Partially Rejected",
 					comment: `Document has been partially rejected for reason: ${comment}`,
@@ -92,12 +89,74 @@ const SeedfundModuleDetails = ({ id }) => {
 		}
 	};
 
+	const handleAccept = async () => {
+		handleDialog("Updating status to accept...");
+		try {
+			await axios.patch(
+				`http://localhost:3000/api/seed-fund/u1/${id}`,
+				{
+					documentStatus: "Accepted",
+					comment: "Document has been reviewed and approved.",
+				},
+				{
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `${token}`,
+					},
+				},
+			);
+			handleDialog("Application is accepted.");
+			await fetchData(); // Update the data after status change
+		} catch (error) {
+			console.error("Error updating data:", error);
+		}
+	};
+
+	const getStatusColor = () => {
+		if (data.documentStatus === "Accepted") return "text-green-500";
+		if (data.documentStatus === "Rejected") return "text-red-500";
+		if (data.documentStatus === "Partially Rejected") return "text-yellow-500";
+		return "";
+	};
+	const getComment = () => {
+		if (comment != null) {
+			return data.comment;
+		}
+		if (data.documentStatus === "Accepted")
+			return "Document has been reviewed and approved.";
+		if (data.documentStatus === "Rejected")
+			return "Document has been partially rejected";
+		if (data.documentStatus === "Partially Rejected")
+			return "Document has been rejected";
+		return "";
+	};
+	const handleViewPdf = (url) => {
+		// Use Google PDF viewer as fallback
+		const viewerUrl = `https://docs.google.com/gview?url=${encodeURIComponent(url)}&embedded=true`;
+		setPdfUrl(viewerUrl);
+		setIsPdfModalVisible(true);
+	};
+
+	const closePdfModal = () => {
+		setIsPdfModalVisible(false);
+		setPdfUrl("");
+	};
+
 	return (
 		<div className="h-screen overflow-y-auto">
 			<h1 className="pt-5 pl-8 text-2xl">Seed Fund Application Details</h1>
 			<div className="px-8 py-5">
 				<table className="min-w-full bg-white">
 					<tbody>
+						{/* Conditionally render Application Status row */}
+						{data.documentStatus && (
+							<tr>
+								<td className="py-4 px-4 border">Application Status</td>
+								<td className={`py-4 px-4 border ${getStatusColor()}`}>
+									{`${data.documentStatus} | ${getComment()}`}
+								</td>
+							</tr>
+						)}
 						<tr>
 							<td className="py-4 px-4 border">Company Name</td>
 							<td className="py-4 px-4 border">{data.companyName}</td>
@@ -115,72 +174,22 @@ const SeedfundModuleDetails = ({ id }) => {
 							<td className="py-4 px-4 border">{data.businessEntityType}</td>
 						</tr>
 						<tr>
-							<td className="py-4 px-4 border-b border-l border-t">
-								Company Certificate
-							</td>
-							<td className=" border-b border-l border-t border-r w-[35vw]">
-								<div className="px-4 py-4 ">
-									<dd className="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-										<ul className="divide-y divide-gray-100 rounded-md border border-gray-200">
-											<li className="flex items-center justify-between py-4 pl-4 pr-5 text-sm/6">
-												<div className="flex w-0 flex-1 items-center">
-													<svg
-														className="h-5 w-5 shrink-0 text-gray-400"
-														viewBox="0 0 20 20"
-														fill="currentColor"
-														aria-hidden="true"
-														data-slot="icon"
-													>
-														<path
-															fillRule="evenodd"
-															d="M15.621 4.379a3 3 0 0 0-4.242 0l-7 7a3 3 0 0 0 4.241 4.243h.001l.497-.5a.75.75 0 0 1 1.064 1.057l-.498.501-.002.002a4.5 4.5 0 0 1-6.364-6.364l7-7a4.5 4.5 0 0 1 6.368 6.36l-3.455 3.553A2.625 2.625 0 1 1 9.52 9.52l3.45-3.451a.75.75 0 1 1 1.061 1.06l-3.45 3.451a1.125 1.125 0 0 0 1.587 1.595l3.454-3.553a3 3 0 0 0 0-4.242Z"
-															clipRule="evenodd"
-														/>
-													</svg>
-													<div className="ml-4 flex min-w-0 flex-1 gap-2">
-														<span className="truncate font-medium">
-															{data.companyCertificate}
-														</span>
-														<span className="shrink-0 text-gray-400">
-															2.4mb
-														</span>
-													</div>
-												</div>
-												<div className="ml-4 shrink-0">
-													{/* <a
-														href="https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" // Ensure this path points to the correct relative URL of the PDF file
-														target="_blank"
-														rel="noopener noreferrer"
-														className="font-medium text-indigo-600 hover:text-indigo-900"
-													>
-														View
-													</a> */}
-
-													<button
-														type="button"
-														className="font-medium text-indigo-600 hover:text-indigo-900"
-														onClick={() =>
-															handleViewPdf(
-																"/certificate-1730768875489-30300590.pdf",
-															)
-														}
-													>
-														View
-													</button>
-												</div>
-												<div className="ml-4 shrink-0">
-													<a
-														href="https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" // Ensure this path points to the correct relative URL of the PDF file
-														download
-														className="font-medium text-indigo-600 hover:text-indigo-900"
-													>
-														Download
-													</a>
-												</div>
-											</li>
-										</ul>
-									</dd>
-								</div>
+							<td className="py-4 px-4 border">Company Certificate</td>
+							<td className="py-4 px-4 border">
+								{data.companyCertificate && (
+									<div>
+										<button
+											onClick={() => handleViewPdf(data.companyCertificate)}
+											className="text-blue-500 hover:underline"
+										>
+											View
+										</button>{" "}
+										|{" "}
+										<a href={`${data.companyCertificate}`} download>
+											Download
+										</a>
+									</div>
+								)}
 							</td>
 						</tr>
 						<tr>
@@ -222,72 +231,23 @@ const SeedfundModuleDetails = ({ id }) => {
 							<td className="py-4 px-4 border">{data.branchAddress}</td>
 						</tr>
 						<tr>
-							<td className="py-4 px-4 border-b border-l border-t">
-								Upload cancel cheque/Passbook First Page
-							</td>
-							<td className=" border-b border-l border-t border-r w-[35vw]">
-								<div className="px-4 py-4 ">
-									<dd className="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-										<ul className="divide-y divide-gray-100 rounded-md border border-gray-200">
-											<li className="flex items-center justify-between py-4 pl-4 pr-5 text-sm/6">
-												<div className="flex w-0 flex-1 items-center">
-													<svg
-														className="h-5 w-5 shrink-0 text-gray-400"
-														viewBox="0 0 20 20"
-														fill="currentColor"
-														aria-hidden="true"
-														data-slot="icon"
-													>
-														<path
-															fillRule="evenodd"
-															d="M15.621 4.379a3 3 0 0 0-4.242 0l-7 7a3 3 0 0 0 4.241 4.243h.001l.497-.5a.75.75 0 0 1 1.064 1.057l-.498.501-.002.002a4.5 4.5 0 0 1-6.364-6.364l7-7a4.5 4.5 0 0 1 6.368 6.36l-3.455 3.553A2.625 2.625 0 1 1 9.52 9.52l3.45-3.451a.75.75 0 1 1 1.061 1.06l-3.45 3.451a1.125 1.125 0 0 0 1.587 1.595l3.454-3.553a3 3 0 0 0 0-4.242Z"
-															clipRule="evenodd"
-														/>
-													</svg>
-													<div className="ml-4 flex min-w-0 flex-1 gap-2">
-														<span className="truncate font-medium">
-															{data.cancelChequeOrPassbook}
-														</span>
-														<span className="shrink-0 text-gray-400">
-															2.4mb
-														</span>
-													</div>
-												</div>
-												<div className="ml-4 shrink-0">
-													{/* <a
-														href="https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" // Ensure this path points to the correct relative URL of the PDF file
-														target="_blank"
-														rel="noopener noreferrer"
-														className="font-medium text-indigo-600 hover:text-indigo-900"
-													>
-														View
-													</a> */}
-
-													<button
-														type="button"
-														className="font-medium text-indigo-600 hover:text-indigo-900"
-														onClick={() =>
-															handleViewPdf(
-																"/certificate-1730768875489-30300590.pdf",
-															)
-														}
-													>
-														View
-													</button>
-												</div>
-												<div className="ml-4 shrink-0">
-													<a
-														href="https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" // Ensure this path points to the correct relative URL of the PDF file
-														download
-														className="font-medium text-indigo-600 hover:text-indigo-900"
-													>
-														Download
-													</a>
-												</div>
-											</li>
-										</ul>
-									</dd>
-								</div>
+							<td className="py-4 px-4 border">Cancelled Cheque or Passbook</td>
+							<td className="py-4 px-4 border">
+								{data.cancelChequeOrPassbook && (
+									<div>
+										<a
+											href={`/${data.cancelChequeOrPassbook}`}
+											target="_blank"
+											rel="noopener noreferrer"
+										>
+											View
+										</a>{" "}
+										|{" "}
+										<a href={`/${data.cancelChequeOrPassbook}`} download>
+											Download
+										</a>
+									</div>
+								)}
 							</td>
 						</tr>
 						<tr>
@@ -303,15 +263,13 @@ const SeedfundModuleDetails = ({ id }) => {
 
 				<div className="flex items-center justify-end gap-x-2 pr-4 py-3">
 					<button
-						type="submit"
-						className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+						className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white"
 						onClick={handleAccept}
 					>
 						Accept
 					</button>
 					<button
-						type="button"
-						className="rounded-md bg-gray-800 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+						className="rounded-md bg-gray-800 px-3 py-2 text-sm font-semibold text-white"
 						onClick={() => {
 							setIsCommentVisible(true);
 							setComment("");
@@ -320,8 +278,7 @@ const SeedfundModuleDetails = ({ id }) => {
 						Reject
 					</button>
 					<button
-						type="button"
-						className="rounded-md bg-gray-800 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+						className="rounded-md bg-gray-800 px-3 py-2 text-sm font-semibold text-white"
 						onClick={() => {
 							setIsCommentVisible(true);
 							setComment("");
@@ -341,26 +298,51 @@ const SeedfundModuleDetails = ({ id }) => {
 						/>
 						<div className="flex justify-end gap-x-2 mt-4">
 							<button
-								type="button"
-								className="rounded-md bg-gray-800 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-500"
+								className="rounded-md bg-gray-800 px-3 py-2 text-sm font-semibold text-white"
 								onClick={() => setIsCommentVisible(false)}
 							>
 								Cancel
 							</button>
 							<button
-								type="button"
-								className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500"
+								className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white"
 								onClick={handleReject}
 							>
 								Reject
 							</button>
 							<button
-								type="button"
-								className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500"
+								className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white"
 								onClick={handlePartialReject}
 							>
 								Partial Reject
 							</button>
+						</div>
+					</div>
+				)}
+				{/* PDF View Modal */}
+				{isPdfModalVisible && (
+					<div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
+						<div className="bg-white rounded-lg shadow-lg p-4 w-3/4 h-[600px]">
+							<div className="flex justify-end">
+								<button
+									className="text-gray-600 hover:text-gray-900"
+									onClick={closePdfModal}
+								>
+									Close
+								</button>
+							</div>
+							<iframe
+								src={pdfUrl}
+								className="w-full h-full"
+								frameBorder="0"
+							></iframe>
+						</div>
+					</div>
+				)}
+				{showDialog && (
+					<div className="fixed inset-0 flex items-center justify-center z-50">
+						<div className="bg-black bg-opacity-50 absolute inset-0"></div>
+						<div className="bg-white p-6 rounded-md shadow-lg z-10">
+							<p className="text-lg font-semibold">{dialogMessage}</p>
 						</div>
 					</div>
 				)}

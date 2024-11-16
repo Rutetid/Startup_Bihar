@@ -60,24 +60,36 @@ const SeedFunded = () => {
 	];
 
 	const validationSchema = Yup.object({
-    companyName: Yup.string().required('Company Name is required'),
-    registrationNumber: Yup.string().required('Registration Number is required'),
-    dateOfIncorporation: Yup.date().required('Date of Incorporation is required'),
-    businessEntityType: Yup.string().required('Business Entity Type is required'),
-    rocDistrict: Yup.string().required('ROC District is required'),
-    companyCertificate: Yup.mixed().required('Company Certificate is required'),
-    companyAddress: Yup.string().required('Company Address is required'),
-    pincode: Yup.string().required('Pincode is required'),
-    bankName: Yup.string().required('Bank Name is required'),
-    ifscCode: Yup.string().required('IFSC Code is required'),
-    currentAccountNumber: Yup.string().required('Current Account Number is required'),
-    currentAccountHolderName: Yup.string().required('Current Account Holder Name is required'),
-    branchName: Yup.string().required('Branch Name is required'),
-    branchAddress: Yup.string().required('Branch Address is required'),
-    cancelChequeOrPassbook: Yup.mixed().required('Cancel Cheque or Passbook is required'),
-    panNumber: Yup.string().required('PAN Number is required'),
-    gstNumber: Yup.string().required('GST Number is required'),
-  });
+		companyName: Yup.string().required("Company Name is required"),
+		registrationNumber: Yup.string().required(
+			"Registration Number is required",
+		),
+		dateOfIncorporation: Yup.date().required(
+			"Date of Incorporation is required",
+		),
+		businessEntityType: Yup.string().required(
+			"Business Entity Type is required",
+		),
+		rocDistrict: Yup.string().required("ROC District is required"),
+		companyCertificate: Yup.mixed().required("Company Certificate is required"),
+		companyAddress: Yup.string().required("Company Address is required"),
+		pincode: Yup.string().required("Pincode is required"),
+		bankName: Yup.string().required("Bank Name is required"),
+		ifscCode: Yup.string().required("IFSC Code is required"),
+		currentAccountNumber: Yup.string().required(
+			"Current Account Number is required",
+		),
+		currentAccountHolderName: Yup.string().required(
+			"Current Account Holder Name is required",
+		),
+		branchName: Yup.string().required("Branch Name is required"),
+		branchAddress: Yup.string().required("Branch Address is required"),
+		cancelChequeOrPassbook: Yup.mixed().required(
+			"Cancel Cheque or Passbook is required",
+		),
+		panNumber: Yup.string().required("PAN Number is required"),
+		gstNumber: Yup.string().required("GST Number is required"),
+	});
 
 	// Formik setup
 	const formik = useFormik({
@@ -156,11 +168,10 @@ const SeedFunded = () => {
 					</div>
 				</div>
 			)}
-
-			<div className="max-w-6xl mx-auto flex">
-				{/* Left Column */}
-				<div className="w-1/2 p-4">
-					<form onSubmit={formik.handleSubmit}>
+			<form onSubmit={formik.handleSubmit}>
+				<div className="max-w-6xl mx-auto flex">
+					{/* Left Column */}
+					<div className="w-1/2 p-4">
 						<div className="mb-4">
 							<label className="block mb-2" htmlFor="companyName">
 								Company Name:
@@ -287,12 +298,10 @@ const SeedFunded = () => {
 								required
 							/>
 						</div>
-					</form>
-				</div>
+					</div>
 
-				{/* Right Column */}
-				<div className="w-1/2 p-4">
-					<form onSubmit={formik.handleSubmit}>
+					{/* Right Column */}
+					<div className="w-1/2 p-4">
 						<div className="mb-4">
 							<label className="block mb-2" htmlFor="bankName">
 								Bank Name:
@@ -422,23 +431,24 @@ const SeedFunded = () => {
 								required
 							/>
 						</div>
-
-						<button
-							type="submit"
-							className="bg-blue-500 text-white rounded py-2 px-4"
-						>
-							Submit
-						</button>
-
-						{successMessage && (
-							<div className="text-green-500 mt-4">{successMessage}</div>
-						)}
-						{errorMessage && (
-							<div className="text-red-500 mt-4">{errorMessage}</div>
-						)}
-					</form>
+					</div>
 				</div>
-			</div>
+				<div className="flex items-center justify-center pb-10">
+					<button
+						type="submit"
+						className="bg-blue-500 text-white rounded py-2 px-4"
+					>
+						Submit
+					</button>
+				</div>
+
+				{successMessage && (
+					<div className="text-green-500 mt-4">{successMessage}</div>
+				)}
+				{errorMessage && (
+					<div className="text-red-500 mt-4">{errorMessage}</div>
+				)}
+			</form>
 		</div>
 	);
 };

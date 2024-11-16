@@ -33,7 +33,7 @@ const submitSeedFund = async (req, res) => {
       branchName,
       branchAddress,
       panNumber,
-      gstNumber
+      gstNumber,
     } = req.body;
 
     // Handle file uploads
@@ -41,49 +41,50 @@ const submitSeedFund = async (req, res) => {
     const cancelChequeOrPassbook = req.files.cancelChequeOrPassbook ? req.files.cancelChequeOrPassbook[0].path : null;
 
     // Upsert: Create or update the seed fund entry
-    const seedFundEntry = await prisma.seedFund.upsert({
-      where: { userId }, // Use userId to find existing entry
-      update: {
-        companyName,
-        registrationNumber,
-        dateOfIncorporation: new Date(dateOfIncorporation),
-        businessEntityType,
-        companyCertificate,
-        rocDistrict,
-        companyAddress,
-        pincode,
-        bankName,
-        ifscCode,
-        currentAccountNumber,
-        currentAccountHolderName,
-        branchName,
-        branchAddress,
-        cancelChequeOrPassbook,
-        panNumber,
-        gstNumber,
-        documentStatus : "created"
-      },
-      create: {
-        companyName,
-        registrationNumber,
-        dateOfIncorporation: new Date(dateOfIncorporation),
-        businessEntityType,
-        companyCertificate,
-        rocDistrict,
-        companyAddress,
-        pincode,
-        bankName,
-        ifscCode,
-        currentAccountNumber,
-        currentAccountHolderName,
-        branchName,
-        branchAddress,
-        cancelChequeOrPassbook,
-        panNumber,
-        gstNumber,
-        userId // Associate the entry with the user ID
-      }
-    });
+				const seedFundEntry = await prisma.seedFund.upsert({
+					where: { userId }, // Use userId to find existing entry
+					update: {
+						companyName,
+						registrationNumber,
+						dateOfIncorporation: new Date(dateOfIncorporation),
+						businessEntityType,
+						companyCertificate,
+						rocDistrict,
+						companyAddress,
+						pincode,
+						bankName,
+						ifscCode,
+						currentAccountNumber,
+						currentAccountHolderName,
+						branchName,
+						branchAddress,
+						cancelChequeOrPassbook,
+						panNumber,
+						gstNumber,
+						documentStatus: "created",
+					},
+					create: {
+						companyName,
+						registrationNumber,
+						dateOfIncorporation: new Date(dateOfIncorporation),
+						businessEntityType,
+						companyCertificate,
+						rocDistrict,
+						companyAddress,
+						pincode,
+						bankName,
+						ifscCode,
+						currentAccountNumber,
+						currentAccountHolderName,
+						branchName,
+						branchAddress,
+						cancelChequeOrPassbook,
+						panNumber,
+						gstNumber,
+						documentStatus: "created",
+						userId, // Associate the entry with the user ID
+					},
+				});
 
     res.status(200).json({
       message: seedFundEntry ? 'Seed fund entry updated successfully' : 'Seed fund entry created successfully',

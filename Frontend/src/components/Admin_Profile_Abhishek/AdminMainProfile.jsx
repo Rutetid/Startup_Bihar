@@ -85,19 +85,18 @@ const AdminMainProfile = () => {
 		setDetailsView(true); // Show third section when an item is selected
 	};
 	const renderDetailsSection = () => {
-		if (!detailsView)
-			return (
-				<div className="flex items-center justify-center h-full">
-					<h1>Select an item to view details</h1>
-				</div>
-			);
+		if (!detailsView) return (
+			<div className="flex items-center justify-center h-full">
+			<h1>Select an item to view details</h1>
+		</div>
+		);
 
 		switch (activePage) {
 			case "SeedFundModule":
 				return <SeedfundModuleDetails id={selectedId} />;
 			case "StartupProfile":
 				return <ProfileDetails id={selectedId} />;
-
+			
 			default:
 				return null;
 		}
@@ -107,14 +106,19 @@ const AdminMainProfile = () => {
 		<div className="grid grid-cols-12 ">
 			{/* First Section - Left Sidebar */}
 			<div className="col-span-2 ">
-				<LeftBar changePanel={changePanel} />
+
+			<LeftBar changePanel={changePanel} />
 			</div>
 
 			{/* Second Section - Main Content Area */}
-			<div className="col-span-3">{handlePageChange()}</div>
+			<div className="col-span-3">
+				{handlePageChange()}
+			</div>
 
 			{/* Third Section - Details Section */}
-			<div className="col-span-7  bg-gray-100">{renderDetailsSection()}</div>
+			<div className="col-span-7  bg-gray-100">
+				{renderDetailsSection()}
+			</div>
 		</div>
 	);
 };

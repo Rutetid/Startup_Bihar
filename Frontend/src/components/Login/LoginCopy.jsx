@@ -46,13 +46,16 @@ const LoginCopy = () => {
 			if (response.ok) {
 				toast.success(data.message || "Login successful!");
 				localStorage.setItem("token", `Bearer ${data.token}`);
+
 				if (!isAdminLogin) {
-					localStorage.setItem("user_id", data.user_id);
 					localStorage.setItem("registration_no", data.registration_no);
+					localStorage.setItem("user_id", data.user_id);
+				} else if (isAdminLogin) {
+					localStorage.setItem("admin_id", data.admin_id);
 				}
 
 				// Redirect based on login type
-				navigate(isAdminLogin ? "/adminprofile" : "/userprofile");
+				navigate(isAdminLogin ? "/AdminProfile" : "/StartupProfile");
 			} else {
 				setErrorMessage(data.error || "Login failed");
 				toast.error(data.error || "Login failed");

@@ -58,12 +58,14 @@ const userLogin = async (req, res) => {
 // Fetch basic details of a startup by user_id or registration_no
 const getStartupDetails = async (req, res) => {
   try {
-    const { user_id } = req.query; // Assuming user_id is provided as a query parameter
+    const { user_id } = req.query; // Expecting user_id as a query parameter
 
     // Ensure that a user_id is provided
     if (!user_id) {
       return res.status(400).json({ error: 'user_id is required to fetch startup details' });
     }
+
+    console.log('Fetching details for user_id:', user_id);
 
     // Find the user by user_id and select only basic fields
     const startup = await prisma.user.findUnique({
@@ -74,27 +76,37 @@ const getStartupDetails = async (req, res) => {
         registration_no: true,
         registration_year: true,
         about: true,
-        moto: true
+        moto: true,
+        facebook: true,
+        website: true,
+        twitter: true,
+        instagram: true,
+        mobile: true,
+        logo: true,
+        founder_dp: true,
+        founder_name: true,
       }
     });
 
     // If the user is not found, return an error
     if (!startup) {
+      console.log(`No startup found for user_id: ${user_id}`);
       return res.status(404).json({ error: 'Startup not found' });
     }
+
+    console.log('Startup details:', startup);
 
     // Respond with the basic details
     res.status(200).json({ startup });
   } catch (error) {
     console.error('Error fetching startup details:', error);
-    res.status(500).json({ error: 'An error occurred while fetching startup details' });
+    res.status(500).json({ error: 'An error occurred while fetching startup details', details: error.message });
   }
 };
 
-
 const createUser = async (req, res) => {
   try {
-    const { user_id, password, registration_no, company_name, startup_since, about } = req.body;
+    const { user_id, password, registration_no, company_name, startup_since, about ,founder_name} = req.body;
 
     if (!user_id || !password || !registration_no || !company_name) {
       return res.status(400).json({ error: 'All fields are required: user_id, password, registration_no, and company_name' });
@@ -117,6 +129,7 @@ const createUser = async (req, res) => {
         registration_no,
         company_name,
         startup_since,
+        founder_name,
         about
       },
     });
@@ -128,7 +141,8 @@ const createUser = async (req, res) => {
         registration_no: newUser.registration_no,
         company_name: newUser.company_name,
         startup_since: newUser.startup_since,
-        about: newUser.about
+        about: newUser.about,
+        about: newUser.founder_name
       },
     });
   } catch (error) {
@@ -201,17 +215,17 @@ const updateInstagram = async (req, res) => {
     if (!token) return res.status(401).json({ error: 'Unauthorized: No token provided' });
 
     const user_id = getUserIdFromToken(token);
-    const { instaLink } = req.body;
-    if (!instaLink) {
+    const { instagram } = req.body;
+    if (!instagram) {
       return res.status(400).json({ error: 'Correct Field required' });
     }
 
     const updatedUser = await prisma.user.update({
       where: { user_id },
-      data: { instaLink },
+      data: { instagram },
     });
 
-    res.status(200).json({ message: 'Instagram updated successfully', instaLink: updatedUser.instaLink });
+    res.status(200).json({ message: 'Instagram updated successfully', instagram: updatedUser.instagram });
   } catch (error) {
     console.error('Error updating Instagram:', error);
     res.status(500).json({ error: 'An error occurred while updating Instagram' });
@@ -225,17 +239,60 @@ const updateWebsite = async (req, res) => {
     if (!token) return res.status(401).json({ error: 'Unauthorized: No token provided' });
 
     const user_id = getUserIdFromToken(token);
-    const { websiteLink } = req.body;
-    if (!websiteLink) {
+    const { website } = req.body;
+    if (!website) {
       return res.status(400).json({ error: 'Correct Field required' });
     }
 
     const updatedUser = await prisma.user.update({
       where: { user_id },
-      data: { websiteLink },
+      data: { website },
     });
 
-    res.status(200).json({ message: 'Website updated successfully', websiteLink: updatedUser.websiteLink });
+    res.status(200).json({ message: 'Website updated successfully', website: updatedUser.website });
+  } catch (error) {
+    console.error('Error updating Website:', error);
+    res.status(500).json({ error: 'An error occurred while updating Website' });
+  }
+};
+
+// Update logo
+const updateLogo = async (req, res) => {
+  try {
+    const token = req.headers.authorization?.split(' ')[1];
+    if (!token) return res.status(401).json({ error: 'Unauthorized: No token provided' });
+
+    const user_id = getUserIdFromToken(token);
+    const logo = req.files.logo ? req.files.logo[0].location : null;
+
+
+    const updatedUser = await prisma.user.update({
+      where: { user_id },
+      data: { logo },
+    });
+
+    res.status(200).json({ message: 'Website updated successfully', logo: updatedUser.logo });
+  } catch (error) {
+    console.error('Error updating Website:', error);
+    res.status(500).json({ error: 'An error occurred while updating Website' });
+  }
+};
+// Update applicantDp
+const updateFounderDp = async (req, res) => {
+  try {
+    const token = req.headers.authorization?.split(' ')[1];
+    if (!token) return res.status(401).json({ error: 'Unauthorized: No token provided' });
+
+    const user_id = getUserIdFromToken(token);
+    const founder_dp = req.files.founder_dp ? req.files.founder_dp[0].location : null;
+
+
+    const updatedUser = await prisma.user.update({
+      where: { user_id },
+      data: { founder_dp },
+    });
+
+    res.status(200).json({ message: 'Website updated successfully', founder_dp: updatedUser.founder_dp });
   } catch (error) {
     console.error('Error updating Website:', error);
     res.status(500).json({ error: 'An error occurred while updating Website' });
@@ -302,5 +359,7 @@ module.exports = {
   updateInstagram,
   updateWebsite,
   updateTwitter,
-  updateMoto
+  updateMoto,
+  updateLogo,
+  updateFounderDp
 };
