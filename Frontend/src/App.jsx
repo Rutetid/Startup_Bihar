@@ -8,6 +8,7 @@ import SeedFunded from './components/UserForm/SeedFunded';
 import SecondTrance from './components/UserForm/SecondTrance';
 import AdminMainProfile from './components/Admin_Profile_Abhishek/AdminMainProfile';
 import Matchingloan from './components/UserForm/Matchingloan';
+import UserStartupProfile from './components/HomePage/UserStartupProfile';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -19,6 +20,7 @@ const App = () => {
   return (
 			<Router>
 				<Routes>
+					<Route path="/profile" element={<UserStartupProfile />} />
 					<Route path="/login" element={<LoginCopy onLogin={handleLogin} />} />
 					<Route path="/StartupProfile" element={<StartupProfileMain />} />
 					<Route path="/" element={<HomePage />} />
