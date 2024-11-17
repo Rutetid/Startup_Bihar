@@ -20,6 +20,10 @@ import SeedfundModuleDetails from "./Seed_Fund_module/SeedFundModuleDetails.jsx"
 import CommonList from "./CommonList.jsx";
 import SecondTrancheModuleDetails from "./Second_Tranche_module/SecondTrancheModuleDetails.jsx";
 import PostSeedFundModuleDetails from "./Post_Seed_Fund_module/PostSeedFundModuleDetails.jsx";
+import QPRModuleDetails from "./QPR_Module/QPRModuleDetails.jsx";
+import MatchingLoanModuleDetails from "./MatchingLoan/MatchingLoanModuleDetails.jsx";
+import IncubationModuleDetails from "./Incubation_Module/IncubationModuleDetails.jsx";
+import AccelerationProgrammeModuleDetails from "./Acceleration_Programme_Module/AccelerationProgrammeModuleDetails.jsx";
 
 const AdminMainProfile = () => {
 	const [activePage, setActivePage] = useState("StartupProfile"); // Controls second section
@@ -59,17 +63,41 @@ const AdminMainProfile = () => {
 					/>
 				);
 
-			case "QPRModule":
-				return <QPRModule />;
+			case "QPRModule": 
+			return (
+				<CommonList
+					onSelect={handleSelect}
+					url="http://localhost:3000/api/Qreport/v2"
+					title="QPR Appltication List"
+				/>
+			);
 
 			case "MatchingLoan":
-				return <MatchingLoan />;
+				return (
+					<CommonList
+						onSelect={handleSelect}
+						url="http://localhost:3000/api/matchingLoan/v2"
+						title="Matching Loan Appltication List"
+					/>
+				);
 
 			case "IncubationModule":
-				return <IncubationModule />;
+				return (
+					<CommonList
+						onSelect={handleSelect}
+						url="http://localhost:3000/api/incubation/v2"
+						title="Incubation Appltication List"
+					/>
+				);
 
 			case "AccelerationProgrammeModule":
-				return <AccelerationProgrammeModule />;
+				return (
+					<CommonList
+						onSelect={handleSelect}
+						url="http://localhost:3000/api/acceleration/v2"
+						title="Acceleration Programme Appltication List"
+					/>
+				);
 
 			case "IPRReimbursementModule":
 				return <IPRReimbursementModule />;
@@ -122,6 +150,14 @@ const AdminMainProfile = () => {
 				return <SecondTrancheModuleDetails id={selectedId} />;
 			case "PostSeedFundModule":
 				return <PostSeedFundModuleDetails id={selectedId} />;
+			case "QPRModule":
+				return <QPRModuleDetails id={selectedId} />;
+			case "MatchingLoan":
+				return <MatchingLoanModuleDetails id={selectedId} />;
+			case "IncubationModule":
+				return <IncubationModuleDetails id={selectedId} />;
+			case "AccelerationProgrammeModule":
+				return <AccelerationProgrammeModuleDetails id={selectedId} />;
 
 			default:
 				return null;
